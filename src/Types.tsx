@@ -15,3 +15,12 @@ export type CategoryArray = {
   title: string;
   imageUrl: string;
 };
+
+export type NavigationItem = {
+  path: string;
+  label: string;
+}
+
+export type NavigationProps = {
+  navigationArray?: NavigationItem[];
+}

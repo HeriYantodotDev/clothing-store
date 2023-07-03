@@ -1,6 +1,6 @@
 # Clothing Store Project
 
-This is my first React Project that is using TypeScript. 
+This is my first React Project that is using TypeScript.
 
 # Project Goals
 
@@ -20,6 +20,13 @@ This is my first React Project that is using TypeScript.
 To start: `npm run dev` 
 
 And here are my several approach during the development process.
+
+## To do
+This is the to do list: 
+- Testing Navigation
+  - Test Navigation Links
+  - Test the default value and also when accepting arguments
+  - Test the outlet? **Question** should it be tested in the `App` component? 
 
 ## Branching Names
 
@@ -116,11 +123,23 @@ Reading List:
 
 
 # The React App Overview
+
+## Routes
+### [Home](./src/routes/home/Home.component.tsx)
+**To-do item** Improve it 
+### [Navigation](./src/routes/navigation/Navigation.component.tsx)
+**To-do item** Improve it 
 ## Component
 ### [CategoryItem](./src/components/CategoryItem/CategoryItem.component.tsx)
 ![Category Component Example](./__docImages__/CategoryItem.png)
 ### [Directory](./src//components//Directory/Directory.component.tsx)
 ![Directory Component Example](./__docImages__/Directory.png)
 
+
 ## Styles
 - [Google Fonts: Obitron](https://fonts.google.com/specimen/Orbitron)
+
+## Authentication
+
+## Database
+For this project, I'm using Firebase Realtime Database
