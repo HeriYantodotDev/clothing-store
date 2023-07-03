@@ -1,0 +1,17 @@
+export type CategoriesProps = {
+  categoryList?: CategoryArray[];
+  cta?: string;
+  imageUrl?: string;
+};
+
+export type CategoryItemProps = {
+  title: string;
+  cta: string;
+  imageUrl?: string;
+}
+
+export type CategoryArray = {
+  id: number;
+  title: string;
+  imageUrl: string;
+};
