@@ -6,15 +6,18 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "jest --verbose",
     "test:coverage": "jest --verbose --coverage",
-    "test:watch": "jest --verbose --watchAll"
+    "test:watch": "jest --verbose --watchAll",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "ts:check": "tsc -p .",
+    "check": "npm run lint && npm run ts:check"
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -33,6 +36,7 @@
     "sass": "^1.63.6",
     "ts-jest": "^29.1.1",
     "typescript": "^5.0.2",
-    "vite": "^4.3.9"
+    "vite": "^4.3.9",
+    "vite-plugin-svgr": "^3.2.0"
   }
 }

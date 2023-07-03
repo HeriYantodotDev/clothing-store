@@ -11,6 +11,7 @@ export function CategoryItem({
 }: CategoryItemProps) {
   return (
     <div className='category-container' data-testid='category'>
+      <div className='opacity-layer'></div>
       <div
         className='background-image'
         style={
