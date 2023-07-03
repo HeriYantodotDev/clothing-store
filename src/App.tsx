@@ -1,12 +1,10 @@
-import { Toogle } from './Toogle';
-
+import { Directory } from './components/Directory/Directory.component';
 
 export default function App() {
 
   return (
     <>
-      <Toogle />
-      Hello World
+      <Directory />
     </>
   );
 }
