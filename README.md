@@ -21,13 +21,6 @@ To start: `npm run dev`
 
 And here are my several approach during the development process.
 
-## To do
-This is the to do list: 
-- Testing Navigation
-  - Test Navigation Links
-  - Test the default value and also when accepting arguments
-  - Test the outlet? **Question** should it be tested in the `App` component? 
-
 ## Branching Names
 
 - Feature branches: If you're creating a branch to work on a specific feature or user story, you can prefix the branch name with "feature/"/ For example: 
