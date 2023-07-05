@@ -9,5 +9,4 @@ export const defaultNavigationArray: NavigationItem[] = [
     path: 'contact',
     label: 'Contact',
   },
-
 ];
