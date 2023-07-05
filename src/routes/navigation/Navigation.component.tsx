@@ -1,18 +1,19 @@
 import { Fragment } from 'react';
-import { Outlet, Link } from 'react-router-dom';
-import { ReactComponent as LogoShop } from '../../assets/shopLogo.svg';
+import { Link, Outlet } from 'react-router-dom';
 
 import './Navigation.styles.scss';
 import { NavigationItem, NavigationProps } from '../../Types';
 
 import { defaultNavigationArray } from './defaultValue';
 
+import shopLogo from '../../assets/shopLogo.png';
+
 export function NavLink({
   path,
   label,
 }: NavigationItem) {
   return (
-    <div className='nav-links-container'>
+    <div className='nav-links-container' data-testid='navlink' >
       <Link to={path} className='nav-link'>
         {label}
       </Link>
@@ -25,9 +26,9 @@ export function Navigation({
 }: NavigationProps) {
   return (
     <Fragment>
-      <div className='navigation'>
+      <div className='navigation' data-testid='navigation'>
         <Link to='/' className='logo-container'>
-          <LogoShop className='logo' />
+          <img className='logo' src={shopLogo} alt='shopLogo' data-testid='logo' />
         </Link>
 
         {navigationArray.map(({ path, label }) => (
@@ -35,7 +36,7 @@ export function Navigation({
         ))}
 
       </div>
-      <Outlet />
+      <Outlet data-testid='outlet' />
     </Fragment>
   );
 }

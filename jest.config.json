@@ -7,6 +7,7 @@
     "@testing-library/jest-dom/extend-expect"
   ],
   "moduleNameMapper": {
-    "\\.(scss|css)$": "<rootDir>/style-mock.ts"
+    "\\.(scss|css)$": "<rootDir>/src/__mocks__/style-mock.ts",
+    "\\.(png|jpg|svg)$": "<rootDir>/src/__mocks__/image-mock.ts"
   }
 }

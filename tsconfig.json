@@ -24,7 +24,8 @@
     "esModuleInterop": true,
   },
   "include": [
-    "src"
+    "src",
+    "svg.d.ts"
   ],
   "references": [
     {
