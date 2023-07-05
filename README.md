@@ -1,6 +1,9 @@
 # Clothing Store Project
 
-This is my first React Project that is using TypeScript.
+This is my first React project that utilizes TypeScript. 
+This documentation serves as a reference and journal for both future me and anyone interested in my project. 
+So future-me! or anyone. If you are reading this in the future 
+and find this documentation lacking, please refrain from blaming your past. Instead, I encourage you to enhance and refine it for the benefit of yourself and others."
 
 # Project Goals
 
@@ -128,11 +131,60 @@ Reading List:
 ### [Directory](./src//components//Directory/Directory.component.tsx)
 ![Directory Component Example](./__docImages__/Directory.png)
 
-
 ## Styles
 - [Google Fonts: Obitron](https://fonts.google.com/specimen/Orbitron)
 
-## Authentication
+## BackEnd
+I'm using [Firebase](https://firebase.google.com/) here for the backend.
+- `npm i firebase`. [Link](https://www.npmjs.com/package/firebase)
 
-## Database
-For this project, I'm using Firebase Realtime Database
+### Setting up Firestore Database
+It consists of three things:
+- data
+- document
+- collection
+
+Example:
+- '#' => collection
+- '##' => document
+- '###' => data
+```
+#Shoes#
+  ##Shoe1##
+    ###
+    name: 'asdf'
+    brand: 'asdf'
+    imageURL: 'asdf'
+    const:
+      price: 200
+      currencry: 'USD'
+    ###
+  ##Shoe1##
+    ###
+    name: 'asdf'
+    brand: 'asdf'
+    imageURL: 'asdf'
+    const:
+      price: 200
+      currencry: 'USD'
+    ###
+```
+Please take a look at the picture below: 
+![Firestore Database Structure](./__docImages__/firebase%20database%20structure.png)
+
+### Database Structure 
+- Collection: `users`
+  - document: `uid` || (how when email)
+    - data:
+      | Field           | Type            | Default Value (in Function) |
+      |-----------------|-----------------|-----------------------------|
+      | active          | boolean         | true                        |
+      | createdAt       | timeStamp       | new Date()                  |
+      | updatedAt       | timeStamp       | new Date()                  |
+      | displayName     | string          |                             |
+      | email           | string          |                             |
+
+
+### Authentication
+- Google Auth
+- 
