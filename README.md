@@ -1,9 +1,11 @@
-# Clothing Store Project
+# [Working In Progress] Clothing Store Project
 
 This is my first React project that utilizes TypeScript. 
 This documentation serves as a reference and journal for both future me and anyone interested in my project. 
-So future-me! or anyone. If you are reading this in the future 
-and find this documentation lacking, please refrain from blaming your past. Instead, I encourage you to enhance and refine it for the benefit of yourself and others."
+
+So, Dear future self, 
+
+may this message be of great assistance to you.
 
 # Project Goals
 
@@ -18,6 +20,15 @@ and find this documentation lacking, please refrain from blaming your past. Inst
 - Integrate with a Stripe API (test version only)
 - Integrate with Firebase to handle Auth and the storage: 
   - Sign in and sign up feature
+
+# Project Solutions
+
+- FrontEnd: React
+- BackEnd: 
+  - Firebase
+  - Firestore Database
+  - Google Auth
+
 
 # Development
 To start: `npm run dev` 
