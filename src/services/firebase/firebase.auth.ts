@@ -3,23 +3,29 @@ import {
   signInWithPopup,
   signInWithRedirect,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
 } from 'firebase/auth';
 
 import { firebaseApp } from './firebase.config';
 
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
-provider.setCustomParameters({
+googleProvider.setCustomParameters({
   prompt: 'select_account',
 });
 
-const auth = getAuth(firebaseApp);
+export const auth = getAuth(firebaseApp);
 
 export function signInWithGooglePopOut() {
-  return signInWithPopup(auth, provider);
+  return signInWithPopup(auth, googleProvider);
 } 
 
 export function signInWithGoogleRedirect() {
-  return signInWithRedirect(auth, provider);
+  return signInWithRedirect(auth, googleProvider);
 }
 
+export async function createAuthUserWithEmailAndPassword(email: string, password: string) {
+  if (!email || !password) return;
+
+  return await createUserWithEmailAndPassword(auth, email, password);
+}

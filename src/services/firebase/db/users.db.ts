@@ -4,18 +4,23 @@ import {
   getDoc,
   setDoc,
 } from 'firebase/firestore';
-import { UserCredential } from 'firebase/auth';
+import { 
+  User,
+} from 'firebase/auth';
+
 import { firebaseApp } from '../firebase.config';
 
 export const db = getFirestore(firebaseApp);
 
-import { Users } from './database.types';
+import { 
+  UserData,
+  UserDataOptional,
+} from './database.types';
 
 
-export async function createUserDocumentFromAuth(UserCredential: UserCredential) {
-  const userAuth = UserCredential.user;
+export async function createUserDocumentFromAuth(user: User, userDataOptional: UserDataOptional = {}) {
 
-  const userUID = userAuth.uid;
+  const userUID = user.uid;
 
   const userDocRef = doc(db, 'users', userUID); 
 
@@ -25,29 +30,28 @@ export async function createUserDocumentFromAuth(UserCredential: UserCredential)
 
   if (!userSnapshop.exists()) {
     userStatus = 'New user';
-    const {displayName, email} = userAuth;
 
-    if (!displayName || !email) {
-      throw new Error('There\'s no Display Name or Email in Auth');
-    }
+    const displayName = user.displayName || '';
+    const email = user.email || '';
 
     const createdAt = new Date();
     const updatedAt = new Date();
 
-    const userInput: Users = {
+    const userInput: UserData = {
       displayName,
       email,
       active: true,
       createdAt,
       updatedAt,
+      ...userDataOptional,
     };
 
     try {
       await setDoc(userDocRef, userInput);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch(error: any ){
+    } catch(error){
       // eslint-disable-next-line no-console
-      console.log('error creating the user', error.message);
+      console.log('error creating the user', error);
     }
   }
 
@@ -55,3 +59,4 @@ export async function createUserDocumentFromAuth(UserCredential: UserCredential)
   console.log(userStatus);
   return userDocRef;
 } 
+
