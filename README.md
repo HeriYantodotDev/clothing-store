@@ -126,9 +126,6 @@ Reading List:
 - [Common Mistakes](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
 
 
-
-
-
 # The React App Overview
 
 ## Routes
@@ -141,6 +138,8 @@ Reading List:
 ![Category Component Example](./__docImages__/CategoryItem.png)
 ### [Directory](./src//components//Directory/Directory.component.tsx)
 ![Directory Component Example](./__docImages__/Directory.png)
+### SignIn
+### SignUp
 
 ## Styles
 - [Google Fonts: Obitron](https://fonts.google.com/specimen/Orbitron)
@@ -197,5 +196,8 @@ Please take a look at the picture below:
 
 
 ### Authentication
-- Google Auth
-- 
+- Google Auth by Firebase Auth
+- Email Auth by Firebase Auth
+
+
+

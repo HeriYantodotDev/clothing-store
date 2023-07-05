@@ -24,3 +24,10 @@ export type NavigationItem = {
 export type NavigationProps = {
   navigationArray?: NavigationItem[];
 }
+
+export interface FormFields {
+  displayName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
