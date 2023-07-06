@@ -31,3 +31,22 @@ export interface FormFields {
   password: string;
   confirmPassword: string;
 }
+
+export interface FormInput {
+  label: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+}
+
+export const BUTTON_TYPE_CLASSES: { [key: string]: string } = {
+  google: 'google-sign-in',
+  inverted: 'inverted',
+  default: '',
+};
+
+export interface ButtonProps {
+  children: string;
+  buttonType: keyof typeof BUTTON_TYPE_CLASSES
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+}
