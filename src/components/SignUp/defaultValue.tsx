@@ -1,6 +1,6 @@
-import { FormFields } from '../../Types';
+import { FormFieldsSignUp } from '../../Types';
 
-export const defaultFormField: FormFields = {
+export const defaultFormField: FormFieldsSignUp = {
   displayName: '',
   email: '',
   password: '',

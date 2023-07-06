@@ -1,21 +1,35 @@
 import React, { FormEvent, useState } from 'react';
 import { defaultFormField } from './defaultValue';
-import { createAuthUserWithEmailAndPassword } from '../../services/firebase/firebase.auth';
 import { createUserDocumentFromAuth } from '../../services/firebase/db/users.db';
+import {
+  signInWithGooglePopOut,
+  signInAuthUserWithEmailAndPassword,
+} from '../../services/firebase/firebase.auth';
+
 
 import { FormInput } from '../FormInput/FormInput.component';
 import { Button } from '../Button/Button.component';
 
-import './SignUp.styles.scss';
+import './SignIn.styles.scss';
 
-export function SignUp() {
+export function SignIn() {
   const [formFields, setFormFields] = useState(defaultFormField);
   const {
-    displayName,
     email,
     password,
-    confirmPassword,
   } = formFields;
+
+  async function signInWithGoogle() {
+    try {
+      const response = await signInWithGooglePopOut();
+      const user = response.user;
+      await createUserDocumentFromAuth(user);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+  }
 
   function resetFormField() {
     setFormFields(defaultFormField);
@@ -31,12 +45,8 @@ export function SignUp() {
   }
 
   //replace this with joy
-  function simpleValidationHandleSubmit(email: string, password: string, confirmPassword: string) {
-    if (!email || !password || !confirmPassword) {
-      return false;
-    }
-
-    if (password !== confirmPassword) {
+  function simpleValidationHandleSubmit(email: string, password: string) {
+    if (!email || !password) {
       return false;
     }
 
@@ -48,46 +58,33 @@ export function SignUp() {
     try {
       //TO DO: Fix this validation
       console.log('fix this validation');
-      if (!simpleValidationHandleSubmit(email, password, confirmPassword)) {
+      if (!simpleValidationHandleSubmit(email, password)) {
         throw new Error('Validation Error');
       }
 
-      const response = await createAuthUserWithEmailAndPassword(email, password);
-      const user = response?.user;
-      if (!response || !user) {
-        throw new Error('Something went wrong with the Auth process');
-      }
-
-      await createUserDocumentFromAuth(user, { displayName });
-
+      const response = await signInAuthUserWithEmailAndPassword(email, password);
+      console.log(response);
       resetFormField();
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      if (err?.code === 'auth/email-already-in-use') {
+      if (err?.code === 'auth/wrong-password') {
         // eslint-disable-next-line no-console
-        console.log('Future me! Hey do something about handling is already been used');
-      } else {
-        // eslint-disable-next-line no-console
-        console.log(err);
+        console.log('Future me! Hey do something about "auth/wrong-password"');
       }
+      if (err?.code === 'auth/user-not-found') {
+        // eslint-disable-next-line no-console
+        console.log('Future me! Hey do something about :"auth/user-not-found"');
+      }
+      console.log(err);
     }
   }
 
   return (
-    <div className='sign-up-container'>
-      <h2>Don't have an account? </h2>
+    <div className='sign-in-container'>
+      <h2>Already have an account?</h2>
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>
-
-        <FormInput
-          label='Display Name'
-          type='text'
-          name='displayName'
-          required onChange={handleChange}
-          value={displayName}
-        />
-
         <FormInput
           label='Email'
           type='email'
@@ -106,16 +103,10 @@ export function SignUp() {
           value={password}
         />
 
-        <FormInput
-          label='Confirm Password'
-          type='password'
-          name='confirmPassword'
-          required
-          onChange={handleChange}
-          value={confirmPassword}
-        />
-
-        <Button buttonType='default' type='submit'>Sign Up</Button>
+        <div className='buttons-container'>
+          <Button buttonType='default' type='submit'>Sign In</Button>
+          <Button buttonType='google' type='button' onClick={signInWithGoogle} >Google sign in</Button>
+        </div>
       </form>
     </div>
   );

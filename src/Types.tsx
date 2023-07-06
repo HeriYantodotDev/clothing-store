@@ -25,11 +25,17 @@ export type NavigationProps = {
   navigationArray?: NavigationItem[];
 }
 
-export interface FormFields {
+export interface FormFieldsSignUp {
   displayName: string;
   email: string;
   password: string;
   confirmPassword: string;
+}
+
+
+export interface FormFieldsSignIn {
+  email: string;
+  password: string;
 }
 
 export interface FormInput {

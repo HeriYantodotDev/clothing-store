@@ -99,6 +99,39 @@ And here are my several approach during the development process.
     }
   }
   ```
+- This would save future-me a lot. This is about Footer. Sometimes, the content is really short and the footer instead is at the bottom it would be in the middle like this: 
+![Footer Not At the bottom](./__docImages__/Footer%20Not%20at%20The%20Bottom.png)
+I tried many things, and it didn't work to solve this issue. In many cases this won't happen since we put many items on the pages right. But let's solved it. 
+  - First wrap all the HTML element / React Component outside the footer in a div so it's like this:
+    ```
+    export default function App() {
+      return (
+        <div>
+          <div className='content'> //this one
+            <Routes >
+              <Route path='/' element={<Navigation navigationArray={navigationArray} />} >
+                <Route index element={<Home />} />
+                <Route path='shop' element={<Shop />} />
+                <Route path='auth' element={<Authentication />} />
+              </Route>
+            </Routes>
+          </div>
+
+          <Footer />
+        </div>
+      );
+    }
+    ```
+  - Then give a clas name `content` or what ever you like. 
+  - Okay then determined the height of the Footer. If you're not sure then you can check the console in the browser and count the height (click the element and count the height for the boddy - padding - border - margin) like this:
+  ![count the padding](./__docImages__/count%20the%20height%20of%20the%20element.png)
+  - Then put this css in the index/main css : 
+  ```
+  .content {
+    min-height: calc(100vh - 80px);
+  }
+  ```
+  - "Voila, it works!"
 
 
 ## Linting

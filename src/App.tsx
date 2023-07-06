@@ -1,8 +1,9 @@
 import Home from './routes/home/Home.component';
-import { SignIn } from './routes/signIn/SignIn.component';
+import { Authentication } from './routes/authentication/Authentication.component';
 import { Routes, Route } from 'react-router-dom';
 import { Navigation } from './routes/navigation/Navigation.component';
 import { NavigationItem } from './Types';
+import { Footer } from './components/Footer/Footer.component';
 
 
 const Shop = () => {
@@ -23,7 +24,7 @@ const navigationArray: NavigationItem[] = [
     label: 'Contact',
   },
   {
-    path: 'signin',
+    path: 'auth',
     label: 'SignIn',
   },
 ];
@@ -31,12 +32,18 @@ const navigationArray: NavigationItem[] = [
 export default function App() {
 
   return (
-    <Routes>
-      <Route path='/' element={<Navigation navigationArray={navigationArray} />} >
-        <Route index element={<Home />} />
-        <Route path='shop' element={<Shop />} />
-        <Route path='signin' element={<SignIn />} />
-      </Route>
-    </Routes>
+    <div>
+      <div className='content'>
+        <Routes >
+          <Route path='/' element={<Navigation navigationArray={navigationArray} />} >
+            <Route index element={<Home />} />
+            <Route path='shop' element={<Shop />} />
+            <Route path='auth' element={<Authentication />} />
+          </Route>
+        </Routes>
+      </div>
+
+      <Footer />
+    </div>
   );
 }

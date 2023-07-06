@@ -6,18 +6,19 @@ import { NavigationItem, NavigationProps } from '../../Types';
 
 import { defaultNavigationArray } from './defaultValue';
 
-import shopLogo from '../../assets/shopLogo.png';
+import shopLogo from '../../assets/cool.png';
 
 export function NavLink({
   path,
   label,
 }: NavigationItem) {
   return (
-    <div className='nav-links-container' data-testid='navlink' >
-      <Link to={path} className='nav-link'>
+    <li className='nav-item ml-5' data-testid='navlink'>
+      <Link className='nav-link text-light' to={path}>
         {label}
       </Link>
-    </div>
+    </li>
+
   );
 }
 
@@ -26,17 +27,30 @@ export function Navigation({
 }: NavigationProps) {
   return (
     <Fragment>
-      <div className='navigation' data-testid='navigation'>
-        <Link to='/' className='logo-container'>
-          <img className='logo' src={shopLogo} alt='shopLogo' data-testid='logo' />
+      <nav className='navbar navbar-expand-lg navbar-light bg-dark mb-3' data-testid='navigation'>
+        <Link to='/' className='navbar-brand' >
+          <img className='logo rounded-circle' src={shopLogo} alt='shopLogo' data-testid='logo' width={70} />
         </Link>
 
-        {navigationArray.map(({ path, label }) => (
-          <NavLink key={path} path={path} label={label} />
-        ))}
+        <button className='navbar-toggler'
+          type='button' data-toggle='collapse'
+          data-target='#navbarSupportedContent'
+          aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
+          <span className='navbar-toggler-icon'></span>
+        </button>
 
-      </div>
+        <div className='collapse navbar-collapse' id='navbarSupportedContent'>
+          <ul className='navbar-nav ml-auto'>
+            {navigationArray.map(({ path, label }) => (
+              <NavLink key={path} path={path} label={label} />
+            ))}
+          </ul>
+
+        </div>
+      </nav>
+
       <Outlet data-testid='outlet' />
+
     </Fragment>
   );
 }

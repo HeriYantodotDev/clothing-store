@@ -1,10 +1,11 @@
 .button-container {
-  min-width: 165px;
+  min-width: 110px;
+  // max-width: 50px;
   width: auto;
   height: 50px;
   letter-spacing: 0.5px;
   line-height: 50px;
-  padding: 0 35px 0 35px;
+  padding: 0 10px 0 10px;
   font-size: 15px;
   background-color: black;
   color: white;
@@ -15,6 +16,7 @@
   cursor: pointer;
   display: flex;
   justify-content: center;
+  margin-right: 10px;
 
   &:hover {
     background-color: white;
@@ -27,7 +29,7 @@
     color: white;
 
     &:hover {
-      background-color: #357ae8;
+      background-color: rgb(53, 37, 223);
       border: none;
     }
   }
