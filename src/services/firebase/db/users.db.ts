@@ -57,7 +57,6 @@ export async function createUserDocumentFromAuth(user: User, userDataOptional: U
     try {
       await setDoc(userDocRef, userInput);
     } catch(error){
-      // eslint-disable-next-line no-console
       console.log('error creating the user', error);
     }
   }

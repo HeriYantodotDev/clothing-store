@@ -5,7 +5,7 @@ import { createUserDocumentFromAuth } from '../../services/firebase/db/users.db'
 
 import { FormInput } from '../FormInput/FormInput.component';
 import { Button } from '../Button/Button.component';
-import { LoadingWithinButton } from '../Loadiing/Loading.component';
+import { LoadingWithinButton } from '../Loading/Loading.component';
 import { signUpWithGooglePopOut } from '../../services/firebase/firebase.auth';
 
 import './SignUp.styles.scss';
@@ -45,7 +45,6 @@ export function SignUp() {
 
     } catch (err) {
       setLoadingGoogle(false);
-      // eslint-disable-next-line no-console
       console.log(err);
     }
   }
@@ -101,10 +100,8 @@ export function SignUp() {
       resetFormField();
 
       if (err?.code === 'auth/email-already-in-use') {
-        // eslint-disable-next-line no-console
         console.log('Future me! Hey do something about email-already-in-use');
       } else {
-        // eslint-disable-next-line no-console
         console.log(err);
       }
     }
