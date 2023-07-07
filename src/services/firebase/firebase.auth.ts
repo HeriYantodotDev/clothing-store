@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  signOut,
 } from 'firebase/auth';
 
 import { firebaseApp } from './firebase.config';
@@ -35,4 +36,8 @@ export async function signInAuthUserWithEmailAndPassword(email: string, password
   if (!email || !password) return;
 
   return await signInWithEmailAndPassword(auth, email, password);
+}
+
+export async function signOutUser() {
+  return await signOut(auth);
 }
