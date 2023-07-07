@@ -1,14 +1,14 @@
 import React, {
-  FormEvent, useState,
+  FormEvent,
+  useState,
   useContext,
+  useEffect,
 } from 'react';
 import { defaultFormField } from './defaultValue';
 import {
   signInWithGooglePopOut,
   signInAuthUserWithEmailAndPassword,
 } from '../../services/firebase/firebase.auth';
-
-import { UserContext } from '../../context/user.context';
 
 import { FormInput } from '../FormInput/FormInput.component';
 import { Button } from '../Button/Button.component';
@@ -24,21 +24,16 @@ export function SignIn() {
     email,
     password,
   } = formFields;
-  const { setCurrentUser } = useContext(UserContext);
+
 
   async function signInWithGoogle() {
     setLoadingGoogle(true);
     try {
-      const response = await signInWithGooglePopOut();
-
-      const user = response?.user;
-
-      setCurrentUser(user);
-
+      await signInWithGooglePopOut();
       setLoadingGoogle(false);
+      window.location.href = '/';
     } catch (err) {
       setLoadingGoogle(false);
-      // eslint-disable-next-line no-console
       console.log(err);
     }
   }
@@ -65,7 +60,6 @@ export function SignIn() {
     return true;
   }
 
-
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoadingEmail(true);
@@ -77,20 +71,11 @@ export function SignIn() {
         throw new Error('Validation Error');
       }
 
-      const response = await signInAuthUserWithEmailAndPassword(email, password);
-
-      const user = response?.user;
-
-      console.log('fix this error handling later');
-      if (!user) {
-        throw new Error('');
-      }
-
-      setCurrentUser(user);
+      await signInAuthUserWithEmailAndPassword(email, password);
 
       resetFormField();
       setLoadingEmail(false);
-
+      window.location.href = '/';
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setLoadingEmail(false);

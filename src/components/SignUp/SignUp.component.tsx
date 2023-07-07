@@ -1,4 +1,4 @@
-import React, { FormEvent, useState, useContext } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { defaultFormField } from './defaultValue';
 import { createAuthUserWithEmailAndPassword } from '../../services/firebase/firebase.auth';
 import { createUserDocumentFromAuth } from '../../services/firebase/db/users.db';
@@ -7,8 +7,6 @@ import { FormInput } from '../FormInput/FormInput.component';
 import { Button } from '../Button/Button.component';
 import { LoadingWithinButton } from '../Loadiing/Loading.component';
 import { signUpWithGooglePopOut } from '../../services/firebase/firebase.auth';
-
-import { UserContext } from '../../context/user.context';
 
 import './SignUp.styles.scss';
 
@@ -22,8 +20,6 @@ export function SignUp() {
     password,
     confirmPassword,
   } = formFields;
-
-  const { setCurrentUser } = useContext(UserContext);
 
   function resetFormField() {
     setFormFields(defaultFormField);
@@ -42,12 +38,11 @@ export function SignUp() {
 
       await createUserDocumentFromAuth(user);
 
-
-      setCurrentUser(user);
-
       setLoadingGoogle(false);
 
       resetFormField();
+      window.location.href = '/';
+
     } catch (err) {
       setLoadingGoogle(false);
       // eslint-disable-next-line no-console
@@ -95,14 +90,10 @@ export function SignUp() {
 
       await createUserDocumentFromAuth(user, { displayName });
 
-      setCurrentUser({
-        ...user,
-        displayName,
-      });
-
       setLoadingEmail(false);
 
       resetFormField();
+      window.location.href = '/';
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
@@ -111,7 +102,7 @@ export function SignUp() {
 
       if (err?.code === 'auth/email-already-in-use') {
         // eslint-disable-next-line no-console
-        console.log('Future me! Hey do something about handling is already been used');
+        console.log('Future me! Hey do something about email-already-in-use');
       } else {
         // eslint-disable-next-line no-console
         console.log(err);
@@ -169,7 +160,7 @@ export function SignUp() {
             )}
           </Button>
 
-          <Button onClick={signUpWithGoogle} buttonType='google' type='bu'>
+          <Button onClick={signUpWithGoogle} buttonType='google' type='button'>
             {isLoadingGoogle ? (
               <LoadingWithinButton />
             ) : (

@@ -162,7 +162,7 @@ Reading List:
 
 # The React App Overview
 
-## Routes
+## React Routes
 ### [Home](./src/routes/home/Home.component.tsx)
 **To-do item** Improve it 
 ### [Navigation](./src/routes/navigation/Navigation.component.tsx)
@@ -179,62 +179,14 @@ Reading List:
 ## Styles
 - [Google Fonts: Obitron](https://fonts.google.com/specimen/Orbitron)
 
-## BackEnd
-I'm using [Firebase](https://firebase.google.com/) here for the backend.
-- `npm i firebase`. [Link](https://www.npmjs.com/package/firebase)
-
-### Setting up Firestore Database
-It consists of three things:
-- data
-- document
-- collection
-
-Example:
-- '#' => collection
-- '##' => document
-- '###' => data
-```
-#Shoes#
-  ##Shoe1##
-    ###
-    name: 'asdf'
-    brand: 'asdf'
-    imageURL: 'asdf'
-    const:
-      price: 200
-      currencry: 'USD'
-    ###
-  ##Shoe1##
-    ###
-    name: 'asdf'
-    brand: 'asdf'
-    imageURL: 'asdf'
-    const:
-      price: 200
-      currencry: 'USD'
-    ###
-```
-Please take a look at the picture below: 
-![Firestore Database Structure](./__docImages__/firebase%20database%20structure.png)
-
-### Database Structure 
-- Collection: `users`
-  - document: `uid` || (how when email)
-    - data:
-      | Field           | Type            | Default Value (in Function) |
-      |-----------------|-----------------|-----------------------------|
-      | active          | boolean         | true                        |
-      | createdAt       | timeStamp       | new Date()                  |
-      | updatedAt       | timeStamp       | new Date()                  |
-      | displayName     | string          |                             |
-      | email           | string          |                             |
 
 
-### Authentication
+## Authentication
 - Google Auth by Firebase Auth
 - Email Auth by Firebase Auth
+To keep track of the User Authentication I used `onAuthStateChange`. So the Authentication is consistent. 
 
-## Context
+## React Context
 ### User Context
 Here's how to set up useContext for User in TypeScript: 
 ```
@@ -271,3 +223,56 @@ export function UserProvider({ children }: UserProviderProps) {
   );
 }
 ```
+
+
+# BackEnd
+I'm using [Firebase](https://firebase.google.com/) here for the backend.
+- `npm i firebase`. [Link](https://www.npmjs.com/package/firebase)
+
+
+## Setting up Firestore Database
+It consists of three things:
+- data
+- document
+- collection
+
+Example:
+- '#' => collection
+- '##' => document
+- '###' => data
+```
+#Shoes#
+  ##Shoe1##
+    ###
+    name: 'asdf'
+    brand: 'asdf'
+    imageURL: 'asdf'
+    const:
+      price: 200
+      currencry: 'USD'
+    ###
+  ##Shoe1##
+    ###
+    name: 'asdf'
+    brand: 'asdf'
+    imageURL: 'asdf'
+    const:
+      price: 200
+      currencry: 'USD'
+    ###
+```
+Please take a look at the picture below: 
+![Firestore Database Structure](./__docImages__/firebase%20database%20structure.png)
+
+## Database Structure 
+- Collection: `users`
+  - document: `uid` || (how when email)
+    - data:
+      | Field           | Type            | Default Value (in Function) |
+      |-----------------|-----------------|-----------------------------|
+      | active          | boolean         | true                        |
+      | createdAt       | timeStamp       | new Date()                  |
+      | updatedAt       | timeStamp       | new Date()                  |
+      | displayName     | string          |                             |
+      | email           | string          |                             |
+

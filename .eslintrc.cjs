@@ -14,8 +14,10 @@ module.exports = {
     semi: ['warn', 'always'], 
     'comma-dangle': ['warn', 'always-multiline'],
     quotes: ['warn', 'single'],
-    'no-console': 'warn', 
     'max-len': ['warn', { code: 121 }], 
-    indent: ['warn', 2],
+    indent: ['warn', 2, { SwitchCase: 1}],
   },
 };
+
+
+// 'no-console': 'warn', 
