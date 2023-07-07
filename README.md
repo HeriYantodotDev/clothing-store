@@ -1,11 +1,13 @@
 # [Working In Progress] Clothing Store Project
 
+(Table Of Content) => Later On.
+
 This is my first React project that utilizes TypeScript. 
-This documentation serves as a reference and journal for both future me and anyone interested in my project. 
+This documentation serves boths as a **reference** and **journal** for both future me and anyone interested in my project. Anyway! This is a quite long `README.md` so please bear with me!
 
 So, Dear future self, 
 
-may this message be of great assistance to you.
+May this journal be of great assistance to you. 
 
 # Project Goals
 
@@ -32,7 +34,9 @@ may this message be of great assistance to you.
 
 
 # Development
-To start: `npm run dev` 
+- `npm install`
+- Set up `firebaseConfig` file in the : `./src/services/firebase/firebase.config.ts`. Replace it with your own firebase configuration.
+- `npm start`
 
 And here are my several approach during the development process.
 
@@ -57,13 +61,20 @@ And here are my several approach during the development process.
     For example: `CategoryItem.component.tsx` 
   - For styling, start with the Capital, and then use `.styles`.
     For example: `CategoryItem.styles.scss` 
-  - For others we can use camelCase. 
+  - For TS types. Use `.types`. For example : `datbase.types.ts`
+  - Service:
+    - firebase: For `auth`, please use this: `firebase.auth.ts`. 
+      For configuration: `firebase.config.ts`.  
+      For db operation: use `.db.ts` for example `users.db.ts`  
+    - utils: any utils file will have `.utils` for example: `time.utils.ts` 
+  - Test: for test files, please use `xx.test.tsx`, and start it with Capital Letter. For example: `Categories.test.tsx`
+  - For others: camelCase:  
 - Function Name:
-  - Component Function: Start with the Capital then use the camelCase
+  - Component Function: Start with a capital letter and use camelCase for subsequent words.
     For example: `CategoryItem`
   - Normal functions & variables: camelCase 
     For example: `defaultValue` 
-  - Classes: Start with the Capital then use the camelCase
+  - Classes: Start with a capital letter and use camelCase for subsequent words. For example: `JoiValidator`
 
 ## Styling Configuration
 - Using [saas](https://www.npmjs.com/package/sass)
@@ -100,7 +111,8 @@ And here are my several approach during the development process.
     }
   }
   ```
-- This would save future-me a lot. This is about Footer. Sometimes, the content is really short and the footer instead is at the bottom it would be in the middle like this: 
+### Footer Setting
+This would save future-me a lot. This is about Footer. Sometimes, the content is really short and the footer instead is at the bottom it would be in the middle like this: 
 ![Footer Not At the bottom](./__docImages__/Footer%20Not%20at%20The%20Bottom.png)
 I tried many things, and it didn't work to solve this issue. In many cases this won't happen since we put many items on the pages right. But let's solved it. 
   - First wrap all the HTML element / React Component outside the footer in a div so it's like this:
@@ -142,6 +154,7 @@ The detail of the linting rules is this file `.eslintrc.cjs` :
 - Semi colon: always
 - Quotes: single
 - Comma Dangle: always
+- `indent: ['warn', 2, { SwitchCase: 1}]` . Don't forget for the SwitchCase
 
 ## Testing
 I'm using several packages for this : 
@@ -171,10 +184,20 @@ Reading List:
 ## Component
 ### [CategoryItem](./src/components/CategoryItem/CategoryItem.component.tsx)
 ![Category Component Example](./__docImages__/CategoryItem.png)
-### [Directory](./src//components//Directory/Directory.component.tsx)
+### [Directory](./src//components/Directory/Directory.component.tsx)
 ![Directory Component Example](./__docImages__/Directory.png)
-### SignIn
-### SignUp
+### [SignIn](./src/components/SignIn/SignIn.component.tsx)
+![Sign In](./__docImages__/signIn.png)
+### [SignUp](./src/components/SignUp/SignUp.component.tsx)
+![Sign Up](./__docImages__/signUp.png)
+### [Button](./src/components/Button/Button.component.tsx)
+![Button](./__docImages__/button.png)
+### [Footer](./src/components/Footer/Footer.component.tsx)
+![Footer](./__docImages__/Footer.png)
+### [Loading](./src/components/Loading/Loading.component.tsx)
+There are several loading components. All are in the same file 
+
+![LoadingWithingButton](./__docImages__/loading.png)
 
 ## Styles
 - [Google Fonts: Obitron](https://fonts.google.com/specimen/Orbitron)
@@ -275,4 +298,20 @@ Please take a look at the picture below:
       | updatedAt       | timeStamp       | new Date()                  |
       | displayName     | string          |                             |
       | email           | string          |                             |
+- Collection: 
+  - data 
+      | Field           | Type            | Default Value (in Function) |
+      |-----------------|-----------------|-----------------------------|
+      |                 |                 |                             |
+- Collection: 
+  - data 
+      | Field           | Type            | Default Value (in Function) |
+      |-----------------|-----------------|-----------------------------|
+      |                 |                 |                             |
 
+# Journal
+## Next ...
+## July 7 2023
+After spending a considerable amount of time on this project, I encountered a significant challenge while working with testing. Originally, my intention was to adopt the Test-Driven Development (TDD) approach for React. However, due to numerous errors, I made the decision to gradually introduce tests, one at a time. Additionally, I am currently in the process of familiarizing myself with Firebase and Firestore, which has proven to be a bit challenging when it comes to specifying the initial specifications.
+
+Nevertheless, I firmly believe that practice is the key to mastery. In my future projects, I aspire to incorporate TDD into the development process of React applications, leveraging the lessons learned from this experience.

@@ -1,8 +1,6 @@
 import React, {
   FormEvent,
   useState,
-  useContext,
-  useEffect,
 } from 'react';
 import { defaultFormField } from './defaultValue';
 import {
@@ -12,7 +10,7 @@ import {
 
 import { FormInput } from '../FormInput/FormInput.component';
 import { Button } from '../Button/Button.component';
-import { LoadingWithinButton } from '../Loadiing/Loading.component';
+import { LoadingWithinButton } from '../Loading/Loading.component';
 
 import './SignIn.styles.scss';
 
@@ -81,11 +79,9 @@ export function SignIn() {
       setLoadingEmail(false);
       resetFormField();
       if (err?.code === 'auth/wrong-password') {
-        // eslint-disable-next-line no-console
         console.log('Future me! Hey do something about "auth/wrong-password"');
       }
       if (err?.code === 'auth/user-not-found') {
-        // eslint-disable-next-line no-console
         console.log('Future me! Hey do something about :"auth/user-not-found"');
       }
       console.log(err);
