@@ -18,17 +18,25 @@ import {
 } from './database.types';
 
 
-export async function createUserDocumentFromAuth(user: User, userDataOptional: UserDataOptional = {}) {
-
+export function getUserDocRefFromAuth(user: User) {
   const userUID = user.uid;
-
   const userDocRef = doc(db, 'users', userUID); 
+  return userDocRef;
+}
 
-  const userSnapshop = await getDoc(userDocRef);
+export async function userSnapshotExists(user: User) {
+  const userDocRef = getUserDocRefFromAuth(user);
+  return (await getDoc(userDocRef)).exists();
+}
 
+export async function createUserDocumentFromAuth(user: User, userDataOptional: UserDataOptional = {}) {
+  const userDocRef = getUserDocRefFromAuth(user);
+  
   let userStatus = 'The user is already existed';
 
-  if (!userSnapshop.exists()) {
+  const userExists = await userSnapshotExists(user);
+
+  if (!userExists) {
     userStatus = 'New user';
 
     const displayName = user.displayName || '';
@@ -56,6 +64,5 @@ export async function createUserDocumentFromAuth(user: User, userDataOptional: U
 
   // remove this later after debugging
   console.log(userStatus);
-  return userDocRef;
 } 
 

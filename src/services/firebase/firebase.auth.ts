@@ -8,6 +8,8 @@ import {
   signOut,
 } from 'firebase/auth';
 
+import { userSnapshotExists } from './db/users.db';
+
 import { firebaseApp } from './firebase.config';
 
 const googleProvider = new GoogleAuthProvider();
@@ -18,8 +20,22 @@ googleProvider.setCustomParameters({
 
 export const auth = getAuth(firebaseApp);
 
-export function signInWithGooglePopOut() {
-  return signInWithPopup(auth, googleProvider);
+export async function signInWithGooglePopOut() {
+  const userCredential = await signInWithPopup(auth, googleProvider);
+  const userExists = await userSnapshotExists(userCredential.user);
+  if (!userExists) {
+    throw new Error('The user isn\'t existed');
+  }
+  return userCredential;
+} 
+
+export async function signUpWithGooglePopOut() {
+  const userCredential = await signInWithPopup(auth, googleProvider);
+  const userExists = await userSnapshotExists(userCredential.user);
+  if (userExists) {
+    throw new Error('This user has already been registered');
+  }
+  return userCredential;
 } 
 
 export function signInWithGoogleRedirect() {

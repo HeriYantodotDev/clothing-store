@@ -6,6 +6,7 @@ import { createUserDocumentFromAuth } from '../../services/firebase/db/users.db'
 import { FormInput } from '../FormInput/FormInput.component';
 import { Button } from '../Button/Button.component';
 import { LoadingWithinButton } from '../Loadiing/Loading.component';
+import { signUpWithGooglePopOut } from '../../services/firebase/firebase.auth';
 
 import { UserContext } from '../../context/user.context';
 
@@ -14,6 +15,7 @@ import './SignUp.styles.scss';
 export function SignUp() {
   const [formFields, setFormFields] = useState(defaultFormField);
   const [isLoadingEmail, setLoadingEmail] = useState(false);
+  const [isLoadingGoogle, setLoadingGoogle] = useState(false);
   const {
     displayName,
     email,
@@ -25,6 +27,32 @@ export function SignUp() {
 
   function resetFormField() {
     setFormFields(defaultFormField);
+  }
+
+  async function signUpWithGoogle() {
+    setLoadingGoogle(true);
+    try {
+      const response = await signUpWithGooglePopOut();
+
+      const user = response?.user;
+
+      if (!response || !user) {
+        throw new Error('Something went wrong with the Auth process');
+      }
+
+      await createUserDocumentFromAuth(user);
+
+
+      setCurrentUser(user);
+
+      setLoadingGoogle(false);
+
+      resetFormField();
+    } catch (err) {
+      setLoadingGoogle(false);
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -79,6 +107,7 @@ export function SignUp() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setLoadingEmail(false);
+      resetFormField();
 
       if (err?.code === 'auth/email-already-in-use') {
         // eslint-disable-next-line no-console
@@ -131,13 +160,23 @@ export function SignUp() {
           value={confirmPassword}
         />
 
-        <Button buttonType='default' type='submit'>
-          {isLoadingEmail ? (
-            <LoadingWithinButton />
-          ) : (
-            'Sign Up'
-          )}
-        </Button>
+        <div className='buttons-container'>
+          <Button buttonType='default' type='submit'>
+            {isLoadingEmail ? (
+              <LoadingWithinButton />
+            ) : (
+              'Sign Up'
+            )}
+          </Button>
+
+          <Button onClick={signUpWithGoogle} buttonType='google' type='bu'>
+            {isLoadingGoogle ? (
+              <LoadingWithinButton />
+            ) : (
+              'Google Sign Up'
+            )}
+          </Button>
+        </div>
       </form>
     </div>
   );

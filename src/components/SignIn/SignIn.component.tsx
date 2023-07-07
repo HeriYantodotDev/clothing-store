@@ -3,7 +3,6 @@ import React, {
   useContext,
 } from 'react';
 import { defaultFormField } from './defaultValue';
-import { createUserDocumentFromAuth } from '../../services/firebase/db/users.db';
 import {
   signInWithGooglePopOut,
   signInAuthUserWithEmailAndPassword,
@@ -20,6 +19,7 @@ import './SignIn.styles.scss';
 export function SignIn() {
   const [formFields, setFormFields] = useState(defaultFormField);
   const [isLoadingEmail, setLoadingEmail] = useState(false);
+  const [isLoadingGoogle, setLoadingGoogle] = useState(false);
   const {
     email,
     password,
@@ -27,12 +27,17 @@ export function SignIn() {
   const { setCurrentUser } = useContext(UserContext);
 
   async function signInWithGoogle() {
+    setLoadingGoogle(true);
     try {
       const response = await signInWithGooglePopOut();
-      const user = response.user;
-      await createUserDocumentFromAuth(user);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
+
+      const user = response?.user;
+
+      setCurrentUser(user);
+
+      setLoadingGoogle(false);
+    } catch (err) {
+      setLoadingGoogle(false);
       // eslint-disable-next-line no-console
       console.log(err);
     }
@@ -73,7 +78,7 @@ export function SignIn() {
       }
 
       const response = await signInAuthUserWithEmailAndPassword(email, password);
-      setLoadingEmail(false);
+
       const user = response?.user;
 
       console.log('fix this error handling later');
@@ -84,10 +89,12 @@ export function SignIn() {
       setCurrentUser(user);
 
       resetFormField();
+      setLoadingEmail(false);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setLoadingEmail(false);
+      resetFormField();
       if (err?.code === 'auth/wrong-password') {
         // eslint-disable-next-line no-console
         console.log('Future me! Hey do something about "auth/wrong-password"');
@@ -133,7 +140,12 @@ export function SignIn() {
 
           </Button>
           <Button buttonType='google' type='button' onClick={signInWithGoogle} >
-            Google sign in
+            {isLoadingGoogle ? (
+              <LoadingWithinButton textColor='text-warning' />
+            ) : (
+              'Google Sign In'
+            )}
+
           </Button>
         </div>
       </form>
