@@ -19,6 +19,7 @@ export type CategoryArray = {
 export type NavigationItem = {
   path: string;
   label: string;
+  onClick?: () => void;
 }
 
 export type NavigationProps = {
@@ -44,6 +45,8 @@ export interface FormInput {
   [key: string]: any;
 }
 
+import { ReactNode } from 'react';
+
 export const BUTTON_TYPE_CLASSES: { [key: string]: string } = {
   google: 'google-sign-in',
   inverted: 'inverted',
@@ -51,7 +54,7 @@ export const BUTTON_TYPE_CLASSES: { [key: string]: string } = {
 };
 
 export interface ButtonProps {
-  children: string;
+  children: string | ReactNode;
   buttonType: keyof typeof BUTTON_TYPE_CLASSES
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;

@@ -14,6 +14,14 @@ const Shop = () => {
   );
 };
 
+const Contact = () => {
+  return (
+    <div>
+      <h1>I'm a Contact page</h1>
+    </div>
+  );
+};
+
 const navigationArray: NavigationItem[] = [
   {
     path: 'shop',
@@ -22,10 +30,6 @@ const navigationArray: NavigationItem[] = [
   {
     path: 'contact',
     label: 'Contact',
-  },
-  {
-    path: 'auth',
-    label: 'SignIn',
   },
 ];
 
@@ -38,6 +42,7 @@ export default function App() {
           <Route path='/' element={<Navigation navigationArray={navigationArray} />} >
             <Route index element={<Home />} />
             <Route path='shop' element={<Shop />} />
+            <Route path='contact' element={<Contact />} />
             <Route path='auth' element={<Authentication />} />
           </Route>
         </Routes>

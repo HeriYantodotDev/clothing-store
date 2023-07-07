@@ -1,4 +1,7 @@
-import React, { FormEvent, useState } from 'react';
+import React, {
+  FormEvent, useState,
+  useContext,
+} from 'react';
 import { defaultFormField } from './defaultValue';
 import { createUserDocumentFromAuth } from '../../services/firebase/db/users.db';
 import {
@@ -6,18 +9,22 @@ import {
   signInAuthUserWithEmailAndPassword,
 } from '../../services/firebase/firebase.auth';
 
+import { UserContext } from '../../context/user.context';
 
 import { FormInput } from '../FormInput/FormInput.component';
 import { Button } from '../Button/Button.component';
+import { LoadingWithinButton } from '../Loadiing/Loading.component';
 
 import './SignIn.styles.scss';
 
 export function SignIn() {
   const [formFields, setFormFields] = useState(defaultFormField);
+  const [isLoadingEmail, setLoadingEmail] = useState(false);
   const {
     email,
     password,
   } = formFields;
+  const { setCurrentUser } = useContext(UserContext);
 
   async function signInWithGoogle() {
     try {
@@ -53,8 +60,11 @@ export function SignIn() {
     return true;
   }
 
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setLoadingEmail(true);
+
     try {
       //TO DO: Fix this validation
       console.log('fix this validation');
@@ -63,11 +73,21 @@ export function SignIn() {
       }
 
       const response = await signInAuthUserWithEmailAndPassword(email, password);
-      console.log(response);
+      setLoadingEmail(false);
+      const user = response?.user;
+
+      console.log('fix this error handling later');
+      if (!user) {
+        throw new Error('');
+      }
+
+      setCurrentUser(user);
+
       resetFormField();
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
+      setLoadingEmail(false);
       if (err?.code === 'auth/wrong-password') {
         // eslint-disable-next-line no-console
         console.log('Future me! Hey do something about "auth/wrong-password"');
@@ -104,8 +124,17 @@ export function SignIn() {
         />
 
         <div className='buttons-container'>
-          <Button buttonType='default' type='submit'>Sign In</Button>
-          <Button buttonType='google' type='button' onClick={signInWithGoogle} >Google sign in</Button>
+          <Button buttonType='default' type='submit'>
+            {isLoadingEmail ? (
+              <LoadingWithinButton />
+            ) : (
+              'Sign In'
+            )}
+
+          </Button>
+          <Button buttonType='google' type='button' onClick={signInWithGoogle} >
+            Google sign in
+          </Button>
         </div>
       </form>
     </div>

@@ -1,5 +1,5 @@
 .button-container {
-  min-width: 110px;
+  min-width: 120px;
   // max-width: 50px;
   width: auto;
   height: 50px;
@@ -19,9 +19,9 @@
   margin-right: 10px;
 
   &:hover {
-    background-color: white;
+    background-color: silver;
     color: black;
-    border: 1px solid black;
+    // border: 1px solid black;
   }
 
   &.google-sign-in {
@@ -35,13 +35,13 @@
   }
 
   &.inverted {
-    background-color: white;
+    background-color: silver;
     color: black;
     border: 1px solid black;
 
     &:hover {
       background-color: black;
-      color: white;
+      color: silver;
       border: none;
     }
   }

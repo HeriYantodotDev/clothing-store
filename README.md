@@ -23,7 +23,8 @@ may this message be of great assistance to you.
 
 # Project Solutions
 
-- FrontEnd: React
+- FrontEnd: React With TypeScript! 
+  - Build Tool: ViteJS⚡
 - BackEnd: 
   - Firebase
   - Firestore Database
@@ -166,6 +167,7 @@ Reading List:
 **To-do item** Improve it 
 ### [Navigation](./src/routes/navigation/Navigation.component.tsx)
 **To-do item** Improve it 
+
 ## Component
 ### [CategoryItem](./src/components/CategoryItem/CategoryItem.component.tsx)
 ![Category Component Example](./__docImages__/CategoryItem.png)
@@ -232,5 +234,40 @@ Please take a look at the picture below:
 - Google Auth by Firebase Auth
 - Email Auth by Firebase Auth
 
+## Context
+### User Context
+Here's how to set up useContext for User in TypeScript: 
+```
+import {
+  createContext,
+  useState,
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+} from 'react';
 
+import { User } from 'firebase/auth';
 
+type UserContextType = {
+  currentUser: User | null;
+  setCurrentUser: Dispatch<SetStateAction<User | null>>;
+}
+
+type UserProviderProps = {
+  children: ReactNode;
+}
+
+export const UserContext = createContext<UserContextType>({
+  currentUser: null,
+  setCurrentUser: () => null,
+});
+
+export function UserProvider({ children }: UserProviderProps) {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const value = { currentUser, setCurrentUser };
+
+  return (
+    <UserContext.Provider value={value}>{children}</UserContext.Provider>
+  );
+}
+```
