@@ -6,6 +6,10 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
+  NextOrObserver,
+  User,
+  
 } from 'firebase/auth';
 
 import { userSnapshotExists } from './db/users.db';
@@ -22,10 +26,11 @@ export const auth = getAuth(firebaseApp);
 
 export async function signInWithGooglePopOut() {
   const userCredential = await signInWithPopup(auth, googleProvider);
-  const userExists = await userSnapshotExists(userCredential.user);
+  const userExists = await (userSnapshotExists(userCredential.user));
   if (!userExists) {
-    throw new Error('The user isn\'t existed');
+    throw new Error('User Not Found');
   }
+
   return userCredential;
 } 
 
@@ -55,5 +60,10 @@ export async function signInAuthUserWithEmailAndPassword(email: string, password
 }
 
 export async function signOutUser() {
-  return await signOut(auth);
+  await signOut(auth);
+  window.location.reload();
+}
+
+export function onAuthStateChangedListener(callback: NextOrObserver<User>) {
+  return onAuthStateChanged(auth, callback );
 }

@@ -34,12 +34,7 @@ export function Navigation({
   navigationArray = defaultNavigationArray,
 }: NavigationProps) {
 
-  const { currentUser, setCurrentUser } = useContext(UserContext);
-
-  async function signOutHandler() {
-    await signOutUser();
-    setCurrentUser(null);
-  }
+  const { currentUser } = useContext(UserContext);
 
   return (
     <Fragment>
@@ -57,18 +52,18 @@ export function Navigation({
         </button>
 
         <div className='collapse navbar-collapse' id='navbarSupportedContent'>
-          <ul className='navbar-nav mr-auto'>
+          <ul id='navBar' className='navbar-nav mr-auto'>
             {navigationArray.map(({ path, label }) => (
               <NavLink key={path} path={path} label={label} />
             ))}
           </ul>
 
-          <ul className='navbar-nav ml-auto'>
+          <ul id='authNavBar' className='navbar-nav ml-auto'>
             {
               currentUser ? (
-                <NavLink onClick={signOutHandler} key='auth' path='auth' label='Sign Out' />
+                <NavLink onClick={signOutUser} key='signout' path='/' label='Sign Out' />
               ) : (
-                <NavLink key='auth' path='auth' label='Sign In' />
+                <NavLink key='signin' path='auth' label='Sign In' />
               )
             }
           </ul>
