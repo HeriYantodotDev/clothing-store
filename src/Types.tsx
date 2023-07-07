@@ -55,7 +55,8 @@ export const BUTTON_TYPE_CLASSES: { [key: string]: string } = {
 
 export interface ButtonProps {
   children: string | ReactNode;
-  buttonType: keyof typeof BUTTON_TYPE_CLASSES
+  buttonType: keyof typeof BUTTON_TYPE_CLASSES;
+  onClick?: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }

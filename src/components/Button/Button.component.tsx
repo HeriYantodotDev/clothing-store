@@ -5,10 +5,15 @@ import './Button.styles.scss';
 export function Button({
   children,
   buttonType,
+  onclick,
   ...otherProps
 }: ButtonProps,
 ) {
   return (
-    <button className={`button-container ${BUTTON_TYPE_CLASSES[buttonType]}`} {...otherProps} >{children}</button>
+    <button
+      onClick={onclick}
+      className={`button-container ${BUTTON_TYPE_CLASSES[buttonType]}`} {...otherProps} >
+      {children}
+    </button>
   );
 }
