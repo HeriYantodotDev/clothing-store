@@ -15,21 +15,9 @@ import {
 
 import { userSnapshotExists } from '../services/firebase/db/users.db';
 
-export enum Intent {
-  GOOGLE_SIGN_IN = 'GOOGLE_SIGN_IN',
-  GOOGLE_SIGN_UP = 'GOOGLE_SIGN_IN',
-  EMAIL_SIGN_IN = 'EMAIL_SIGN_IN',
-  EMAIL_SIGN_UP = 'EMAIL_SIGN_UP',
-  INITIAL = 'INITIAL',
-}
-
 type UserContextType = {
   currentUser: User | null;
   setCurrentUser: Dispatch<SetStateAction<User | null>>;
-}
-type IntentContextType = {
-  intent: string | null;
-  setIntent: Dispatch<SetStateAction<string | null>>;
 }
 
 type UserProviderProps = {
@@ -41,21 +29,12 @@ export const UserContext = createContext<UserContextType>({
   setCurrentUser: () => null,
 });
 
-export const IntentContext = createContext<IntentContextType>({
-  intent: null,
-  setIntent: () => null,
-});
-
-
 export function UserProvider({ children }: UserProviderProps) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [intent, setIntent] = useState<string | null>(null);
 
   const value = {
     currentUser,
     setCurrentUser,
-    intent,
-    setIntent,
   };
 
   useEffect(() => {
