@@ -52,13 +52,13 @@ export function Navigation({
         </button>
 
         <div className='collapse navbar-collapse' id='navbarSupportedContent'>
-          <ul id='navBar' className='navbar-nav mr-auto'>
+          <ul id='navBar' className='navbar-nav mr-auto' data-testid='navGroup'>
             {navigationArray.map(({ path, label }) => (
               <NavLink key={path} path={path} label={label} />
             ))}
           </ul>
 
-          <ul id='authNavBar' className='navbar-nav ml-auto'>
+          <ul id='authNavBar' className='navbar-nav ml-auto' data-testid='authNavGroup'>
             {
               currentUser ? (
                 <NavLink onClick={signOutUser} key='signout' path='/' label='Sign Out' />
