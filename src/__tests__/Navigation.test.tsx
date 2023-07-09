@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, MemoryRouter, Routes } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -100,7 +100,8 @@ describe('Navigation & NavLink Component', () => {
 
     test('renders the correct label & redirects to the correct path for all NavLink component', async () => {
       const { user } = setup(<NavigationTest />);
-      const navigationElement = screen.getAllByTestId('navlink');
+      const navGroup = screen.getByTestId('navGroup');
+      const navigationElement = within(navGroup).getAllByTestId('navlink');
 
       for (const [index, nav] of navigationElement.entries()) {
         await user.click(nav.children[0]);
@@ -118,7 +119,8 @@ describe('Navigation & NavLink Component', () => {
 
     test('renders the correct label & redirects to the correct path for all NavLink component', async () => {
       const { user } = setup(<NavigationTest navigationArray={customNavigationArray} />);
-      const navigationElement = screen.getAllByTestId('navlink');
+      const navGroup = screen.getByTestId('navGroup');
+      const navigationElement = within(navGroup).getAllByTestId('navlink');
 
       for (const [index, nav] of navigationElement.entries()) {
         await user.click(nav.children[0]);
@@ -184,12 +186,14 @@ describe('Navigation & Outlet', () => {
   test('renders outlet in each routes when the navLink is clicked', async () => {
     const { user } = setup(<AppComponentExample />);
 
-    const navigationElement = screen.getAllByTestId('navlink');
+    const navGroup = screen.getByTestId('navGroup');
+    const navigationElement = within(navGroup).getAllByTestId('navlink');
 
     for (const [index, nav] of navigationElement.entries()) {
       await user.click(nav.children[0]);
       //the data-testid is the same with the path for the default
       const outletElement = screen.getByTestId(defaultNavigationArray[index].path);
+      console.log(outletElement.outerHTML);
       expect(outletElement).toBeInTheDocument();
     }
   });
