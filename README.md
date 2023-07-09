@@ -175,6 +175,30 @@ Reading List:
 
 # The React App Overview
 
+## Design Patterns
+### Observer Pattern 
+Here's a little bit note about Observer pattern. 
+The Observer pattern is a design pattern that establishes a relationship between objects, where one object (called the subject or observable) maintains a list of other objects (called observers) and notifies them automatically of any state changes.
+
+Here's a quick overview of how the Observer pattern works, including Next, Error, and Complete events:
+
+- Subject: The subject is the main object that other objects are interested in observing. It maintains a list of observers and provides methods for adding, removing, and notifying observers.
+- Observer: Observers are the objects that want to be notified of changes in the subject. They register themselves with the subject and provide an update mechanism to receive notifications.
+- Registration: Observers register themselves with the subject by adding themselves to the subject's list of observers. This allows the subject to keep track of its observers.
+- Notification: When the subject's state changes, it iterates through its list of observers and calls a specific method (often called update() or similar) on each observer. The subject may also pass relevant information or data to the observers during the notification.
+- Updating: When an observer receives a notification, it performs the necessary actions based on the information received from the subject. The update mechanism can vary depending on the implementation and requirements of the observer.
+
+In addition to the basic Observer pattern, there are three commonly used events in the context of observables:
+
+- Next: The Next event represents a normal update or change in the subject's state. Observers receive this event and can take appropriate actions based on the new information.
+- Error: The Error event is triggered when an exceptional or error condition occurs in the subject. Observers can handle this event to perform error handling, logging, or other necessary actions.
+- Complete: The Complete event indicates the completion or termination of the subject's operation or task. Observers can use this event to finalize any pending activities or perform cleanup operations.
+
+These events allow observers to respond to different situations and handle various scenarios effectively.
+
+The Observer pattern, along with the Next, Error, and Complete events, promotes loose coupling between the subject and observers. It enables objects to establish a one-to-many relationship, where changes in one object are automatically propagated to multiple other objects. This ensures synchronization and maintains consistency between the subject and its observers, enhancing flexibility and extensibility in the system.
+
+
 ## React Routes
 ### [Home](./src/routes/home/Home.component.tsx)
 **To-do item** Improve it 
