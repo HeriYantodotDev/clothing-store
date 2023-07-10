@@ -31,6 +31,7 @@ export interface FormFieldsSignUp {
   email: string;
   password: string;
   confirmPassword: string;
+  [key: string]: string
 }
 
 export interface ErrorMessageSignUp {

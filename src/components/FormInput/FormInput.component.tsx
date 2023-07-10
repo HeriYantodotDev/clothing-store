@@ -7,11 +7,12 @@ export function FormInput({
   ...otherProps
 }: FormInput) {
   return (
-    <div className='group'>
+    <div className='group' data-testid={otherProps['data-testid'] + 'Group'}>
       <input className='form-input'{...otherProps} />
-      {label && (
-        <label className={`${otherProps.value.length ? 'shrink' : ''} form-input-label`}>{label}</label>
-      )}
+      {
+        label && (
+          <label className={`${otherProps.value.length ? 'shrink' : ''} form-input-label`}>{label}</label>
+        )}
       {
         errorMessage && (
           <div className='error-message'>

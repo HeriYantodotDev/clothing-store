@@ -168,6 +168,7 @@ export function SignUp() {
           name='displayName'
           required onChange={handleChange}
           value={displayName}
+          data-testid='displayName'
         />
 
         <FormInput
@@ -178,6 +179,7 @@ export function SignUp() {
           required
           onChange={handleChange}
           value={email}
+          data-testid='email'
         />
 
         <FormInput
@@ -188,6 +190,7 @@ export function SignUp() {
           required
           onChange={handleChange}
           value={password}
+          data-testid='password'
         />
 
         <FormInput
@@ -198,6 +201,7 @@ export function SignUp() {
           required
           onChange={handleChange}
           value={confirmPassword}
+          data-testid='confirmPassword'
         />
 
         {
@@ -209,7 +213,7 @@ export function SignUp() {
         }
 
         <div className='buttons-container'>
-          <Button buttonType='default' type='submit'>
+          <Button buttonType='default' type='submit' data-testid='submitButton'>
             {isLoadingEmail ? (
               <LoadingWithinButton />
             ) : (

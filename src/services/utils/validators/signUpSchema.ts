@@ -17,7 +17,7 @@ export const signUpSchema = yup.object().shape({
     .string()
     .min(8, ValidationErrorsEnum.errorPassword2)
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      /^[a-zA-Z0-9\s]+$/,
       ValidationErrorsEnum.errorPassword1,
     )
     .required(ValidationErrorsEnum.errorPasswordEmpty),
