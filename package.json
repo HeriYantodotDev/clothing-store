@@ -10,18 +10,21 @@
     "test": "jest --verbose",
     "test:coverage": "jest --verbose --coverage",
     "test:watch": "jest --verbose --watchAll",
+    "test:one": "jest --testPathPattern=SignUp.test.ts",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "ts:check": "tsc -p .",
     "check": "npm run lint && npm run ts:check"
   },
   "dependencies": {
-    "firebase": "^9.23.0",
+    "firebase": "10.0.0",
+    "firebase-admin": "^11.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
     "yup": "^1.2.0"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^3.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",

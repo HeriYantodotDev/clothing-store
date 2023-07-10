@@ -11,7 +11,7 @@ export function LoadingWithinButton({
 }: LoadingWithButtonProps = defaultTextColor) {
   // You can change the color size by changing the class 
   return (
-    <div>
+    <div data-testid='loadingButton'>
       <div className={`spinner-border spinner-border-sm ${textColor}`} role="status">
         <span className="sr-only">Loading...</span>
       </div>
