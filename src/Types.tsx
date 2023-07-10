@@ -46,6 +46,11 @@ export interface FormFieldsSignIn {
   password: string;
 }
 
+export interface ErrorMessageAuth {
+  email: string | null;
+  password: string | null;
+}
+
 export interface FormInput {
   label: string;
   errorMessage: string | null;

@@ -16,7 +16,10 @@ import { userSnapshotExists } from './db/users.db';
 
 import { firebaseApp } from './firebase.config';
 
-import { ErrorEmailInUse } from '../utils/Errors/ErrorClass';
+import { 
+  ErrorEmailInUse,
+  ErrorInvalidCredential,
+} from '../utils/Errors/ErrorClass';
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -30,7 +33,7 @@ export async function signInWithGooglePopOut() {
   const userCredential = await signInWithPopup(auth, googleProvider);
   const userExists = await (userSnapshotExists(userCredential.user));
   if (!userExists) {
-    throw new Error('User Not Found');
+    throw new ErrorInvalidCredential();
   }
 
   return userCredential;

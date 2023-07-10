@@ -2,26 +2,59 @@ import React, {
   FormEvent,
   useState,
 } from 'react';
-import { defaultFormField } from './defaultValue';
+import {
+  defaultFormField,
+  defaultErrorMessageSignIn,
+  defaultErrorMessageAuth,
+} from './defaultValue';
 import {
   signInWithGooglePopOut,
   signInAuthUserWithEmailAndPassword,
 } from '../../services/firebase/firebase.auth';
 
+import * as yup from 'yup';
+
 import { FormInput } from '../FormInput/FormInput.component';
 import { Button } from '../Button/Button.component';
 import { LoadingWithinButton } from '../Loading/Loading.component';
 
+import { signInSchema } from '../../services/utils/validators/signInSchema';
+
+import { AuthErrorsEnum } from '../../services/utils/Enum/AuthErrors.enum';
+
 import './SignIn.styles.scss';
+import { ErrorInvalidCredential } from '../../services/utils/Errors/ErrorClass';
 
 export function SignIn() {
   const [formFields, setFormFields] = useState(defaultFormField);
   const [isLoadingEmail, setLoadingEmail] = useState(false);
   const [isLoadingGoogle, setLoadingGoogle] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(defaultErrorMessageSignIn);
+  const [errorMessageAuth, setErrorMessageAuth] = useState(defaultErrorMessageAuth);
   const {
     email,
     password,
   } = formFields;
+
+  function resetFormField() {
+    setFormFields(defaultFormField);
+  }
+
+  function resetErrorMessage() {
+    setErrorMessage(defaultErrorMessageSignIn);
+  }
+
+  function resetErrorMessageAuth() {
+    setErrorMessageAuth(defaultErrorMessageAuth);
+  }
+
+  function resetFormErrorLoading() {
+    setLoadingEmail(false);
+    setLoadingGoogle(false);
+    resetFormField();
+    resetErrorMessage();
+    resetErrorMessageAuth();
+  }
 
 
   async function signInWithGoogle() {
@@ -31,14 +64,11 @@ export function SignIn() {
       setLoadingGoogle(false);
       window.location.href = '/';
     } catch (err) {
-      setLoadingGoogle(false);
-      console.log(err);
+      handleError(err);
     }
   }
 
-  function resetFormField() {
-    setFormFields(defaultFormField);
-  }
+
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -49,13 +79,11 @@ export function SignIn() {
     });
   }
 
-  //replace this with joy
-  function simpleValidationHandleSubmit(email: string, password: string) {
-    if (!email || !password) {
-      return false;
-    }
-
-    return true;
+  async function signInFormValidation(email: string, password: string) {
+    await signInSchema.validate({
+      email,
+      password,
+    }, { abortEarly: false });
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -63,38 +91,62 @@ export function SignIn() {
     setLoadingEmail(true);
 
     try {
-      //TO DO: Fix this validation
       console.log('fix this validation');
-      if (!simpleValidationHandleSubmit(email, password)) {
-        throw new Error('Validation Error');
-      }
+      await signInFormValidation(email, password);
 
       await signInAuthUserWithEmailAndPassword(email, password);
 
-      resetFormField();
-      setLoadingEmail(false);
+      resetFormErrorLoading();
       window.location.href = '/';
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      setLoadingEmail(false);
-      resetFormField();
-      if (err?.code === 'auth/wrong-password') {
-        console.log('Future me! Hey do something about "auth/wrong-password"');
-      }
-      if (err?.code === 'auth/user-not-found') {
-        console.log('Future me! Hey do something about :"auth/user-not-found"');
-      }
-      console.log(err);
+      handleError(err);
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async function handleError(err: any) {
+    resetFormErrorLoading();
+
+    if (yup.ValidationError.isError(err)) {
+      let errorList = defaultErrorMessageSignIn;
+      for (const inner of err.inner) {
+        const path = inner.params?.path ?? '';
+        const errorMessageKey = path as keyof typeof errorList;
+        errorList = {
+          ...errorList,
+          [errorMessageKey]: inner.errors[0],
+        };
+      }
+
+      setErrorMessage(errorList);
+      return;
+    }
+
+    if (
+      (err?.code === 'auth/wrong-password') ||
+      (err?.code === 'auth/user-not-found')
+    ) {
+      setErrorMessageAuth(AuthErrorsEnum.wrongCredential);
+      return;
+    }
+
+    if (err instanceof ErrorInvalidCredential) {
+      setErrorMessageAuth(AuthErrorsEnum.wrongCredential);
+      return;
+    }
+
+    console.log(err.message);
   }
 
   return (
     <div className='sign-in-container'>
       <h2>Already have an account?</h2>
-      <span>Sign up with your email and password</span>
+      <span>Sign in with email, password, or Google.</span>
       <form onSubmit={handleSubmit}>
         <FormInput
           label='Email'
+          errorMessage={errorMessage.email}
           type='email'
           name='email'
           required
@@ -104,12 +156,21 @@ export function SignIn() {
 
         <FormInput
           label='Password'
+          errorMessage={errorMessage.password}
           type='password'
           name='password'
           required
           onChange={handleChange}
           value={password}
         />
+
+        {
+          errorMessageAuth && (
+            <div className='error-message'>
+              {errorMessageAuth}
+            </div>
+          )
+        }
 
         <div className='buttons-container'>
           <Button buttonType='default' type='submit'>
