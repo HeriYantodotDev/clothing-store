@@ -16,6 +16,8 @@ import { userSnapshotExists } from './db/users.db';
 
 import { firebaseApp } from './firebase.config';
 
+import { ErrorEmailInUse } from '../utils/Errors/ErrorClass';
+
 const googleProvider = new GoogleAuthProvider();
 
 googleProvider.setCustomParameters({
@@ -38,7 +40,7 @@ export async function signUpWithGooglePopOut() {
   const userCredential = await signInWithPopup(auth, googleProvider);
   const userExists = await userSnapshotExists(userCredential.user);
   if (userExists) {
-    throw new Error('This user has already been registered');
+    throw new ErrorEmailInUse();
   }
   return userCredential;
 } 

@@ -33,6 +33,13 @@ export interface FormFieldsSignUp {
   confirmPassword: string;
 }
 
+export interface ErrorMessageSignUp {
+  displayName: string | null;
+  email: string | null;
+  password: string | null;
+  confirmPassword: string | null;
+  [key: string]: string | null;
+}
 
 export interface FormFieldsSignIn {
   email: string;
@@ -41,6 +48,7 @@ export interface FormFieldsSignIn {
 
 export interface FormInput {
   label: string;
+  errorMessage: string | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
@@ -60,3 +68,4 @@ export interface ButtonProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
+

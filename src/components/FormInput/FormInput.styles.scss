@@ -11,6 +11,10 @@ $main-color: black;
   position: relative;
   margin: 45px 0;
 
+  .error-message {
+    color: red;
+  }
+
   .form-input {
     background: none;
     background-color: white;
