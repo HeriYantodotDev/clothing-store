@@ -5,3 +5,9 @@ export class ErrorEmailInUse extends Error{
     super(message);
   }
 }
+
+export class ErrorInvalidCredential extends Error{
+  constructor(message = AuthErrorsEnum.wrongCredential) {
+    super(message);
+  }
+}
