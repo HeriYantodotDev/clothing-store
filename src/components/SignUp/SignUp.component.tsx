@@ -1,5 +1,9 @@
 import React, { FormEvent, useState } from 'react';
-import { defaultFormField } from './defaultValue';
+import {
+  defaultFormField,
+  defaultErrorMessageSignUp,
+  defaultErrorMessageSignUpGoogle,
+} from './defaultValue';
 import { createAuthUserWithEmailAndPassword } from '../../services/firebase/firebase.auth';
 import { createUserDocumentFromAuth } from '../../services/firebase/db/users.db';
 
@@ -8,12 +12,20 @@ import { Button } from '../Button/Button.component';
 import { LoadingWithinButton } from '../Loading/Loading.component';
 import { signUpWithGooglePopOut } from '../../services/firebase/firebase.auth';
 
+import { signUpSchema } from '../../services/utils/validators/signUpSchema';
+import { AuthErrorsEnum } from '../../services/utils/Enum/AuthErrors.enum';
+
+import * as yup from 'yup';
+
 import './SignUp.styles.scss';
+import { ErrorEmailInUse } from '../../services/utils/Errors/ErrorClass';
 
 export function SignUp() {
   const [formFields, setFormFields] = useState(defaultFormField);
   const [isLoadingEmail, setLoadingEmail] = useState(false);
   const [isLoadingGoogle, setLoadingGoogle] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(defaultErrorMessageSignUp);
+  const [errorMessageGoogle, setErrorMessageGoogle] = useState(defaultErrorMessageSignUpGoogle);
   const {
     displayName,
     email,
@@ -23,6 +35,22 @@ export function SignUp() {
 
   function resetFormField() {
     setFormFields(defaultFormField);
+  }
+
+  function resetErrorMessage() {
+    setErrorMessage(defaultErrorMessageSignUp);
+  }
+
+  function resetErrorMessageGoogle() {
+    setErrorMessageGoogle(defaultErrorMessageSignUpGoogle);
+  }
+
+  function resetFormErrorLoading() {
+    setLoadingGoogle(false);
+    setLoadingEmail(false);
+    resetErrorMessage();
+    resetFormField();
+    resetErrorMessageGoogle();
   }
 
   async function signUpWithGoogle() {
@@ -40,12 +68,11 @@ export function SignUp() {
 
       setLoadingGoogle(false);
 
-      resetFormField();
+      resetFormErrorLoading();
       window.location.href = '/';
 
     } catch (err) {
-      setLoadingGoogle(false);
-      console.log(err);
+      handleError(err);
     }
   }
 
@@ -58,28 +85,25 @@ export function SignUp() {
     });
   }
 
-  //replace this with joy
-  function simpleValidationHandleSubmit(email: string, password: string, confirmPassword: string) {
-    if (!email || !password || !confirmPassword) {
-      return false;
-    }
-
-    if (password !== confirmPassword) {
-      return false;
-    }
-
-    return true;
+  async function signUpFormValidation(
+    displayName: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+  ) {
+    await signUpSchema.validate({
+      displayName,
+      email,
+      password,
+      confirmPassword,
+    }, { abortEarly: false });
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoadingEmail(true);
     try {
-      //TO DO: Fix this validation
-      console.log('fix this validation');
-      if (!simpleValidationHandleSubmit(email, password, confirmPassword)) {
-        throw new Error('Validation Error');
-      }
+      await signUpFormValidation(displayName, email, password, confirmPassword);
 
       const response = await createAuthUserWithEmailAndPassword(email, password);
       const user = response?.user;
@@ -89,22 +113,46 @@ export function SignUp() {
 
       await createUserDocumentFromAuth(user, { displayName });
 
-      setLoadingEmail(false);
-
-      resetFormField();
+      resetFormErrorLoading();
       window.location.href = '/';
-
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      setLoadingEmail(false);
-      resetFormField();
-
-      if (err?.code === 'auth/email-already-in-use') {
-        console.log('Future me! Hey do something about email-already-in-use');
-      } else {
-        console.log(err);
-      }
+      handleError(err);
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async function handleError(err: any) {
+    resetFormErrorLoading();
+
+    if (yup.ValidationError.isError(err)) {
+      let errorList = defaultErrorMessageSignUp;
+      for (const inner of err.inner) {
+        const path = inner.params?.path ?? '';
+        const errorMessageKey = path as keyof typeof errorList;
+        errorList = {
+          ...errorList,
+          [errorMessageKey]: inner.errors[0],
+        };
+      }
+
+      setErrorMessage(errorList);
+      return;
+    }
+
+    if (err?.code === 'auth/email-already-in-use') {
+      setErrorMessage({
+        ...defaultErrorMessageSignUp,
+        email: AuthErrorsEnum.emailInUse,
+      });
+      return;
+    }
+
+    if (err instanceof ErrorEmailInUse) {
+      setErrorMessageGoogle(err.message);
+    }
+
+    console.log(err);
   }
 
   return (
@@ -115,6 +163,7 @@ export function SignUp() {
 
         <FormInput
           label='Display Name'
+          errorMessage={errorMessage.displayName}
           type='text'
           name='displayName'
           required onChange={handleChange}
@@ -123,6 +172,7 @@ export function SignUp() {
 
         <FormInput
           label='Email'
+          errorMessage={errorMessage.email}
           type='email'
           name='email'
           required
@@ -132,6 +182,7 @@ export function SignUp() {
 
         <FormInput
           label='Password'
+          errorMessage={errorMessage.password}
           type='password'
           name='password'
           required
@@ -141,12 +192,21 @@ export function SignUp() {
 
         <FormInput
           label='Confirm Password'
+          errorMessage={errorMessage.confirmPassword}
           type='password'
           name='confirmPassword'
           required
           onChange={handleChange}
           value={confirmPassword}
         />
+
+        {
+          errorMessageGoogle && (
+            <div className='error-message'>
+              {errorMessageGoogle}
+            </div>
+          )
+        }
 
         <div className='buttons-container'>
           <Button buttonType='default' type='submit'>
@@ -169,3 +229,11 @@ export function SignUp() {
     </div>
   );
 }
+
+// First I'm going to add the element or component to display the error message 
+// Add a state to it 
+// Add the logic to it 
+// => Joi
+// => display the error message 
+// => etc 
+// 

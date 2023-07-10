@@ -3,6 +3,7 @@ import './FormInput.styles.scss';
 
 export function FormInput({
   label,
+  errorMessage,
   ...otherProps
 }: FormInput) {
   return (
@@ -11,6 +12,13 @@ export function FormInput({
       {label && (
         <label className={`${otherProps.value.length ? 'shrink' : ''} form-input-label`}>{label}</label>
       )}
+      {
+        errorMessage && (
+          <div className='error-message'>
+            {errorMessage}
+          </div>
+        )
+      }
     </div>
   );
 } 
