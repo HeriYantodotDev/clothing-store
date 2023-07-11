@@ -172,6 +172,48 @@ Reading List:
 - [Use Query](https://testing-library.com/docs/queries/about/)
 - [Common Mistakes](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
 
+### Firebase Test
+Here's the step: 
+- Install the CLI: [link](https://firebase.google.com/docs/cli#mac-linux-npm)
+- Login: `firebase login` [Link](https://firebase.google.com/docs/cli#sign-in-test-cli)
+- Set up the emulator : `firebase init emulators`. This set up everything and generate `firebase.json` like this : 
+  ```
+  {
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "database": {
+      "port": 9000
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "storage": {
+      "port": 9199
+    },
+    "eventarc": {
+      "port": 9299
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+    }
+  }
+  ```
+
+Update: I'll skip this for a while. 
+
 
 # The React App Overview
 
