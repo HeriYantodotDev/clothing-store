@@ -47,6 +47,7 @@ export function UserProvider({ children }: UserProviderProps) {
           }
         }
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.log(err);
       }
     });

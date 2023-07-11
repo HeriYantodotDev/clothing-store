@@ -10,7 +10,7 @@
     "test": "jest --verbose",
     "test:coverage": "jest --verbose --coverage",
     "test:watch": "jest --verbose --watchAll",
-    "test:one": "jest --testPathPattern=SignUp.test.ts",
+    "test:one": "jest --testPathPattern=SignIn.test.ts",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "ts:check": "tsc -p .",
     "check": "npm run lint && npm run ts:check"

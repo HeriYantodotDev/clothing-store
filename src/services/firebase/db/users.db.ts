@@ -32,13 +32,9 @@ export async function userSnapshotExists(user: User) {
 export async function createUserDocumentFromAuth(user: User, userDataOptional: UserDataOptional = {}) {
   const userDocRef = getUserDocRefFromAuth(user);
   
-  let userStatus = 'The user is already existed';
-
   const userExists = await userSnapshotExists(user);
 
   if (!userExists) {
-    userStatus = 'New user';
-
     const displayName = user.displayName || '';
     const email = user.email || '';
 
@@ -57,11 +53,9 @@ export async function createUserDocumentFromAuth(user: User, userDataOptional: U
     try {
       await setDoc(userDocRef, userInput);
     } catch(error){
+      // eslint-disable-next-line no-console
       console.log('error creating the user', error);
     }
   }
-
-  // remove this later after debugging
-  console.log(userStatus);
 } 
 

@@ -193,7 +193,6 @@ describe('Navigation & Outlet', () => {
       await user.click(nav.children[0]);
       //the data-testid is the same with the path for the default
       const outletElement = screen.getByTestId(defaultNavigationArray[index].path);
-      console.log(outletElement.outerHTML);
       expect(outletElement).toBeInTheDocument();
     }
   });
