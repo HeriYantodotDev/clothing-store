@@ -91,7 +91,6 @@ export function SignIn() {
     setLoadingEmail(true);
 
     try {
-      console.log('fix this validation');
       await signInFormValidation(email, password);
 
       await signInAuthUserWithEmailAndPassword(email, password);
@@ -136,11 +135,12 @@ export function SignIn() {
       return;
     }
 
+    // eslint-disable-next-line no-console
     console.log(err.message);
   }
 
   return (
-    <div className='sign-in-container'>
+    <div className='sign-in-container' data-testid='signInContainer'>
       <h2>Already have an account?</h2>
       <span>Sign in with email, password, or Google.</span>
       <form onSubmit={handleSubmit}>
@@ -152,6 +152,7 @@ export function SignIn() {
           required
           onChange={handleChange}
           value={email}
+          data-testid='email'
         />
 
         <FormInput
@@ -162,6 +163,7 @@ export function SignIn() {
           required
           onChange={handleChange}
           value={password}
+          data-testid='password'
         />
 
         {
@@ -173,7 +175,7 @@ export function SignIn() {
         }
 
         <div className='buttons-container'>
-          <Button buttonType='default' type='submit'>
+          <Button buttonType='default' type='submit' data-testid='submitButton'>
             {isLoadingEmail ? (
               <LoadingWithinButton />
             ) : (

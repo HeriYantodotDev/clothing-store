@@ -16,8 +16,6 @@ module.exports = {
     quotes: ['warn', 'single'],
     'max-len': ['warn', { code: 121 }], 
     indent: ['warn', 2, { SwitchCase: 1}],
+    'no-console': 'warn', 
   },
 };
-
-
-// 'no-console': 'warn', 

@@ -45,6 +45,7 @@ export interface ErrorMessageSignUp {
 export interface FormFieldsSignIn {
   email: string;
   password: string;
+  [key: string]: string;
 }
 
 export interface ErrorMessageAuth {
