@@ -215,6 +215,31 @@ Here's the step:
 Update: I'll skip this for a while. 
 
 
+### Handling SVG in Vite 
+- Install Dev Dependency: `vite-plugin-svgr`
+- Then in the `vite.config.ts` 
+  ```
+  import svgr from 'vite-plugin-svgr';
+  
+  export default defineConfig({
+    plugins: [
+      react(),
+      svgr(),
+    ],
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@import "${resolve(__dirname, 'src/styles/variables.scss')}";`,
+        },
+      },
+    },
+  });
+
+  ```
+- Put this code on top of the file that you'd like to use it : 
+  `/// <reference types="vite-plugin-svgr/client" />`
+  Read the information on NPM for more information about this.  
+
 # The React App Overview
 
 ## Design Patterns
@@ -262,8 +287,8 @@ The Observer pattern, along with the Next, Error, and Complete events, promotes 
 ![Footer](./__docImages__/Footer.png)
 ### [Loading](./src/components/Loading/Loading.component.tsx)
 There are several loading components. All are in the same file 
-
 ![LoadingWithingButton](./__docImages__/loading.png)
+
 
 ## Styles
 - [Google Fonts: Obitron](https://fonts.google.com/specimen/Orbitron)
@@ -312,7 +337,8 @@ export function UserProvider({ children }: UserProviderProps) {
   );
 }
 ```
-
+### Prduct Context
+All the product data is fetched from Firebasestore then stored in the `ProductContext`
 
 # BackEnd
 I'm using [Firebase](https://firebase.google.com/) here for the backend.

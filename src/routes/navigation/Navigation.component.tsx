@@ -1,4 +1,4 @@
-import {
+import React, {
   Fragment,
   useContext,
 } from 'react';
@@ -12,8 +12,12 @@ import { defaultNavigationArray } from './defaultValue';
 import shopLogo from '../../assets/cool.png';
 
 import { UserContext } from '../../context/user.context';
+import { CartContext } from '../../context/cart.context';
 
 import { signOutUser } from '../../services/firebase/firebase.auth';
+
+import { CartIcon } from '../../components/CartIcon/CartIcon.component';
+import { CardDropDown } from '../../components/CartDropDown/CartDropDown.component';
 
 export function NavLink({
   path,
@@ -26,7 +30,6 @@ export function NavLink({
         {label}
       </Link>
     </li>
-
   );
 }
 
@@ -35,6 +38,14 @@ export function Navigation({
 }: NavigationProps) {
 
   const { currentUser } = useContext(UserContext);
+  const { cart, setCart } = useContext(CartContext);
+
+  function handleCartIconClick() {
+    setCart({
+      ...cart,
+      toogleOpen: !cart.toogleOpen,
+    });
+  }
 
   return (
     <Fragment>
@@ -66,9 +77,13 @@ export function Navigation({
                 <NavLink key='signin' path='auth' label='Sign In' />
               )
             }
+            <CartIcon onClick={handleCartIconClick} />
           </ul>
-
-
+          {
+            cart.toogleOpen && (
+              <CardDropDown />
+            )
+          }
         </div>
       </nav>
 

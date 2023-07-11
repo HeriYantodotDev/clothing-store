@@ -1,3 +1,5 @@
+import { ProductType } from './context/product.context';
+
 export type CategoriesProps = {
   categoryList?: CategoryArray[];
   cta?: string;
@@ -74,5 +76,13 @@ export interface ButtonProps {
   onClick?: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
+}
+
+export interface ProductCardProps {
+  product: ProductType;
+}
+
+export type CartIconProps = {
+  onClick?: () => void;
 }
 
