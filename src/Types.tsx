@@ -1,4 +1,5 @@
 import { ProductType } from './context/product.context';
+import { CartItemsType } from './context/cart.context';
 
 export type CategoriesProps = {
   categoryList?: CategoryArray[];
@@ -84,5 +85,10 @@ export interface ProductCardProps {
 
 export type CartIconProps = {
   onClick?: () => void;
+  countItems: number;
+}
+
+export interface CartItemsProps {
+  cartItems: CartItemsType;
 }
 

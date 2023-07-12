@@ -34,7 +34,6 @@ export function ProductProvider({ children }: ProductProviderProps) {
   const [product, setProduct] = useState<ProductType[] | null>(null);
 
   useEffect(() => {
-    console.log(SHOP_DATA);
     setProduct(SHOP_DATA);
   }, []);
 

@@ -1,4 +1,4 @@
-import React, {
+import {
   Fragment,
   useContext,
 } from 'react';
@@ -38,7 +38,7 @@ export function Navigation({
 }: NavigationProps) {
 
   const { currentUser } = useContext(UserContext);
-  const { cart, setCart } = useContext(CartContext);
+  const { cart, setCart, countItems } = useContext(CartContext);
 
   function handleCartIconClick() {
     setCart({
@@ -77,7 +77,7 @@ export function Navigation({
                 <NavLink key='signin' path='auth' label='Sign In' />
               )
             }
-            <CartIcon onClick={handleCartIconClick} />
+            <CartIcon onClick={handleCartIconClick} countItems={countItems} />
           </ul>
           {
             cart.toogleOpen && (

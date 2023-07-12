@@ -172,6 +172,7 @@ Reading List:
 - [Use Query](https://testing-library.com/docs/queries/about/)
 - [Common Mistakes](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
 
+
 ### Firebase Test
 Here's the step: 
 - Install the CLI: [link](https://firebase.google.com/docs/cli#mac-linux-npm)
@@ -240,6 +241,32 @@ Update: I'll skip this for a while.
   `/// <reference types="vite-plugin-svgr/client" />`
   Read the information on NPM for more information about this.  
 
+### Handling SVG in Jest
+Remember! SVG + Jest + TypeScript === `PAIN`
+So, take a look this step to make your life easier. 
+- First of all, ensure that you follow the step above in **Handling SVG in Vite** 
+- Create a definition file : `svg.d.ts` and copy paste this
+  ```
+  declare module '*.svg' {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const content: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    export const ReactComponent: any;
+    export default content;
+  }
+  ```
+- Then in the `jset.config.json` in the `moduleNameMapper`, add this : 
+  ```
+  "\\.svg": "<rootDir>/src/__mocks__/svg-mock.ts"
+  ```
+- Create a file `svg-mock.ts` in the path above and copy paste this : 
+  ```
+  const content = 'div';
+  export const ReactComponent = content;
+  export default content;
+  ```
+- This is the refernce from a blog : [Andre Biel Blog](https://medium.com/@real-biel/jest-typescript-and-svgs-44b4333a1164)
+
 # The React App Overview
 
 ## Design Patterns
@@ -288,6 +315,15 @@ The Observer pattern, along with the Next, Error, and Complete events, promotes 
 ### [Loading](./src/components/Loading/Loading.component.tsx)
 There are several loading components. All are in the same file 
 ![LoadingWithingButton](./__docImages__/loading.png)
+### [Shop]()
+![Shop]()
+### [ProductCard]()
+![]()
+### [CartIcon]()
+![]()
+### [CartDropDown]()
+![]()
+
 
 
 ## Styles
@@ -337,8 +373,11 @@ export function UserProvider({ children }: UserProviderProps) {
   );
 }
 ```
-### Prduct Context
+### Product Context
 All the product data is fetched from Firebasestore then stored in the `ProductContext`
+### Cart Context
+`CartContext` caontains the information about toogleOpen for the cart Icon.
+Maybe I'll add more. 
 
 # BackEnd
 I'm using [Firebase](https://firebase.google.com/) here for the backend.
