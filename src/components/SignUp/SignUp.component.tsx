@@ -157,7 +157,7 @@ export function SignUp() {
   }
 
   return (
-    <div className='sign-up-container'>
+    <div className='sign-up-container' data-testid='signUpContainer'>
       <h2>Don't have an account? </h2>
       <span>Sign up with email, password, or Google.</span>
       <form onSubmit={handleSubmit}>

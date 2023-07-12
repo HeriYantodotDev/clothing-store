@@ -1,18 +1,10 @@
 import Home from './routes/home/Home.component';
-import { Authentication } from './routes/authentication/Authentication.component';
 import { Routes, Route } from 'react-router-dom';
-import { Navigation } from './routes/navigation/Navigation.component';
 import { NavigationItem } from './Types';
+import { Authentication } from './routes/authentication/Authentication.component';
+import { Navigation } from './routes/navigation/Navigation.component';
 import { Footer } from './components/Footer/Footer.component';
-
-
-const Shop = () => {
-  return (
-    <div>
-      <h1>I'm a shop page</h1>
-    </div>
-  );
-};
+import { Shop } from './routes/shop/Shop.component';
 
 const Contact = () => {
   return (

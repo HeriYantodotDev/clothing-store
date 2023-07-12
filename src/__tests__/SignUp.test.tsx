@@ -46,8 +46,8 @@ describe('Sign Up Form Validation', () => {
   ${'displayName'}          | ${'sd'}                 | ${ValidationErrorsEnum.userSizeMin}
   ${'displayName'}          | ${giberish}             | ${ValidationErrorsEnum.userSizeMax}
   ${'displayName'}          | ${'jdf%^&*'}            | ${ValidationErrorsEnum.errorDisplayNameNull}
-  ${'password'}             | ${'asd'}                | ${ValidationErrorsEnum.errorPassword2}
-  ${'password'}             | ${'Ta@1'}               | ${ValidationErrorsEnum.errorPassword1}
+  ${'password'}             | ${'asd'}                | ${ValidationErrorsEnum.errorPassword1}
+  ${'password'}             | ${'Ta@1'}               | ${ValidationErrorsEnum.errorPassword2}
   ${'confirmPassword'}      | ${'Ta@1'}               | ${ValidationErrorsEnum.confirmPasswordNotMatch}
   `('[Validation Errors]if $field is ="$value", $errorMessage is receieved',
     async ({ field, value, errorMessage }) => {
@@ -57,22 +57,23 @@ describe('Sign Up Form Validation', () => {
 
       await user.click(screen.getByText('Sign In'));
 
+      const signUpContainer = screen.getByTestId('signUpContainer');
+
       for (const input in defaultFormInput) {
-        const inputElement = screen.getByTestId(input);
+        const inputElement = within(signUpContainer).getByTestId(input);
         await user.type(inputElement, defaultFormInput[input]);
       }
 
-      const inputElement = screen.getByTestId(field);
+      const inputElement = within(signUpContainer).getByTestId(field);
       await user.clear(inputElement);
       await user.type(inputElement, value);
 
-      const submitButton = screen.getByTestId('submitButton');
+      const submitButton = within(signUpContainer).getByTestId('submitButton');
 
       await user.click(submitButton);
 
-      const errorInputComponent = screen.getByTestId(field + 'Group');
+      const errorInputComponent = within(signUpContainer).getByTestId(field + 'Group');
       const errorMessageElement = within(errorInputComponent).getByText(errorMessage);
-
       expect(errorMessageElement).toBeInTheDocument();
     });
 });
