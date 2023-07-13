@@ -5,6 +5,7 @@ import { Authentication } from './routes/authentication/Authentication.component
 import { Navigation } from './routes/navigation/Navigation.component';
 import { Footer } from './components/Footer/Footer.component';
 import { Shop } from './routes/shop/Shop.component';
+import { Checkout } from './routes/checkout/Checkout.component';
 
 const Contact = () => {
   return (
@@ -36,6 +37,7 @@ export default function App() {
             <Route path='shop' element={<Shop />} />
             <Route path='contact' element={<Contact />} />
             <Route path='auth' element={<Authentication />} />
+            <Route path='checkout' element={<Checkout />} />
           </Route>
         </Routes>
       </div>

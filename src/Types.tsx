@@ -90,5 +90,9 @@ export type CartIconProps = {
 
 export interface CartItemsProps {
   cartItems: CartItemsType;
+  index?: number;
 }
+
+export type CheckoutItemProps = CartItemsProps;
+
 
