@@ -298,6 +298,12 @@ The Observer pattern, along with the Next, Error, and Complete events, promotes 
 **To-do item** Improve it 
 ### [Navigation](./src/routes/navigation/Navigation.component.tsx)
 **To-do item** Improve it 
+### [Authentication](./src/routes/authentication/Authentication.component.tsx)
+![Authenticaiton](./__docImages__/Authentication.png)
+### [Shop](./src/routes/shop/Shop.component.tsx)
+![Shop](./__docImages__/Shop.png)
+### [Checkout](/src/routes/checkout/Checkout.component.tsx)
+![Checkout](./__docImages__/Checkout.png)
 
 ## Component
 ### [CategoryItem](./src/components/CategoryItem/CategoryItem.component.tsx)
@@ -314,16 +320,16 @@ The Observer pattern, along with the Next, Error, and Complete events, promotes 
 ![Footer](./__docImages__/Footer.png)
 ### [Loading](./src/components/Loading/Loading.component.tsx)
 There are several loading components. All are in the same file 
-![LoadingWithingButton](./__docImages__/loading.png)
-### [Shop]()
-![Shop]()
-### [ProductCard]()
-![]()
-### [CartIcon]()
-![]()
-### [CartDropDown]()
-![]()
 
+![LoadingWithingButton](./__docImages__/loading.png)
+### [ProductCard](./src/components/ProductCard/ProductCard.component.tsx)
+![ProductCard](./__docImages__/ProductCard.png)
+### [CartIcon](./src/components/CartIcon/CartIcon.component.tsx)
+![CartIcon](./__docImages__/CartIcon.png)
+### [CartDropDown](/src/components/CartDropDown/CartDropDown.component.tsx)
+![CartDropDown](./__docImages__/CartDropdown.png)
+### [CheckoutItem](./src/components/CheckoutItem/CheckoutItem.component.tsx)
+![CheckoutItem](./__docImages__/CheckoutItem.png)
 
 
 ## Styles
