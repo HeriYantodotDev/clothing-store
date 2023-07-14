@@ -1,16 +1,18 @@
 import { useContext } from 'react';
-import { ProductContext } from '../../context/product.context';
+import { CategoriesContext } from '../../context/categories.context';
 import { CartItemsProps } from '../../Types';
 import './CartItem.styles.scss';
 
+import { findProductItem } from '../../context/cart.helper';
+
 export function CartItem({ cartItems }: CartItemsProps) {
-  const { id, quantity } = cartItems;
-  const { product } = useContext(ProductContext);
-  const productItem = product?.filter(item => item.id === id);
+  const { quantity } = cartItems;
+  const { categories } = useContext(CategoriesContext);
+  const productItem = findProductItem(categories, cartItems);
   if (!productItem) {
     return;
   }
-  const { name, price, imageUrl } = productItem[0];
+  const { name, price, imageUrl } = productItem;
   return (
     <div className='cart-item-container'>
       <img src={imageUrl} alt={name} />

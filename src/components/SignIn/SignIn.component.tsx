@@ -21,6 +21,7 @@ import { LoadingWithinButton } from '../Loading/Loading.component';
 import { signInSchema } from '../../services/utils/validators/signInSchema';
 
 import { AuthErrorsEnum } from '../../services/utils/Enum/AuthErrors.enum';
+import { BUTTON_TYPE_CLASSES } from '../../Types';
 
 import './SignIn.styles.scss';
 import { ErrorInvalidCredential } from '../../services/utils/Errors/ErrorClass';
@@ -168,14 +169,14 @@ export function SignIn() {
 
         {
           errorMessageAuth && (
-            <div className='error-message'>
+            <div className='error-message mb-3'>
               {errorMessageAuth}
             </div>
           )
         }
 
         <div className='buttons-container'>
-          <Button buttonType='default' type='submit' data-testid='submitButton'>
+          <Button buttonType={BUTTON_TYPE_CLASSES.default} type='submit' data-testid='submitButton'>
             {isLoadingEmail ? (
               <LoadingWithinButton />
             ) : (
@@ -183,7 +184,7 @@ export function SignIn() {
             )}
 
           </Button>
-          <Button buttonType='google' type='button' onClick={signInWithGoogle} >
+          <Button buttonType={BUTTON_TYPE_CLASSES.google} type='button' onClick={signInWithGoogle} >
             {isLoadingGoogle ? (
               <LoadingWithinButton textColor='text-warning' />
             ) : (

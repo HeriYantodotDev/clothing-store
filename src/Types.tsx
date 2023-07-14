@@ -1,6 +1,7 @@
-import { ProductType } from './context/product.context';
+import { ReactNode } from 'react';
 import { CartItemsType } from './context/cart.context';
 
+import { ItemShopData, ShopData } from './__seedData__/shopData';
 export type CategoriesProps = {
   categoryList?: CategoryArray[];
   cta?: string;
@@ -63,24 +64,32 @@ export interface FormInput {
   [key: string]: any;
 }
 
-import { ReactNode } from 'react';
 
-export const BUTTON_TYPE_CLASSES: { [key: string]: string } = {
-  google: 'google-sign-in',
+
+export interface ButtonType {
+  google: string,
+  inverted: string,
+  default: string,
+  [key: string]: string,
+}
+
+export const BUTTON_TYPE_CLASSES: ButtonType = {
+  google: 'google',
   inverted: 'inverted',
-  default: '',
+  default: 'default',
 };
 
 export interface ButtonProps {
   children: string | ReactNode;
-  buttonType: keyof typeof BUTTON_TYPE_CLASSES;
+  buttonType: string;
   onClick?: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
 export interface ProductCardProps {
-  product: ProductType;
+  product: ItemShopData;
+  category: string;
 }
 
 export type CartIconProps = {
@@ -93,6 +102,15 @@ export interface CartItemsProps {
   index?: number;
 }
 
-export type CheckoutItemProps = CartItemsProps;
+export interface CheckoutItemProps {
+  cartItems: CartItemsType;
+  index?: number;
+  category: string;
+}
+
+
+export interface CategoryPreviewProps {
+  category: ShopData
+}
 
 
