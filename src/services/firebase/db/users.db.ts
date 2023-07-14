@@ -1,5 +1,4 @@
 import {
-  getFirestore,
   doc,
   getDoc,
   setDoc,
@@ -8,9 +7,7 @@ import {
   User,
 } from 'firebase/auth';
 
-import { firebaseApp } from '../firebase.config';
-
-export const db = getFirestore(firebaseApp);
+import { db } from '../firebase.config';
 
 import { 
   UserData,

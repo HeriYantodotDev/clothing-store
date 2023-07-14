@@ -334,8 +334,25 @@ There are several loading components. All are in the same file
 
 ## Styles
 - [Google Fonts: Obitron](https://fonts.google.com/specimen/Orbitron)
+- [styled-components](https://www.npmjs.com/package/styled-components)
+  Using this package will help you a lot to avoid styling clash. 
+  Combine it with Bootstrap, and it'll look like this: 
+  ```
+  import styled from 'styled-components';
 
+  export const NavigationContainer = styled.nav.attrs({
+    className: 'navbar navbar-expand-lg navbar-light bg-dark mb-3',
+  })`
+    <css properties here>
+  `;
+  ```
 
+  Or sytling the existing component like this : 
+  ```
+  export const LinkContainer = styled(Link)`
+    <css properties here>
+  `;
+  ```
 
 ## Authentication
 - Google Auth by Firebase Auth
@@ -435,11 +452,23 @@ Please take a look at the picture below:
       | updatedAt       | timeStamp       | new Date()                  |
       | displayName     | string          |                             |
       | email           | string          |                             |
-- Collection: 
-  - data 
+- Collection: `categories`
+  - data: example: `hats`, `jackets`, `mens`, `sneakers`, `womens`
       | Field           | Type            | Default Value (in Function) |
       |-----------------|-----------------|-----------------------------|
-      |                 |                 |                             |
+      | title           | string          | example: `hats`, `jackets`  |
+      | items           | {}              | below                       |
+
+      `item` object: 
+      | Field           | Type            | Default Value (in Function) |
+      |-----------------|-----------------|-----------------------------|
+      | id              | number          |                             |
+      | imageUrl        | string          |                             |
+      | name            | string          |                             |
+      | price           | string          |                             |
+      | stock           | number          |                             |
+
+
 - Collection: 
   - data 
       | Field           | Type            | Default Value (in Function) |

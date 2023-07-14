@@ -14,6 +14,7 @@ import { signUpWithGooglePopOut } from '../../services/firebase/firebase.auth';
 
 import { signUpSchema } from '../../services/utils/validators/signUpSchema';
 import { AuthErrorsEnum } from '../../services/utils/Enum/AuthErrors.enum';
+import { BUTTON_TYPE_CLASSES } from '../../Types';
 
 import * as yup from 'yup';
 
@@ -214,7 +215,7 @@ export function SignUp() {
         }
 
         <div className='buttons-container'>
-          <Button buttonType='default' type='submit' data-testid='submitButton'>
+          <Button buttonType={BUTTON_TYPE_CLASSES.default} type='submit' data-testid='submitButton'>
             {isLoadingEmail ? (
               <LoadingWithinButton />
             ) : (
@@ -222,7 +223,7 @@ export function SignUp() {
             )}
           </Button>
 
-          <Button onClick={signUpWithGoogle} buttonType='google' type='button'>
+          <Button onClick={signUpWithGoogle} buttonType={BUTTON_TYPE_CLASSES.google} type='button'>
             {isLoadingGoogle ? (
               <LoadingWithinButton />
             ) : (

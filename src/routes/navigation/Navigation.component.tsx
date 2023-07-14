@@ -4,12 +4,11 @@ import {
 } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
-import './Navigation.styles.scss';
 import { NavigationItem, NavigationProps } from '../../Types';
 
 import { defaultNavigationArray } from './defaultValue';
 
-import shopLogo from '../../assets/cool.png';
+import shopLogo from '../../assets/loud.jpg';
 
 import { UserContext } from '../../context/user.context';
 import { CartContext } from '../../context/cart.context';
@@ -17,7 +16,16 @@ import { CartContext } from '../../context/cart.context';
 import { signOutUser } from '../../services/firebase/firebase.auth';
 
 import { CartIcon } from '../../components/CartIcon/CartIcon.component';
-import { CardDropDown } from '../../components/CartDropDown/CartDropDown.component';
+import { CartDropDown } from '../../components/CartDropDown/CartDropDown.component';
+
+import {
+  NavigationContainer,
+  LinkContainer,
+  Logocontainer,
+  LogoText,
+} from './Navigation.styles';
+
+const brandName = 'Cool Store';
 
 export function NavLink({
   path,
@@ -49,11 +57,11 @@ export function Navigation({
 
   return (
     <Fragment>
-      <nav className='navbar navbar-expand-lg navbar-light bg-dark mb-3' data-testid='navigation'>
-        <Link to='/' className='navbar-brand' >
-          <img className='logo rounded-circle' src={shopLogo} alt='shopLogo' data-testid='logo' width={70} />
-          <span className='text-light ml-3 text-uppercase font-weight-bold '>Cool Store</span>
-        </Link>
+      <NavigationContainer data-testid='navigation'>
+        <LinkContainer to='/'>
+          <Logocontainer src={shopLogo} alt='shopLogo' data-testid='logo' />
+          <LogoText>{brandName}</LogoText>
+        </LinkContainer>
 
         <button className='navbar-toggler'
           type='button' data-toggle='collapse'
@@ -81,11 +89,12 @@ export function Navigation({
           </ul>
           {
             cart.toogleOpen && (
-              <CardDropDown />
+              <CartDropDown />
             )
           }
         </div>
-      </nav>
+
+      </NavigationContainer>
 
       <Outlet data-testid='outlet' />
 

@@ -1,5 +1,11 @@
 import { FormInput } from '../../Types';
-import './FormInput.styles.scss';
+
+import {
+  FormInputLabel,
+  Input,
+  Group,
+  ErrorMessage,
+} from './FormInput.styles';
 
 export function FormInput({
   label,
@@ -7,19 +13,24 @@ export function FormInput({
   ...otherProps
 }: FormInput) {
   return (
-    <div className='group' data-testid={otherProps['data-testid'] + 'Group'}>
-      <input className='form-input'{...otherProps} />
+    <Group data-testid={otherProps['data-testid'] + 'Group'} >
+      <Input {...otherProps} />
       {
         label && (
-          <label className={`${otherProps.value.length ? 'shrink' : ''} form-input-label`}>{label}</label>
-        )}
-      {
-        errorMessage && (
-          <div className='error-message'>
-            {errorMessage}
-          </div>
+          <FormInputLabel $shrink={otherProps.value.length}>
+            {label}
+          </FormInputLabel>
         )
       }
-    </div>
+      {
+        errorMessage && (
+          <ErrorMessage>
+            {errorMessage}
+          </ErrorMessage>
+        )
+      }
+
+    </Group>
+
   );
 } 

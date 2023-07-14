@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { CategoryItem } from '../components/CategoryItem/CategoryItem.component';
-
+import { MemoryRouter } from 'react-router-dom';
+import { DirectoryItem } from '../components/DirectoryItem/DirectoryItem.component';
 import { Directory } from '../components/Directory/Directory.component';
 
 import {
   defaultCTA,
   defaultCategories,
-} from '../components/CategoryItem/defaultValue';
+} from '../components/DirectoryItem/defaultValue';
 
 const categoryListCustom = [
   { id: 1, title: 'John', imageUrl: 'adsf' },
@@ -21,7 +21,11 @@ describe('Category Component', () => {
   const imageUrl = categoryListCustom[0].imageUrl;
 
   beforeEach(() => {
-    render(<CategoryItem title={title} cta={ctaCustom} imageUrl={imageUrl} />);
+    render(
+      <MemoryRouter>
+        <DirectoryItem title={title} cta={ctaCustom} imageUrl={imageUrl} />
+      </MemoryRouter>,
+    );
   });
 
   test('renders the title', () => {
@@ -44,7 +48,11 @@ describe('Category Component', () => {
 
 describe('Categories Component With Argument', () => {
   beforeEach(() => {
-    render(<Directory categoryList={categoryListCustom} cta={ctaCustom} />);
+    render(
+      <MemoryRouter>
+        <Directory categoryList={categoryListCustom} cta={ctaCustom} />
+      </MemoryRouter>,
+    );
   });
 
   test('renders the correct number of category when accepting argument', () => {
@@ -72,7 +80,11 @@ describe('Categories Component With Argument', () => {
 
 describe('Categories Component Without Argument', () => {
   beforeEach(() => {
-    render(<Directory />);
+    render(
+      <MemoryRouter>
+        <Directory />
+      </MemoryRouter>,
+    );
   });
 
   test('renders the correct number of default category', () => {

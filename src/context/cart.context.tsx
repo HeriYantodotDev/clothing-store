@@ -8,7 +8,9 @@ import {
   useContext,
 } from 'react';
 
-import { ProductContext } from './product.context';
+import { CategoriesContext } from './categories.context';
+
+import { findProductItem } from './cart.helper';
 
 export type CartType = {
   toogleOpen: boolean,
@@ -20,6 +22,7 @@ const defaultCartValue: CartType = {
 
 export type CartItemsType = {
   id: number,
+  category: string,
   quantity: number,
 }
 
@@ -31,12 +34,14 @@ type CartContextType = {
   cart: CartType,
   setCart: Dispatch<SetStateAction<CartType>>,
   cartItems: CartItemsType[],
-  addCartItem: (idProduct: number) => void,
+  addCartItem: (idProduct: number, category: string) => void,
   subtractCartItem: (idProduct: number) => void,
   removeCartItem: (idProduct: number) => void,
   countItems: number,
   totalPrice: number,
 }
+
+
 
 export const CartContext = createContext<CartContextType>({
   cart: defaultCartValue,
@@ -58,6 +63,7 @@ export const CartContext = createContext<CartContextType>({
 function generateAddCartItemArray(
   idProductToAdd: number,
   cartItems: CartItemsType[],
+  category: string,
 ) {
   const index = cartItems.findIndex(item => item ? item.id === idProductToAdd : false);
 
@@ -67,6 +73,7 @@ function generateAddCartItemArray(
       {
         id: idProductToAdd,
         quantity: 1,
+        category: category,
       },
     ];
   }
@@ -108,12 +115,14 @@ function generateRemoveCartItemArray(
   return updatedCartItems;
 }
 
+
+
 export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<CartType>(defaultCartValue);
   const [cartItems, setCartItems] = useState<CartItemsType[]>([]);
   const [countItems, setCountItems] = useState<number>(0);
   const [totalPrice, settotalPrice] = useState<number>(0);
-  const { product } = useContext(ProductContext);
+  const { categories } = useContext(CategoriesContext);
 
 
   useEffect(() => {
@@ -122,19 +131,22 @@ export function CartProvider({ children }: CartProviderProps) {
   }, [cartItems]);
 
   useEffect(() => {
-
     const newTotalPrice = cartItems.reduce((acc, curr) => {
-      const productItem = product?.filter(item => item.id === curr.id);
+      // const category = categories?.find(item => item.title === curr.category);
+      // const productItem = category?.items.find(item => item.id == curr.id);
+
+      const productItem = findProductItem(categories, curr);
+
       if (!productItem) {
         return 0;
       }
-      return acc + (curr.quantity * productItem[0].price);
+      return acc + (curr.quantity * productItem.price);
     }, 0);
     settotalPrice(newTotalPrice);
-  }, [cartItems, product]);
+  }, [cartItems, categories]);
 
-  function addCartItem(idProduct: number) {
-    setCartItems(generateAddCartItemArray(idProduct, cartItems));
+  function addCartItem(idProduct: number, category: string) {
+    setCartItems(generateAddCartItemArray(idProduct, cartItems, category));
   }
 
   function subtractCartItem(idProduct: number) {

@@ -1,36 +1,65 @@
 import { useContext } from 'react';
-import { ProductContext } from '../../context/product.context';
+import { CategoriesContext } from '../../context/categories.context';
 import { CartContext } from '../../context/cart.context';
 import {
   CheckoutItemProps,
 } from '../../Types';
 
+import { toast } from 'react-toastify';
+
 import './CheckoutItem.styles.scss';
 
-export function CheckoutItem({ cartItems, index }: CheckoutItemProps) {
-  const { product } = useContext(ProductContext);
+import { findProductItem } from '../../context/cart.helper';
+
+export function CheckoutItem({ cartItems, index, category }: CheckoutItemProps) {
+  const { categories } = useContext(CategoriesContext);
   const { id, quantity } = cartItems;
-  const productItem = product?.filter(item => item.id === id);
+  const productItem = findProductItem(categories, cartItems);
+  const { name, price, imageUrl } = productItem ?? {};
   const { addCartItem, subtractCartItem, removeCartItem } = useContext(CartContext);
 
   function addIdProductToCart() {
-    addCartItem(id);
+    addCartItem(id, category);
+    toast(`Congratulations! One item "${name}" is successfully added to the cart.`, {
+      position: 'bottom-right',
+      autoClose: 5000,
+      theme: 'light',
+      icon: '🛒',
+    });
   }
 
   function subtractIdProductFromCart() {
+
+    if (quantity === 1) {
+      toast.warning(`The quantity of item "${name}" is already one.
+      Click remove if you'd like to remove this item from the cart.`, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        theme: 'light',
+        icon: '⚠️',
+      });
+      return;
+    }
+
     subtractCartItem(id);
+    toast.info(`One item "${name}" is subtracted from the cart.`, {
+      position: 'bottom-right',
+      autoClose: 5000,
+      theme: 'light',
+      icon: '🙏',
+    });
   }
 
   function removeIdProductFromCart() {
     removeCartItem(id);
+    toast.warning(`The Item "${name}" has been removed from the cart.`, {
+      position: 'bottom-right',
+      autoClose: 5000,
+      theme: 'light',
+      icon: '📝',
+    });
   }
 
-  if (!productItem) {
-    console.log('Product Item error');
-    return;
-  }
-
-  const { name, price, imageUrl } = productItem[0];
   return (
     <tr>
       <th className='centered-td'>{index ? index : null}</th>

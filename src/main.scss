@@ -1,19 +1,14 @@
-// body {
-//   display: flex;
-//   flex-direction: column;
-// }
-
 .content {
   min-height: calc(100vh - 80px);
 }
 
 
 body {
-  font-family: 'Orbitron';
+  font-family: 'Orbitron' !important;
 }
 
 a {
-  text-decoration: none;
+  text-decoration: none !important;
   color: black;
 }
 

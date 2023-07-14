@@ -1,11 +1,11 @@
 import {
   defaultCategories,
   defaultCTA,
-} from '../CategoryItem/defaultValue';
+} from '../DirectoryItem/defaultValue';
 
 import { CategoriesProps } from '../../Types';
 
-import { CategoryItem } from '../CategoryItem/CategoryItem.component';
+import { DirectoryItem } from '../DirectoryItem/DirectoryItem.component';
 
 import './Directory.styles.scss';
 
@@ -16,7 +16,7 @@ export function Directory({
   return (
     <div className='directory-container'>
       {categoryList.map(({ title, id, imageUrl }) => (
-        <CategoryItem key={id} title={title} cta={cta} imageUrl={imageUrl} />
+        <DirectoryItem key={id} title={title} cta={cta} imageUrl={imageUrl} />
       ))}
     </div>
   );

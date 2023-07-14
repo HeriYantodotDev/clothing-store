@@ -22,7 +22,9 @@ export function Checkout() {
           </thead>
           <tbody>
             {
-              cartItems.map((item, index) => <CheckoutItem key={item.id} cartItems={item} index={index + 1} />)
+              cartItems.map((item, index) => (
+                <CheckoutItem key={item.id} cartItems={item} index={index + 1} category={item.category} />),
+              )
             }
           </tbody>
         </table>

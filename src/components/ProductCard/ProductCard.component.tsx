@@ -5,14 +5,22 @@ import { Button } from '../Button/Button.component';
 
 import { ProductCardProps } from '../../Types';
 
+import { toast } from 'react-toastify';
+
 import { CartContext } from '../../context/cart.context';
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, category }: ProductCardProps) {
   const { name, price, imageUrl, id } = product;
   const { addCartItem } = useContext(CartContext);
 
   function addIdProductToCart() {
-    addCartItem(id);
+    addCartItem(id, category);
+    toast(`Congratulations! One item "${name}" is successfully added to the cart.`, {
+      position: 'bottom-right',
+      autoClose: 5000,
+      theme: 'light',
+      icon: '🛒',
+    });
   }
 
   return (
