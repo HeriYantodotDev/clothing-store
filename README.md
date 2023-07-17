@@ -399,8 +399,451 @@ export function UserProvider({ children }: UserProviderProps) {
 ### Product Context
 All the product data is fetched from Firebasestore then stored in the `ProductContext`
 ### Cart Context
-`CartContext` caontains the information about toogleOpen for the cart Icon.
-Maybe I'll add more. 
+`CartContext` contains: 
+- `cart` : toogleOpen for the Cart Icon
+  ```
+  const defaultCartValue: CartType = {
+    toogleOpen: false,
+  };
+  ```
+- `cartItems`: 
+  ```
+  export type CartItemsType = {
+    id: number,
+    category: string,
+    quantity: number,
+  }
+  ```
+- `countItems` : number
+- `totalPrice`: number
+- Functions: 
+  - `addCartItem`:
+    ```
+    addCartItem: (idProduct: number, category: string) => void
+    ```
+  - `subtractCartItem`
+    ```
+    subtractCartItem: (idProduct: number) => void
+    ```
+  - `removeCartItem`
+    ```
+     removeCartItem: (idProduct: number) => void
+    ```
+Maybe I 'll add more. 
+
+## Reducer
+
+Internal React for state management is using `useContext` and withing the component, using `useState` or `useEffect` to access it. 
+The other strategy is using `useReducer`
+
+So, instead of using `useState` to update the state, it has `Action` to update the state. Action has two things: 
+- type
+- payload
+
+Now let's start with the React `useReducer`. It's quite similar with `useState` but for complex state it's better to use `useReducer`. Now let's change our code to use `useReducer`, let's start with the simple one: state in the [`user.context.tsx`](./src/context/user.context.tsx);
+
+first of all, like I mentioned before, let's comment out the `useState` in this code. 
+Let's set up the type first: 
+```
+export enum USER_ACTION_TYPES {
+  SET_CURRENT_USER = 'SET_CURRENT_USER',
+}
+
+type UserStateType = {
+  currentUser: User | null;
+}
+
+type UserActionType = {
+  type: USER_ACTION_TYPES;
+  payload: User;
+}
+```
+
+After that let's update the `UserContextType` the type of the `setCurrentUser`: 
+```
+type UserContextType = {
+  currentUser: User | null;
+  setCurrentUser: (user: User) => void;
+}
+```
+
+Great! Now let's move to the implementation: 
+
+```
+function userReducer(state: UserStateType, action: UserActionType): UserStateType {
+  console.log('dispatch');
+  console.log(action);
+  const { type, payload } = action;
+
+  switch (type) {
+    case USER_ACTION_TYPES.SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: payload,
+      };
+
+    default:
+      throw new Error(`Unhandled type ${type} in userReducer`);
+  }
+}
+```
+
+Now let's set up the initial value for the state: 
+```
+const INITIAL_STATE: UserStateType = {
+  currentUser: null,
+};
+```
+
+The function above takes two argument: the state (which we will define using `useReducer`), 
+and the second one is the action. The second one is an object that contains two properties: 
+- `type` which is a string. We defined it in an enum `USER_ACTION_TYPES`.
+- `payload` which is a new state that we'd like to update it too. 
+
+Ok great now let's use it in the component: 
+
+```
+  const [state, dispatch] = useReducer(userReducer, INITIAL_STATE);
+
+  const { currentUser } = state;
+```
+First off all we define the state and the `dispatch` function using `useReducer` and also we pass the initial value for the state. 
+We can also do the destructuring for the state, in the case above I'm destructuring `{currentUser}` . 
+
+Next let's define the `setCurrentUser` functino like this : 
+```
+  function setCurrentUser(user: User) {
+    dispatch({
+      type: USER_ACTION_TYPES.SET_CURRENT_USER,
+      payload: user,
+    });
+  }
+```
+
+As you can see, the above function, we set the type using enum and then we set the payload to be the new user. And that's it. Now we already using `useReducer` instead of `useState`. The benefit of using `useReducer` instead of using `useState` is the flexibility to update the state, particularly if the state is quite complex. 
+One thing to remember is that if we'd like to update several multiple states, that it's best to use Reducer.
+
+Here's the full code for it. 
+
+``` 
+export function UserProvider({ children }: UserProviderProps) {
+  // const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  const [state, dispatch] = useReducer(userReducer, INITIAL_STATE);
+
+  const { currentUser } = state;
+
+  console.log(currentUser);
+
+  function setCurrentUser(user: User) {
+    dispatch({
+      type: USER_ACTION_TYPES.SET_CURRENT_USER,
+      payload: user,
+    });
+  }
+
+  const value = {
+    currentUser,
+    setCurrentUser,
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener(async (user) => {
+      try {
+        if (user) {
+          const userExists = await userSnapshotExists(user);
+          if (userExists) {
+            setCurrentUser(user);
+          }
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      }
+    });
+    return unsubscribe;
+  }, []);
+
+  return (
+    <UserContext.Provider value={value} >{children}</UserContext.Provider>
+  );
+}
+```
+and here's also the use of `useReducer` in the `cart.context` 
+
+```
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useReducer,
+} from 'react';
+
+import { CategoriesContext } from './categories.context';
+
+import { findProductItem } from './cart.helper';
+
+export type CartType = {
+  toogleOpen: boolean,
+}
+
+const defaultCartValue: CartType = {
+  toogleOpen: false,
+};
+
+export type CartItemsType = {
+  id: number,
+  category: string,
+  quantity: number,
+}
+
+type CartProviderProps = {
+  children: ReactNode
+}
+
+type CartContextType = {
+  cart: CartType,
+  setCart: (bool: boolean) => void,
+  cartItems: CartItemsType[],
+  addCartItem: (idProduct: number, category: string) => void,
+  subtractCartItem: (idProduct: number) => void,
+  removeCartItem: (idProduct: number) => void,
+  countItems: number,
+  totalPrice: number,
+}
+
+export const CartContext = createContext<CartContextType>({
+  cart: defaultCartValue,
+  setCart: () => defaultCartValue,
+  cartItems: [],
+  addCartItem: () => {
+    //default implementation
+  },
+  subtractCartItem: () => {
+    //default implementation
+  },
+  removeCartItem: () => {
+    //default implementation
+  },
+  countItems: 0,
+  totalPrice: 0,
+});
+
+function generateAddCartItemArray(
+  idProductToAdd: number,
+  cartItems: CartItemsType[],
+  category: string,
+) {
+  const index = cartItems.findIndex(item => item ? item.id === idProductToAdd : false);
+
+  if (index === -1) {
+    return [
+      ...cartItems,
+      {
+        id: idProductToAdd,
+        quantity: 1,
+        category: category,
+      },
+    ];
+  }
+
+  const updatedCartItems = [...cartItems];
+  updatedCartItems[index] = {
+    ...updatedCartItems[index],
+    quantity: updatedCartItems[index].quantity + 1,
+  };
+
+  return updatedCartItems;
+}
+
+function generateSubtractCartItemArray(
+  idProductToSubtract: number,
+  cartItems: CartItemsType[],
+) {
+  const index = cartItems.findIndex(item => item ? item.id === idProductToSubtract : false);
+
+  if (index === -1 || cartItems[index].quantity <= 1) {
+    return cartItems;
+  }
+
+  const updatedCartItems = [...cartItems];
+  updatedCartItems[index] = {
+    ...updatedCartItems[index],
+    quantity: updatedCartItems[index].quantity - 1,
+  };
+
+  return updatedCartItems;
+}
+
+function generateRemoveCartItemArray(
+  idProductToRemove: number,
+  cartItems: CartItemsType[],
+) {
+  const updatedCartItems = cartItems.filter(item => item.id !== idProductToRemove);
+  return updatedCartItems;
+}
+
+type CartStateType = {
+  cart: CartType;
+  cartItems: CartItemsType[];
+  countItems: number;
+  totalPrice: number;
+}
+
+type CartStateTypeWithoutCartToogle = Omit<CartStateType, 'cart'>
+
+enum CART_ACTIONS_ENUM {
+  SET_CART_ITEMS = 'SET_CART_ITEMS',
+  SET_CART_TOOGLE = 'SET_CART_TOOGLE',
+}
+
+type CartActionTypeWithoutCartToogle = {
+  type: CART_ACTIONS_ENUM;
+  payload: CartStateTypeWithoutCartToogle,
+}
+
+type CartActionTypeWithCartToogleOnly = {
+  type: CART_ACTIONS_ENUM,
+  payload: boolean,
+}
+
+const INITIAL_CART_STATE: CartStateType = {
+  cart: { toogleOpen: false },
+  cartItems: [],
+  countItems: 0,
+  totalPrice: 0,
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isCartStateTypeWithoutCartToogle(variable: any): variable is CartStateTypeWithoutCartToogle {
+  return variable.cart === undefined;
+}
+
+type CartActionType =
+  | CartActionTypeWithoutCartToogle
+  | CartActionTypeWithCartToogleOnly;
+
+function cartReducer(
+  state: CartStateType,
+  action: CartActionType,
+): CartStateType {
+  const { type, payload } = action;
+
+  switch (type) {
+    case CART_ACTIONS_ENUM.SET_CART_ITEMS:
+      if (!isCartStateTypeWithoutCartToogle(payload)) {
+        throw new Error('payload is not of type CartStateTypeWithoutCartToogle');
+      }
+      return {
+        ...state,
+        ...payload,
+      };
+
+    case CART_ACTIONS_ENUM.SET_CART_TOOGLE:
+      if (typeof payload !== 'boolean') {
+        throw new Error('payload is not of type boolean');
+      }
+      return {
+        ...state,
+        cart: { toogleOpen: payload },
+      };
+
+    default:
+      throw new Error(`unhandled type of ${type} in cart reducer. (hya)`);
+  }
+}
+
+export function CartProvider({ children }: CartProviderProps) {
+  const { categories } = useContext(CategoriesContext);
+
+  const [state, dispatch] = useReducer(cartReducer, INITIAL_CART_STATE);
+
+  const {
+    cart,
+    cartItems,
+    countItems,
+    totalPrice,
+  } = state;
+
+
+  function updateCartItemReducer(newCartItems: CartItemsType[]) {
+    const newCountItems = generateNewCountItems(newCartItems);
+    const newTotalPrice = generateNewTotalPrice(newCartItems);
+
+    const payload: CartStateTypeWithoutCartToogle = {
+      cartItems: newCartItems,
+      countItems: newCountItems,
+      totalPrice: newTotalPrice,
+    };
+
+    dispatch({
+      type: CART_ACTIONS_ENUM.SET_CART_ITEMS,
+      payload,
+    });
+  }
+
+  function generateNewCountItems(newCartItems: CartItemsType[]) {
+    return newCartItems.reduce((acc, curr) => acc + curr.quantity, 0);
+  }
+
+  function generateNewTotalPrice(newCartItems: CartItemsType[]) {
+    return newCartItems.reduce((acc, curr) => {
+      const productItem = findProductItem(categories, curr);
+      if (!productItem) {
+        return 0;
+      }
+      return acc + (curr.quantity * productItem.price);
+    }, 0);
+  }
+
+  function setCart(bool: boolean) {
+    dispatch({
+      type: CART_ACTIONS_ENUM.SET_CART_TOOGLE,
+      payload: bool,
+    });
+  }
+
+  function addCartItem(idProduct: number, category: string) {
+    const newCartItems = generateAddCartItemArray(idProduct, cartItems, category);
+    updateCartItemReducer(newCartItems);
+  }
+
+  function subtractCartItem(idProduct: number) {
+    const newCartItems = generateSubtractCartItemArray(idProduct, cartItems);
+    updateCartItemReducer(newCartItems);
+  }
+
+  function removeCartItem(idProduct: number) {
+    const newCartItems = generateRemoveCartItemArray(idProduct, cartItems);
+    updateCartItemReducer(newCartItems);
+  }
+
+  const value = {
+    cart,
+    setCart,
+    cartItems,
+    addCartItem,
+    subtractCartItem,
+    removeCartItem,
+    countItems,
+    totalPrice,
+  };
+
+  return (
+    <CartContext.Provider value={value}>{children}</CartContext.Provider>
+  );
+}
+```
+
+It's quite long isn't it? But let me put it here as a code snippet. Next we're going to use `Redux` as a library. 
+
+
+
+## Redux
+`Redux` is a predictable state managment library for JavaScript applications. 'Predictable' means that the state changes in an application are handled in a consistent and explicit manner, following a set of defined principles and patterns. This predictablity helps make the application state easier to understand, reason about, and debug. 
+
+`Reducer` is a fundamental concept in Redux. In Redux, a Reducer is a pure function responsible for handling state changes. It takes the current state and an action as inputs, and returns a new state based on that action. Reducers are responsible for defining how the application state should be updated in response to different actions. They follow the principle of immutability, meaning they do not modify the existing state directly, but instead create a new state object with the desired changes. 
+
 
 # BackEnd
 I'm using [Firebase](https://firebase.google.com/) here for the backend.

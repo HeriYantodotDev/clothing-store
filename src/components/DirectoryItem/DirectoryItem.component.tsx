@@ -18,7 +18,7 @@ export function DirectoryItem({
   return (
     <DirectoryItemContainer data-testid='category'>
       <OpacityLayer />
-      <BackgroundImage $imageurl={imageUrl || ''} />
+      <BackgroundImage $imageurl={imageUrl || ''} data-testid='backgroundImage' />
       <DirectoryItemBody>
         <h2>{title}</h2>
         <LinkContainer to={`shop/${title}`}>

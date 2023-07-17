@@ -14,9 +14,7 @@ export function CartDropDown() {
   const { cartItems, setCart } = useContext(CartContext);
   const navigate = useNavigate();
   function goToCheckoutHandler() {
-    setCart({
-      toogleOpen: false,
-    });
+    setCart(false);
     navigate('/checkout');
   }
   return (

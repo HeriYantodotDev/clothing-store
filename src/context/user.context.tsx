@@ -1,10 +1,8 @@
 import {
   createContext,
-  useState,
-  Dispatch,
-  SetStateAction,
   ReactNode,
   useEffect,
+  useReducer,
 } from 'react';
 
 import { User } from 'firebase/auth';
@@ -17,7 +15,7 @@ import { userSnapshotExists } from '../services/firebase/db/users.db';
 
 type UserContextType = {
   currentUser: User | null;
-  setCurrentUser: Dispatch<SetStateAction<User | null>>;
+  setCurrentUser: (user: User) => void;
 }
 
 type UserProviderProps = {
@@ -29,8 +27,51 @@ export const UserContext = createContext<UserContextType>({
   setCurrentUser: () => null,
 });
 
+export enum USER_ACTION_TYPES {
+  SET_CURRENT_USER = 'SET_CURRENT_USER',
+}
+
+type UserStateType = {
+  currentUser: User | null;
+}
+
+type UserActionType = {
+  type: USER_ACTION_TYPES;
+  payload: User;
+}
+
+function userReducer(state: UserStateType, action: UserActionType): UserStateType {
+  const { type, payload } = action;
+
+  switch (type) {
+    case USER_ACTION_TYPES.SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: payload,
+      };
+
+    default:
+      throw new Error(`Unhandled type ${type} in userReducer`);
+  }
+}
+
+const INITIAL_STATE: UserStateType = {
+  currentUser: null,
+};
+
 export function UserProvider({ children }: UserProviderProps) {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  // const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  const [state, dispatch] = useReducer(userReducer, INITIAL_STATE);
+
+  const { currentUser } = state;
+
+  function setCurrentUser(user: User) {
+    dispatch({
+      type: USER_ACTION_TYPES.SET_CURRENT_USER,
+      payload: user,
+    });
+  }
 
   const value = {
     currentUser,

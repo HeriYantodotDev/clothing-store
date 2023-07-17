@@ -24,7 +24,7 @@ export function ProductCard({ product, category }: ProductCardProps) {
   }
 
   return (
-    <div className='product-card-container'>
+    <div className='product-card-container' >
       <img src={imageUrl} alt={name + price} />
       <div className='footer'>
         <span className='name'>{name}</span>
