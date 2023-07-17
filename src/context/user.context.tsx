@@ -60,8 +60,6 @@ const INITIAL_STATE: UserStateType = {
 };
 
 export function UserProvider({ children }: UserProviderProps) {
-  // const [currentUser, setCurrentUser] = useState<User | null>(null);
-
   const [state, dispatch] = useReducer(userReducer, INITIAL_STATE);
 
   const { currentUser } = state;
