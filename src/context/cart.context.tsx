@@ -1,11 +1,8 @@
 import {
   createContext,
-  useState,
-  Dispatch,
-  SetStateAction,
   ReactNode,
-  useEffect,
   useContext,
+  useReducer,
 } from 'react';
 
 import { CategoriesContext } from './categories.context';
@@ -32,7 +29,7 @@ type CartProviderProps = {
 
 type CartContextType = {
   cart: CartType,
-  setCart: Dispatch<SetStateAction<CartType>>,
+  setCart: (bool: boolean) => void,
   cartItems: CartItemsType[],
   addCartItem: (idProduct: number, category: string) => void,
   subtractCartItem: (idProduct: number) => void,
@@ -40,8 +37,6 @@ type CartContextType = {
   countItems: number,
   totalPrice: number,
 }
-
-
 
 export const CartContext = createContext<CartContextType>({
   cart: defaultCartValue,
@@ -97,7 +92,6 @@ function generateSubtractCartItemArray(
     return cartItems;
   }
 
-
   const updatedCartItems = [...cartItems];
   updatedCartItems[index] = {
     ...updatedCartItems[index],
@@ -115,46 +109,139 @@ function generateRemoveCartItemArray(
   return updatedCartItems;
 }
 
+type CartStateType = {
+  cart: CartType;
+  cartItems: CartItemsType[];
+  countItems: number;
+  totalPrice: number;
+}
 
+type CartStateTypeWithoutCartToogle = Omit<CartStateType, 'cart'>
+
+enum CART_ACTIONS_ENUM {
+  SET_CART_ITEMS = 'SET_CART_ITEMS',
+  SET_CART_TOOGLE = 'SET_CART_TOOGLE',
+}
+
+type CartActionTypeWithoutCartToogle = {
+  type: CART_ACTIONS_ENUM;
+  payload: CartStateTypeWithoutCartToogle,
+}
+
+type CartActionTypeWithCartToogleOnly = {
+  type: CART_ACTIONS_ENUM,
+  payload: boolean,
+}
+
+const INITIAL_CART_STATE: CartStateType = {
+  cart: { toogleOpen: false },
+  cartItems: [],
+  countItems: 0,
+  totalPrice: 0,
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isCartStateTypeWithoutCartToogle(variable: any): variable is CartStateTypeWithoutCartToogle {
+  return variable.cart === undefined;
+}
+
+type CartActionType =
+  | CartActionTypeWithoutCartToogle
+  | CartActionTypeWithCartToogleOnly;
+
+function cartReducer(
+  state: CartStateType,
+  action: CartActionType,
+): CartStateType {
+  const { type, payload } = action;
+
+  switch (type) {
+    case CART_ACTIONS_ENUM.SET_CART_ITEMS:
+      if (!isCartStateTypeWithoutCartToogle(payload)) {
+        throw new Error('payload is not of type CartStateTypeWithoutCartToogle');
+      }
+      return {
+        ...state,
+        ...payload,
+      };
+
+    case CART_ACTIONS_ENUM.SET_CART_TOOGLE:
+      if (typeof payload !== 'boolean') {
+        throw new Error('payload is not of type boolean');
+      }
+      return {
+        ...state,
+        cart: { toogleOpen: payload },
+      };
+
+    default:
+      throw new Error(`unhandled type of ${type} in cart reducer. (hya)`);
+  }
+}
 
 export function CartProvider({ children }: CartProviderProps) {
-  const [cart, setCart] = useState<CartType>(defaultCartValue);
-  const [cartItems, setCartItems] = useState<CartItemsType[]>([]);
-  const [countItems, setCountItems] = useState<number>(0);
-  const [totalPrice, settotalPrice] = useState<number>(0);
   const { categories } = useContext(CategoriesContext);
 
+  const [state, dispatch] = useReducer(cartReducer, INITIAL_CART_STATE);
 
-  useEffect(() => {
-    const newCartCount = cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
-    setCountItems(newCartCount);
-  }, [cartItems]);
+  const {
+    cart,
+    cartItems,
+    countItems,
+    totalPrice,
+  } = state;
 
-  useEffect(() => {
-    const newTotalPrice = cartItems.reduce((acc, curr) => {
-      // const category = categories?.find(item => item.title === curr.category);
-      // const productItem = category?.items.find(item => item.id == curr.id);
 
+  function updateCartItemReducer(newCartItems: CartItemsType[]) {
+    const newCountItems = generateNewCountItems(newCartItems);
+    const newTotalPrice = generateNewTotalPrice(newCartItems);
+
+    const payload: CartStateTypeWithoutCartToogle = {
+      cartItems: newCartItems,
+      countItems: newCountItems,
+      totalPrice: newTotalPrice,
+    };
+
+    dispatch({
+      type: CART_ACTIONS_ENUM.SET_CART_ITEMS,
+      payload,
+    });
+  }
+
+  function generateNewCountItems(newCartItems: CartItemsType[]) {
+    return newCartItems.reduce((acc, curr) => acc + curr.quantity, 0);
+  }
+
+  function generateNewTotalPrice(newCartItems: CartItemsType[]) {
+    return newCartItems.reduce((acc, curr) => {
       const productItem = findProductItem(categories, curr);
-
       if (!productItem) {
         return 0;
       }
       return acc + (curr.quantity * productItem.price);
     }, 0);
-    settotalPrice(newTotalPrice);
-  }, [cartItems, categories]);
+  }
+
+  function setCart(bool: boolean) {
+    dispatch({
+      type: CART_ACTIONS_ENUM.SET_CART_TOOGLE,
+      payload: bool,
+    });
+  }
 
   function addCartItem(idProduct: number, category: string) {
-    setCartItems(generateAddCartItemArray(idProduct, cartItems, category));
+    const newCartItems = generateAddCartItemArray(idProduct, cartItems, category);
+    updateCartItemReducer(newCartItems);
   }
 
   function subtractCartItem(idProduct: number) {
-    setCartItems(generateSubtractCartItemArray(idProduct, cartItems));
+    const newCartItems = generateSubtractCartItemArray(idProduct, cartItems);
+    updateCartItemReducer(newCartItems);
   }
 
   function removeCartItem(idProduct: number) {
-    setCartItems(generateRemoveCartItemArray(idProduct, cartItems));
+    const newCartItems = generateRemoveCartItemArray(idProduct, cartItems);
+    updateCartItemReducer(newCartItems);
   }
 
   const value = {

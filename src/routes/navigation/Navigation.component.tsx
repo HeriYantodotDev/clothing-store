@@ -49,10 +49,7 @@ export function Navigation({
   const { cart, setCart, countItems } = useContext(CartContext);
 
   function handleCartIconClick() {
-    setCart({
-      ...cart,
-      toogleOpen: !cart.toogleOpen,
-    });
+    setCart(!cart.toogleOpen);
   }
 
   return (
