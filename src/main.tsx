@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App.tsx';
-import { UserProvider } from './context/user.context.tsx';
-import { CategoriesProvider } from './context/categories.context.tsx';
-import { CartProvider } from './context/cart.context.tsx';
+import App from './App';
+import { UserProvider } from './context/user.context';
+import { CategoriesProvider } from './context/categories.context';
+import { CartProvider } from './context/cart.context';
 
 import './main.scss';
 
@@ -19,5 +19,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </CategoriesProvider>
       </UserProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
