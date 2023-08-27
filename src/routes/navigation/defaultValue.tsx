@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { NavigationItem } from '../../Types';
 
 export const defaultNavigationArray: NavigationItem[] = [

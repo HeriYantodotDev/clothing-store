@@ -1,10 +1,12 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import App from '../App';
-import { UserProvider } from '../context/user.context';
-
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import App from '../App';
+import { UserProvider } from '../context/user.context';
 
 import { ValidationErrorsEnum } from '../services/utils/Enum/ValidationErrors.enum';
 
@@ -42,14 +44,15 @@ asdfaasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd
 
 describe('Sign Up Form Validation', () => {
   test.each`
-  field                     | value                   | errorMessage
-  ${'displayName'}          | ${'sd'}                 | ${ValidationErrorsEnum.userSizeMin}
-  ${'displayName'}          | ${giberish}             | ${ValidationErrorsEnum.userSizeMax}
-  ${'displayName'}          | ${'jdf%^&*'}            | ${ValidationErrorsEnum.errorDisplayNameNull}
-  ${'password'}             | ${'asd'}                | ${ValidationErrorsEnum.errorPassword1}
-  ${'password'}             | ${'Ta@1'}               | ${ValidationErrorsEnum.errorPassword2}
-  ${'confirmPassword'}      | ${'Ta@1'}               | ${ValidationErrorsEnum.confirmPasswordNotMatch}
-  `('[Validation Errors]if $field is ="$value", $errorMessage is receieved',
+    field                | value        | errorMessage
+    ${'displayName'}     | ${'sd'}      | ${ValidationErrorsEnum.userSizeMin}
+    ${'displayName'}     | ${giberish}  | ${ValidationErrorsEnum.userSizeMax}
+    ${'displayName'}     | ${'jdf%^&*'} | ${ValidationErrorsEnum.errorDisplayNameNull}
+    ${'password'}        | ${'asd'}     | ${ValidationErrorsEnum.errorPassword1}
+    ${'password'}        | ${'Ta@1'}    | ${ValidationErrorsEnum.errorPassword2}
+    ${'confirmPassword'} | ${'Ta@1'}    | ${ValidationErrorsEnum.confirmPasswordNotMatch}
+  `(
+    '[Validation Errors]if $field is ="$value", $errorMessage is receieved',
     async ({ field, value, errorMessage }) => {
       const { user } = setup(<Main />);
 
@@ -72,8 +75,12 @@ describe('Sign Up Form Validation', () => {
 
       await user.click(submitButton);
 
-      const errorInputComponent = within(signUpContainer).getByTestId(field + 'Group');
-      const errorMessageElement = within(errorInputComponent).getByText(errorMessage);
+      const errorInputComponent = within(signUpContainer).getByTestId(
+        `${field}Group`
+      );
+      const errorMessageElement =
+        within(errorInputComponent).getByText(errorMessage);
       expect(errorMessageElement).toBeInTheDocument();
-    });
+    }
+  );
 });

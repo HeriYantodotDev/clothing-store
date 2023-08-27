@@ -1,7 +1,4 @@
-import {
-  FormFieldsSignIn,
-  ErrorMessageAuth,
-} from '../../Types';
+import { FormFieldsSignIn, ErrorMessageAuth } from '../../Types';
 
 export const defaultFormField: FormFieldsSignIn = {
   email: '',

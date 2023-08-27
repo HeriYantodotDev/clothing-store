@@ -7,18 +7,15 @@ import {
 } from 'firebase/firestore';
 
 import { db } from '../firebase.config';
-import { 
-  ShopData,
-} from '../../../__seedData__/shopData';
+import { ShopData } from '../../../__seedData__/shopData.ts';
 
 const COLLECTION_KEY = 'categories';
 
 // Use this for seeding the database
 export async function addCollectionAndDocumentsForCategories(
-  collectionKey: string, 
-  objectsToAdd: ShopData[],
+  collectionKey: string,
+  objectsToAdd: ShopData[]
 ): Promise<void> {
-  
   const collectionRef = collection(db, collectionKey);
 
   const batch = writeBatch(db);
@@ -33,24 +30,18 @@ export async function addCollectionAndDocumentsForCategories(
   console.log('seeding data is done');
 }
 
-export async function getCategoriesAndDocuments(): Promise<ShopData[]>  {
+export async function getCategoriesAndDocuments(): Promise<ShopData[]> {
   const collectionRef = collection(db, COLLECTION_KEY);
   const q = query(collectionRef);
-  
+
   const querySnapshot = await getDocs(q);
 
   const docSnapshots = querySnapshot.docs;
 
   const categoryMap: ShopData[] = docSnapshots.map((docSnapshot) => {
     return docSnapshot.data() as ShopData;
-    // Please adjust the data accordingly if there's a changing structure. 
+    // Please adjust the data accordingly if there's a changing structure.
   });
 
   return categoryMap;
 }
-
-
-
-
-
-

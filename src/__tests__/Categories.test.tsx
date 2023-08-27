@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { DirectoryItem } from '../components/DirectoryItem/DirectoryItem.component';
-import { Directory } from '../components/Directory/Directory.component';
+import DirectoryItem from '../components/DirectoryItem/DirectoryItem.component';
+import Directory from '../components/Directory/Directory.component';
 
 import {
   defaultCTA,
@@ -17,14 +17,13 @@ const categoryListCustom = [
 const ctaCustom = 'Shop Now';
 
 describe('Directory Item Component', () => {
-  const title = categoryListCustom[0].title;
-  const imageUrl = categoryListCustom[0].imageUrl;
+  const { title, imageUrl } = categoryListCustom[0];
 
   beforeEach(() => {
     render(
       <MemoryRouter>
         <DirectoryItem title={title} cta={ctaCustom} imageUrl={imageUrl} />
-      </MemoryRouter>,
+      </MemoryRouter>
     );
   });
 
@@ -38,7 +37,7 @@ describe('Directory Item Component', () => {
     expect(craElement).toBeInTheDocument();
   });
 
-  //Find out how to be able to test background Image? So Far I can only test if the class is not null
+  // Find out how to be able to test background Image? So Far I can only test if the class is not null
 
   // test.only('renders the imageUrl', () => {
   //   const imageElement = screen.getByTestId('backgroundImage');
@@ -46,13 +45,12 @@ describe('Directory Item Component', () => {
   // });
 });
 
-
 describe('Categories Component With Argument', () => {
   beforeEach(() => {
     render(
       <MemoryRouter>
         <Directory categoryList={categoryListCustom} cta={ctaCustom} />
-      </MemoryRouter>,
+      </MemoryRouter>
     );
   });
 
@@ -76,7 +74,6 @@ describe('Categories Component With Argument', () => {
   //     expect(backgroundImage).toHaveStyle(`backgroundImage: url(${categoryListCustom[index].imageUrl})`);
   //   });
   // });
-
 });
 
 describe('Categories Component Without Argument', () => {
@@ -84,7 +81,7 @@ describe('Categories Component Without Argument', () => {
     render(
       <MemoryRouter>
         <Directory />
-      </MemoryRouter>,
+      </MemoryRouter>
     );
   });
 
@@ -109,6 +106,4 @@ describe('Categories Component Without Argument', () => {
   //     expect(backgroundImage).toHaveStyle(`backgroundImage: url(${defaultCategories[index].imageUrl})`);
   //   });
   // });
-
 });
-

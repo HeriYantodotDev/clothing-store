@@ -2,11 +2,11 @@ import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Home from './routes/home/Home.component';
 import { NavigationItem } from './Types';
-import { Authentication } from './routes/authentication/Authentication.component';
-import { Navigation } from './routes/navigation/Navigation.component';
-import { Footer } from './components/Footer/Footer.component';
-import { Shop } from './routes/shop/Shop.component';
-import { Checkout } from './routes/checkout/Checkout.component';
+import Authentication from './routes/authentication/Authentication.component';
+import Navigation from './routes/navigation/Navigation.component';
+import Footer from './components/Footer/Footer.component';
+import Shop from './routes/shop/Shop.component';
+import Checkout from './routes/checkout/Checkout.component';
 
 import 'react-toastify/dist/ReactToastify.css';
 

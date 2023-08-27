@@ -1,26 +1,21 @@
-import {
-  createContext,
-  ReactNode,
-  useEffect,
-  useReducer,
-} from 'react';
+/* eslint-disable react/jsx-no-constructed-context-values */
+/* eslint-disable @typescript-eslint/naming-convention */
+import { createContext, ReactNode, useEffect, useReducer } from 'react';
 
 import { User } from 'firebase/auth';
 
-import {
-  onAuthStateChangedListener,
-} from '../services/firebase/firebase.auth';
+import { onAuthStateChangedListener } from '../services/firebase/firebase.auth';
 
 import { userSnapshotExists } from '../services/firebase/db/users.db';
 
 type UserContextType = {
   currentUser: User | null;
   setCurrentUser: (user: User) => void;
-}
+};
 
 type UserProviderProps = {
   children: ReactNode;
-}
+};
 
 export const UserContext = createContext<UserContextType>({
   currentUser: null,
@@ -33,14 +28,17 @@ export enum USER_ACTION_TYPES {
 
 type UserStateType = {
   currentUser: User | null;
-}
+};
 
 type UserActionType = {
   type: USER_ACTION_TYPES;
   payload: User;
-}
+};
 
-function userReducer(state: UserStateType, action: UserActionType): UserStateType {
+function userReducer(
+  state: UserStateType,
+  action: UserActionType
+): UserStateType {
   const { type, payload } = action;
 
   switch (type) {
@@ -93,7 +91,5 @@ export function UserProvider({ children }: UserProviderProps) {
     return unsubscribe;
   }, []);
 
-  return (
-    <UserContext.Provider value={value} >{children}</UserContext.Provider>
-  );
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }

@@ -1,21 +1,19 @@
-import { useContext, Fragment } from 'react';
+import { useContext } from 'react';
 import { CategoriesContext } from '../../context/categories.context';
 
-import { CategoryPreview } from '../../components/CategoryPreview/CategoryPreview.component';
+import CategoryPreview from '../../components/CategoryPreview/CategoryPreview.component';
 
-export function CategoriesPreview() {
+export default function CategoriesPreview() {
   const { categories } = useContext(CategoriesContext);
   if (!categories) {
-    return;
+    return null;
   }
 
   return (
-    <Fragment>
-      {
-        categories.map((category) => (
-          <CategoryPreview key={category.title + '1'} category={category} />
-        ))
-      }
-    </Fragment>
+    <>
+      {categories.map((category) => (
+        <CategoryPreview key={`${category.title}1`} category={category} />
+      ))}
+    </>
   );
 }

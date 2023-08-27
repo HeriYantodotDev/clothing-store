@@ -1,9 +1,11 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable react/function-component-definition */
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Route, MemoryRouter, Routes } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { Route, MemoryRouter, Routes, BrowserRouter } from 'react-router-dom';
 
-import { Navigation, NavLink } from '../routes/navigation/Navigation.component';
+import Navigation, { NavLink } from '../routes/navigation/Navigation.component';
 import { defaultNavigationArray } from '../routes/navigation/defaultValue';
 
 import { NavigationProps, NavigationItem } from '../Types';
@@ -61,7 +63,8 @@ describe('Navigation & NavLink Component', () => {
         <NavLinkTest
           path={defaultNavigationArray[0].path}
           label={defaultNavigationArray[0].label}
-        />);
+        />
+      );
 
       const navLinkElement = screen.getByTestId('navlink');
       expect(navLinkElement).toBeInTheDocument();
@@ -72,7 +75,8 @@ describe('Navigation & NavLink Component', () => {
         <NavLinkTest
           path={defaultNavigationArray[0].path}
           label={defaultNavigationArray[0].label}
-        />);
+        />
+      );
 
       const labelElement = screen.getByText(defaultNavigationArray[0].label);
       expect(labelElement).toBeInTheDocument();
@@ -83,11 +87,13 @@ describe('Navigation & NavLink Component', () => {
         <NavLinkTest
           path={defaultNavigationArray[0].path}
           label={defaultNavigationArray[0].label}
-        />,
+        />
       );
 
       await user.click(screen.getByText(defaultNavigationArray[0].label));
-      expect(window.location.pathname).toBe(`/${defaultNavigationArray[0].path}`);
+      expect(window.location.pathname).toBe(
+        `/${defaultNavigationArray[0].path}`
+      );
     });
   });
 
@@ -105,7 +111,9 @@ describe('Navigation & NavLink Component', () => {
 
       for (const [index, nav] of navigationElement.entries()) {
         await user.click(nav.children[0]);
-        expect(window.location.pathname).toBe(`/${defaultNavigationArray[index].path}`);
+        expect(window.location.pathname).toBe(
+          `/${defaultNavigationArray[index].path}`
+        );
       }
     });
   });
@@ -118,44 +126,47 @@ describe('Navigation & NavLink Component', () => {
     });
 
     test('renders the correct label & redirects to the correct path for all NavLink component', async () => {
-      const { user } = setup(<NavigationTest navigationArray={customNavigationArray} />);
+      const { user } = setup(
+        <NavigationTest navigationArray={customNavigationArray} />
+      );
       const navGroup = screen.getByTestId('navGroup');
       const navigationElement = within(navGroup).getAllByTestId('navlink');
 
       for (const [index, nav] of navigationElement.entries()) {
         await user.click(nav.children[0]);
-        expect(window.location.pathname).toBe(`/${customNavigationArray[index].path}`);
+        expect(window.location.pathname).toBe(
+          `/${customNavigationArray[index].path}`
+        );
       }
     });
   });
 });
 
-
 /* To do: OutLet
-*  Test that the correct navigation links are being rendered based on the navigationArray prop.
-*/
+ *  Test that the correct navigation links are being rendered based on the navigationArray prop.
+ */
 
 describe('Navigation & Outlet', () => {
   const Home = () => {
     return (
-      <div data-testid='home'>
-        <h1>I'm a home page</h1>
+      <div data-testid="home">
+        <h1>I&apos;m a home page</h1>
       </div>
     );
   };
 
   const Shop = () => {
     return (
-      <div data-testid='shop'>
-        <h1>I'm a shop page</h1>
+      <div data-testid="shop">
+        <h1>I&apos;m a shop page</h1>
       </div>
     );
   };
 
   const Contact = () => {
     return (
-      <div data-testid='contact'>
-        <h1>I'm a contact page</h1>
+      <div data-testid="contact">
+        <h1>I&apos;m a contact page</h1>
       </div>
     );
   };
@@ -164,14 +175,13 @@ describe('Navigation & Outlet', () => {
     return (
       <MemoryRouter initialEntries={['/']}>
         <Routes>
-          <Route path='/' element={<Navigation />} >
+          <Route path="/" element={<Navigation />}>
             <Route index element={<Home />} />
-            <Route path='shop' element={<Shop />} />
-            <Route path='contact' element={<Contact />} />
+            <Route path="shop" element={<Shop />} />
+            <Route path="contact" element={<Contact />} />
           </Route>
         </Routes>
       </MemoryRouter>
-
     );
   };
 
@@ -191,10 +201,11 @@ describe('Navigation & Outlet', () => {
 
     for (const [index, nav] of navigationElement.entries()) {
       await user.click(nav.children[0]);
-      //the data-testid is the same with the path for the default
-      const outletElement = screen.getByTestId(defaultNavigationArray[index].path);
+      // the data-testid is the same with the path for the default
+      const outletElement = screen.getByTestId(
+        defaultNavigationArray[index].path
+      );
       expect(outletElement).toBeInTheDocument();
     }
   });
 });
-

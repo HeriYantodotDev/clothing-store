@@ -1,10 +1,12 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import App from '../App';
-import { UserProvider } from '../context/user.context';
-
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import App from '../App';
+import { UserProvider } from '../context/user.context';
 
 import { ValidationErrorsEnum } from '../services/utils/Enum/ValidationErrors.enum';
 
@@ -36,9 +38,10 @@ function Main() {
 
 describe('Sign In Form Validation', () => {
   test.each`
-    field                     | value                   | errorMessage
-    ${'password'}             | ${'sd'}                 | ${ValidationErrorsEnum.errorPassword2}
-  `('[Validation Errors] if $field is ="$value", $errorMessage is receieved',
+    field         | value   | errorMessage
+    ${'password'} | ${'sd'} | ${ValidationErrorsEnum.errorPassword2}
+  `(
+    '[Validation Errors] if $field is ="$value", $errorMessage is receieved',
     async ({ field, value, errorMessage }) => {
       const { user } = setup(<Main />);
 
@@ -61,9 +64,12 @@ describe('Sign In Form Validation', () => {
 
       await user.click(submitButton);
 
-      const errorInputComponent = within(signInContainer).getByTestId(field + 'Group');
-      const errorMessageElement = within(errorInputComponent).getByText(errorMessage);
+      const errorInputComponent = within(signInContainer).getByTestId(
+        `${field}Group`
+      );
+      const errorMessageElement =
+        within(errorInputComponent).getByText(errorMessage);
       expect(errorMessageElement).toBeInTheDocument();
-
-    });
+    }
+  );
 });

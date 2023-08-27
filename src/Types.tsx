@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { CartItemsType } from './context/cart.context';
 
-import { ItemShopData, ShopData } from './__seedData__/shopData';
+import { ItemShopData, ShopData } from './__seedData__/shopData.ts';
+
 export type CategoriesProps = {
   categoryList?: CategoryArray[];
   cta?: string;
@@ -12,7 +13,7 @@ export type CategoryItemProps = {
   title: string;
   cta: string;
   imageUrl?: string;
-}
+};
 
 export type CategoryArray = {
   id: number;
@@ -24,18 +25,18 @@ export type NavigationItem = {
   path: string;
   label: string;
   onClick?: () => void;
-}
+};
 
 export type NavigationProps = {
   navigationArray?: NavigationItem[];
-}
+};
 
 export interface FormFieldsSignUp {
   displayName: string;
   email: string;
   password: string;
   confirmPassword: string;
-  [key: string]: string
+  [key: string]: string;
 }
 
 export interface ErrorMessageSignUp {
@@ -57,20 +58,18 @@ export interface ErrorMessageAuth {
   password: string | null;
 }
 
-export interface FormInput {
+export interface FormInputTypes {
   label: string;
   errorMessage: string | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
-
-
 export interface ButtonType {
-  google: string,
-  inverted: string,
-  default: string,
-  [key: string]: string,
+  google: string;
+  inverted: string;
+  default: string;
+  [key: string]: string;
 }
 
 export const BUTTON_TYPE_CLASSES: ButtonType = {
@@ -95,7 +94,7 @@ export interface ProductCardProps {
 export type CartIconProps = {
   onClick?: () => void;
   countItems: number;
-}
+};
 
 export interface CartItemsProps {
   cartItems: CartItemsType;
@@ -108,9 +107,6 @@ export interface CheckoutItemProps {
   category: string;
 }
 
-
 export interface CategoryPreviewProps {
-  category: ShopData
+  category: ShopData;
 }
-
-
