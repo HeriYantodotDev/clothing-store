@@ -9,14 +9,13 @@ import {
   onAuthStateChanged,
   NextOrObserver,
   User,
-  
 } from 'firebase/auth';
 
 import { userSnapshotExists } from './db/users.db';
 
 import { firebaseApp } from './firebase.config';
 
-import { 
+import {
   ErrorEmailInUse,
   ErrorInvalidCredential,
 } from '../utils/Errors/ErrorClass';
@@ -31,13 +30,13 @@ export const auth = getAuth(firebaseApp);
 
 export async function signInWithGooglePopOut() {
   const userCredential = await signInWithPopup(auth, googleProvider);
-  const userExists = await (userSnapshotExists(userCredential.user));
+  const userExists = await userSnapshotExists(userCredential.user);
   if (!userExists) {
     throw new ErrorInvalidCredential();
   }
 
   return userCredential;
-} 
+}
 
 export async function signUpWithGooglePopOut() {
   const userCredential = await signInWithPopup(auth, googleProvider);
@@ -46,22 +45,40 @@ export async function signUpWithGooglePopOut() {
     throw new ErrorEmailInUse();
   }
   return userCredential;
-} 
+}
 
 export function signInWithGoogleRedirect() {
   return signInWithRedirect(auth, googleProvider);
 }
 
-export async function createAuthUserWithEmailAndPassword(email: string, password: string) {
-  if (!email || !password) return;
+export async function createAuthUserWithEmailAndPassword(
+  email: string,
+  password: string
+) {
+  if (!email || !password) return null;
 
-  return await createUserWithEmailAndPassword(auth, email, password);
+  const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+
+  return userCredential;
 }
 
-export async function signInAuthUserWithEmailAndPassword(email: string, password: string) {
-  if (!email || !password) return;
+export async function signInAuthUserWithEmailAndPassword(
+  email: string,
+  password: string
+) {
+  if (!email || !password) return null;
 
-  return await signInWithEmailAndPassword(auth, email, password);
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+
+  return userCredential;
 }
 
 export async function signOutUser() {
@@ -70,5 +87,5 @@ export async function signOutUser() {
 }
 
 export function onAuthStateChangedListener(callback: NextOrObserver<User>) {
-  return onAuthStateChanged(auth, callback );
+  return onAuthStateChanged(auth, callback);
 }

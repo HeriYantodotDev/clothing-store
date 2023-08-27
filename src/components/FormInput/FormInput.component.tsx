@@ -1,36 +1,22 @@
-import { FormInput } from '../../Types';
+/* eslint-disable react/jsx-props-no-spreading */
+import { FormInputTypes } from '../../Types';
 
-import {
-  FormInputLabel,
-  Input,
-  Group,
-  ErrorMessage,
-} from './FormInput.styles';
+import { FormInputLabel, Input, Group, ErrorMessage } from './FormInput.styles';
 
-export function FormInput({
+export default function FormInput({
   label,
   errorMessage,
   ...otherProps
-}: FormInput) {
+}: FormInputTypes) {
   return (
-    <Group data-testid={otherProps['data-testid'] + 'Group'} >
+    <Group data-testid={`${otherProps['data-testid']}Group`}>
       <Input {...otherProps} />
-      {
-        label && (
-          <FormInputLabel $shrink={otherProps.value.length}>
-            {label}
-          </FormInputLabel>
-        )
-      }
-      {
-        errorMessage && (
-          <ErrorMessage>
-            {errorMessage}
-          </ErrorMessage>
-        )
-      }
-
+      {label && (
+        <FormInputLabel $shrink={otherProps.value.length}>
+          {label}
+        </FormInputLabel>
+      )}
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </Group>
-
   );
-} 
+}

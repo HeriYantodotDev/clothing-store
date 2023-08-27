@@ -1,55 +1,51 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useReducer,
-} from 'react';
+/* eslint-disable @typescript-eslint/naming-convention */
+import { createContext, ReactNode, useContext, useReducer } from 'react';
 
 import { CategoriesContext } from './categories.context';
 
 import { findProductItem } from './cart.helper';
 
 export type CartType = {
-  toogleOpen: boolean,
-}
+  toogleOpen: boolean;
+};
 
 const defaultCartValue: CartType = {
   toogleOpen: false,
 };
 
 export type CartItemsType = {
-  id: number,
-  category: string,
-  quantity: number,
-}
+  id: number;
+  category: string;
+  quantity: number;
+};
 
 type CartProviderProps = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 type CartContextType = {
-  cart: CartType,
-  setCart: (bool: boolean) => void,
-  cartItems: CartItemsType[],
-  addCartItem: (idProduct: number, category: string) => void,
-  subtractCartItem: (idProduct: number) => void,
-  removeCartItem: (idProduct: number) => void,
-  countItems: number,
-  totalPrice: number,
-}
+  cart: CartType;
+  setCart: (bool: boolean) => void;
+  cartItems: CartItemsType[];
+  addCartItem: (idProduct: number, category: string) => void;
+  subtractCartItem: (idProduct: number) => void;
+  removeCartItem: (idProduct: number) => void;
+  countItems: number;
+  totalPrice: number;
+};
 
 export const CartContext = createContext<CartContextType>({
   cart: defaultCartValue,
   setCart: () => defaultCartValue,
   cartItems: [],
   addCartItem: () => {
-    //default implementation
+    // default implementation
   },
   subtractCartItem: () => {
-    //default implementation
+    // default implementation
   },
   removeCartItem: () => {
-    //default implementation
+    // default implementation
   },
   countItems: 0,
   totalPrice: 0,
@@ -58,9 +54,11 @@ export const CartContext = createContext<CartContextType>({
 function generateAddCartItemArray(
   idProductToAdd: number,
   cartItems: CartItemsType[],
-  category: string,
+  category: string
 ) {
-  const index = cartItems.findIndex(item => item ? item.id === idProductToAdd : false);
+  const index = cartItems.findIndex((item) =>
+    item ? item.id === idProductToAdd : false
+  );
 
   if (index === -1) {
     return [
@@ -68,7 +66,7 @@ function generateAddCartItemArray(
       {
         id: idProductToAdd,
         quantity: 1,
-        category: category,
+        category,
       },
     ];
   }
@@ -84,9 +82,11 @@ function generateAddCartItemArray(
 
 function generateSubtractCartItemArray(
   idProductToSubtract: number,
-  cartItems: CartItemsType[],
+  cartItems: CartItemsType[]
 ) {
-  const index = cartItems.findIndex(item => item ? item.id === idProductToSubtract : false);
+  const index = cartItems.findIndex((item) =>
+    item ? item.id === idProductToSubtract : false
+  );
 
   if (index === -1 || cartItems[index].quantity <= 1) {
     return cartItems;
@@ -103,9 +103,11 @@ function generateSubtractCartItemArray(
 
 function generateRemoveCartItemArray(
   idProductToRemove: number,
-  cartItems: CartItemsType[],
+  cartItems: CartItemsType[]
 ) {
-  const updatedCartItems = cartItems.filter(item => item.id !== idProductToRemove);
+  const updatedCartItems = cartItems.filter(
+    (item) => item.id !== idProductToRemove
+  );
   return updatedCartItems;
 }
 
@@ -114,9 +116,9 @@ type CartStateType = {
   cartItems: CartItemsType[];
   countItems: number;
   totalPrice: number;
-}
+};
 
-type CartStateTypeWithoutCartToogle = Omit<CartStateType, 'cart'>
+type CartStateTypeWithoutCartToogle = Omit<CartStateType, 'cart'>;
 
 enum CART_ACTIONS_ENUM {
   SET_CART_ITEMS = 'SET_CART_ITEMS',
@@ -125,13 +127,13 @@ enum CART_ACTIONS_ENUM {
 
 type CartActionTypeWithoutCartToogle = {
   type: CART_ACTIONS_ENUM;
-  payload: CartStateTypeWithoutCartToogle,
-}
+  payload: CartStateTypeWithoutCartToogle;
+};
 
 type CartActionTypeWithCartToogleOnly = {
-  type: CART_ACTIONS_ENUM,
-  payload: boolean,
-}
+  type: CART_ACTIONS_ENUM;
+  payload: boolean;
+};
 
 const INITIAL_CART_STATE: CartStateType = {
   cart: { toogleOpen: false },
@@ -140,8 +142,10 @@ const INITIAL_CART_STATE: CartStateType = {
   totalPrice: 0,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isCartStateTypeWithoutCartToogle(variable: any): variable is CartStateTypeWithoutCartToogle {
+function isCartStateTypeWithoutCartToogle(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  variable: any
+): variable is CartStateTypeWithoutCartToogle {
   return variable.cart === undefined;
 }
 
@@ -151,14 +155,16 @@ type CartActionType =
 
 function cartReducer(
   state: CartStateType,
-  action: CartActionType,
+  action: CartActionType
 ): CartStateType {
   const { type, payload } = action;
 
   switch (type) {
     case CART_ACTIONS_ENUM.SET_CART_ITEMS:
       if (!isCartStateTypeWithoutCartToogle(payload)) {
-        throw new Error('payload is not of type CartStateTypeWithoutCartToogle');
+        throw new Error(
+          'payload is not of type CartStateTypeWithoutCartToogle'
+        );
       }
       return {
         ...state,
@@ -184,13 +190,21 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const [state, dispatch] = useReducer(cartReducer, INITIAL_CART_STATE);
 
-  const {
-    cart,
-    cartItems,
-    countItems,
-    totalPrice,
-  } = state;
+  const { cart, cartItems, countItems, totalPrice } = state;
 
+  function generateNewCountItems(newCartItems: CartItemsType[]) {
+    return newCartItems.reduce((acc, curr) => acc + curr.quantity, 0);
+  }
+
+  function generateNewTotalPrice(newCartItems: CartItemsType[]) {
+    return newCartItems.reduce((acc, curr) => {
+      const productItem = findProductItem(categories, curr);
+      if (!productItem) {
+        return 0;
+      }
+      return acc + curr.quantity * productItem.price;
+    }, 0);
+  }
 
   function updateCartItemReducer(newCartItems: CartItemsType[]) {
     const newCountItems = generateNewCountItems(newCartItems);
@@ -208,20 +222,6 @@ export function CartProvider({ children }: CartProviderProps) {
     });
   }
 
-  function generateNewCountItems(newCartItems: CartItemsType[]) {
-    return newCartItems.reduce((acc, curr) => acc + curr.quantity, 0);
-  }
-
-  function generateNewTotalPrice(newCartItems: CartItemsType[]) {
-    return newCartItems.reduce((acc, curr) => {
-      const productItem = findProductItem(categories, curr);
-      if (!productItem) {
-        return 0;
-      }
-      return acc + (curr.quantity * productItem.price);
-    }, 0);
-  }
-
   function setCart(bool: boolean) {
     dispatch({
       type: CART_ACTIONS_ENUM.SET_CART_TOOGLE,
@@ -230,7 +230,11 @@ export function CartProvider({ children }: CartProviderProps) {
   }
 
   function addCartItem(idProduct: number, category: string) {
-    const newCartItems = generateAddCartItemArray(idProduct, cartItems, category);
+    const newCartItems = generateAddCartItemArray(
+      idProduct,
+      cartItems,
+      category
+    );
     updateCartItemReducer(newCartItems);
   }
 
@@ -244,6 +248,7 @@ export function CartProvider({ children }: CartProviderProps) {
     updateCartItemReducer(newCartItems);
   }
 
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
   const value = {
     cart,
     setCart,
@@ -255,8 +260,5 @@ export function CartProvider({ children }: CartProviderProps) {
     totalPrice,
   };
 
-  return (
-    <CartContext.Provider value={value}>{children}</CartContext.Provider>
-  );
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
-

@@ -1,5 +1,4 @@
-import { ButtonProps } from '../../Types';
-import { BUTTON_TYPE_CLASSES } from '../../Types';
+import { ButtonProps, BUTTON_TYPE_CLASSES } from '../../Types';
 import {
   BaseButton,
   GoogleSignInButton,
@@ -18,20 +17,17 @@ function getButton(buttonType: string = BUTTON_TYPE_CLASSES.default) {
   return BaseButton;
 }
 
-export function Button({
+export default function Button({
   children,
   buttonType,
   onclick,
   ...otherProps
-}: ButtonProps,
-) {
-
+}: ButtonProps) {
   const CustomButton = getButton(buttonType) || BaseButton;
 
   return (
-    <CustomButton
-      onClick={onclick}
-      {...otherProps} >
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <CustomButton onClick={onclick} {...otherProps}>
       {children}
     </CustomButton>
   );

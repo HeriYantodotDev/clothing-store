@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-
-
 interface BackgroundImageProps {
   $imageurl: string;
 }
@@ -12,7 +10,7 @@ export const BackgroundImage = styled.div<BackgroundImageProps>`
   height: 100%;
   background-size: cover;
   background-position: center;
-  background-image: ${({ $imageurl}) => `url(${ $imageurl})`}
+  background-image: ${({ $imageurl }) => `url(${$imageurl})`};
 `;
 
 export const DirectoryItemBody = styled.div`
@@ -33,7 +31,7 @@ export const DirectoryItemBody = styled.div`
     font-size: 22px;
     color: #4a4a4a;
   }
-    
+
   p {
     font-weight: lighter;
     font-size: 16px;
@@ -64,7 +62,7 @@ export const DirectoryItemContainer = styled.div`
   margin: 0 7.5px 15px;
   overflow: hidden;
   position: relative;
-  
+
   &:hover {
     cursor: pointer;
 

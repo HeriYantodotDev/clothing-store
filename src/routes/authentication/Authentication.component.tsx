@@ -1,10 +1,10 @@
-import { SignIn } from '../../components/SignIn/SignIn.component';
-import { SignUp } from '../../components/SignUp/SignUp.component';
-import './Authenticaiton.styles.scss';
+import SignIn from '../../components/SignIn/SignIn.component';
+import SignUp from '../../components/SignUp/SignUp.component';
+import './Authentication.styles.scss';
 
-export function Authentication() {
+export default function Authentication() {
   return (
-    <div className='authentication-container'>
+    <div className="authentication-container">
       <SignIn />
       <SignUp />
     </div>

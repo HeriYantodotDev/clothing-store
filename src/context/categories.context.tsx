@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import {
   createContext,
   useState,
@@ -9,18 +10,18 @@ import {
 
 import { getCategoriesAndDocuments } from '../services/firebase/db/categories.db';
 
-import { ShopData } from '../__seedData__/shopData';
+import { ShopData } from '../__seedData__/shopData.ts';
 
 export type CategoriesType = ShopData;
 
 type CategoriesContextType = {
-  categories: CategoriesType[] | null,
-  setCategories: Dispatch<SetStateAction<CategoriesType[] | null>>
-}
+  categories: CategoriesType[] | null;
+  setCategories: Dispatch<SetStateAction<CategoriesType[] | null>>;
+};
 
 type CategoriesProviderProps = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 export const CategoriesContext = createContext<CategoriesContextType>({
   categories: null,
@@ -45,7 +46,8 @@ export function CategoriesProvider({ children }: CategoriesProviderProps) {
   };
 
   return (
-    <CategoriesContext.Provider value={value}>{children}</CategoriesContext.Provider>
+    <CategoriesContext.Provider value={value}>
+      {children}
+    </CategoriesContext.Provider>
   );
-
 }

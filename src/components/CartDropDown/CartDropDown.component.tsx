@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-no-bind */
 import { useContext } from 'react';
-import { Button } from '../Button/Button.component';
-import { CartItem } from '../CartItem/CartItem.component';
-import { CartContext } from '../../context/cart.context';
 import { useNavigate } from 'react-router-dom';
+import Button from '../Button/Button.component';
+import CartItem from '../CartItem/CartItem.component';
+import { CartContext } from '../../context/cart.context';
 
 import {
   CartDropdownContainer,
@@ -10,7 +11,7 @@ import {
   CartItems,
 } from './CartDropDown.styles';
 
-export function CartDropDown() {
+export default function CartDropDown() {
   const { cartItems, setCart } = useContext(CartContext);
   const navigate = useNavigate();
   function goToCheckoutHandler() {
@@ -20,15 +21,15 @@ export function CartDropDown() {
   return (
     <CartDropdownContainer>
       <CartItems>
-        {
-          cartItems.length ? (
-            cartItems.map(item => <CartItem key={item.id} cartItems={item} />)
-          ) : (
-            <EmptyMessage>Your cart is empty</EmptyMessage>
-          )
-        }
+        {cartItems.length ? (
+          cartItems.map((item) => <CartItem key={item.id} cartItems={item} />)
+        ) : (
+          <EmptyMessage>Your cart is empty</EmptyMessage>
+        )}
       </CartItems>
-      <Button onClick={goToCheckoutHandler} buttonType={'default'}>GO TO CHECKOUT</Button>
+      <Button onClick={goToCheckoutHandler} buttonType="default">
+        GO TO CHECKOUT
+      </Button>
     </CartDropdownContainer>
   );
 }

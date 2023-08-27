@@ -1,14 +1,14 @@
 import { useContext } from 'react';
-import { CheckoutItem } from '../../components/CheckoutItem/CheckoutItem.component';
+import CheckoutItem from '../../components/CheckoutItem/CheckoutItem.component';
 import { CartContext } from '../../context/cart.context';
 
 import './Checkout.styles.scss';
 
-export function Checkout() {
+export default function Checkout() {
   const { cartItems, totalPrice } = useContext(CartContext);
   return (
-    <div className='container' >
-      <div className='table-responsive'>
+    <div className="container">
+      <div className="table-responsive">
         <table className="table table-striped-columns text-center">
           <thead>
             <tr>
@@ -21,22 +21,18 @@ export function Checkout() {
             </tr>
           </thead>
           <tbody>
-            {
-              cartItems.map((item, index) => (
-                <CheckoutItem key={item.id} cartItems={item} index={index + 1} category={item.category} />),
-              )
-            }
+            {cartItems.map((item, index) => (
+              <CheckoutItem
+                key={item.id}
+                cartItems={item}
+                index={index + 1}
+                category={item.category}
+              />
+            ))}
           </tbody>
         </table>
-
       </div>
-      <div className='total'>
-        Total: ${totalPrice}
-      </div>
-
-
-
+      <div className="total">Total: ${totalPrice}</div>
     </div>
-
   );
 }

@@ -1,6 +1,4 @@
-import {
-  CategoryItemProps,
-} from '../../Types';
+import { CategoryItemProps } from '../../Types';
 
 import {
   DirectoryItemContainer,
@@ -10,15 +8,18 @@ import {
   OpacityLayer,
 } from './DirectoryItem.styles';
 
-export function DirectoryItem({
+export default function DirectoryItem({
   title,
   cta,
   imageUrl,
 }: CategoryItemProps) {
   return (
-    <DirectoryItemContainer data-testid='category'>
+    <DirectoryItemContainer data-testid="category">
       <OpacityLayer />
-      <BackgroundImage $imageurl={imageUrl || ''} data-testid='backgroundImage' />
+      <BackgroundImage
+        $imageurl={imageUrl || ''}
+        data-testid="backgroundImage"
+      />
       <DirectoryItemBody>
         <h2>{title}</h2>
         <LinkContainer to={`shop/${title}`}>
@@ -26,6 +27,5 @@ export function DirectoryItem({
         </LinkContainer>
       </DirectoryItemBody>
     </DirectoryItemContainer>
-
   );
 }

@@ -1,23 +1,13 @@
-import {
-  doc,
-  getDoc,
-  setDoc,
-} from 'firebase/firestore';
-import { 
-  User,
-} from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { User } from 'firebase/auth';
 
 import { db } from '../firebase.config';
 
-import { 
-  UserData,
-  UserDataOptional,
-} from './database.types';
-
+import { UserData, UserDataOptional } from './database.types';
 
 export function getUserDocRefFromAuth(user: User) {
   const userUID = user.uid;
-  const userDocRef = doc(db, 'users', userUID); 
+  const userDocRef = doc(db, 'users', userUID);
   return userDocRef;
 }
 
@@ -26,9 +16,12 @@ export async function userSnapshotExists(user: User) {
   return (await getDoc(userDocRef)).exists();
 }
 
-export async function createUserDocumentFromAuth(user: User, userDataOptional: UserDataOptional = {}) {
+export async function createUserDocumentFromAuth(
+  user: User,
+  userDataOptional: UserDataOptional = {}
+) {
   const userDocRef = getUserDocRefFromAuth(user);
-  
+
   const userExists = await userSnapshotExists(user);
 
   if (!userExists) {
@@ -49,10 +42,9 @@ export async function createUserDocumentFromAuth(user: User, userDataOptional: U
 
     try {
       await setDoc(userDocRef, userInput);
-    } catch(error){
+    } catch (error) {
       // eslint-disable-next-line no-console
       console.log('error creating the user', error);
     }
   }
-} 
-
+}
