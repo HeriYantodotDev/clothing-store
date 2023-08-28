@@ -2,38 +2,38 @@
 
 (Table Of Content) => Later On.
 
-This is my first React project that utilizes TypeScript. 
+This is my first React project that utilizes TypeScript.
 This documentation serves boths as a **reference** and **journal** for both future me and anyone interested in my project. Anyway! This is a quite long `README.md` so please bear with me!
 
-So, Dear future self, 
+So, Dear future self,
 
-May this journal be of great assistance to you. 
+May this journal be of great assistance to you.
 
 # Project Goals
 
-- Create an ecommerce site that has navigation + routing which: 
+- Create an ecommerce site that has navigation + routing which:
   - Takes us do different pages of categories of item
   - From these items, we're able to add them to our cart
   - We can see the direct update items in our cart
-- The Cart funtionality: 
+- The Cart funtionality:
   - We're about to check out
-  - Increase or decrease these items 
-  - Instant updated reflected in our app 
+  - Increase or decrease these items
+  - Instant updated reflected in our app
 - Integrate with a Stripe API (test version only)
-- Integrate with Firebase to handle Auth and the storage: 
+- Integrate with Firebase to handle Auth and the storage:
   - Sign in and sign up feature
 
 # Project Solutions
 
-- FrontEnd: React With TypeScript! 
+- FrontEnd: React With TypeScript!
   - Build Tool: ViteJS⚡
-- BackEnd: 
+- BackEnd:
   - Firebase
   - Firestore Database
   - Google Auth
 
-
 # Development
+
 - `npm install`
 - Set up `firebaseConfig` file in the : `./src/services/firebase/firebase.config.ts`. Replace it with your own firebase configuration.
 - `npm start`
@@ -42,7 +42,7 @@ And here are my several approach during the development process.
 
 ## Branching Names
 
-- Feature branches: If you're creating a branch to work on a specific feature or user story, you can prefix the branch name with "feature/"/ For example: 
+- Feature branches: If you're creating a branch to work on a specific feature or user story, you can prefix the branch name with "feature/"/ For example:
   - 📝 `feature/user-registration`
   - 📝 `feature/payment-integration`
 - Bug fix branches: If you're fixing a bug or addressing an issue, you can prefix the branch name with "bug/". For example:
@@ -56,29 +56,32 @@ And here are my several approach during the development process.
   - 📝 `refactor/cleanup-css-styles`
 
 ## Naming
-- File Name: 
+
+- File Name:
   - For react component, start with the Capital, and then use `.component`.
-    For example: `CategoryItem.component.tsx` 
+    For example: `CategoryItem.component.tsx`
   - For styling, start with the Capital, and then use `.styles`.
-    For example: `CategoryItem.styles.scss` 
+    For example: `CategoryItem.styles.scss`
   - For TS types. Use `.types`. For example : `datbase.types.ts`
   - Service:
-    - firebase: For `auth`, please use this: `firebase.auth.ts`. 
+    - firebase: For `auth`, please use this: `firebase.auth.ts`.
       For configuration: `firebase.config.ts`.  
-      For db operation: use `.db.ts` for example `users.db.ts`  
-    - utils: any utils file will have `.utils` for example: `time.utils.ts` 
+      For db operation: use `.db.ts` for example `users.db.ts`
+    - utils: any utils file will have `.utils` for example: `time.utils.ts`
   - Test: for test files, please use `xx.test.tsx`, and start it with Capital Letter. For example: `Categories.test.tsx`
-  - For others: camelCase:  
+  - For others: camelCase:
 - Function Name:
   - Component Function: Start with a capital letter and use camelCase for subsequent words.
     For example: `CategoryItem`
-  - Normal functions & variables: camelCase 
-    For example: `defaultValue` 
+  - Normal functions & variables: camelCase
+    For example: `defaultValue`
   - Classes: Start with a capital letter and use camelCase for subsequent words. For example: `JoiValidator`
 
 ## Styling Configuration
+
 - Using [saas](https://www.npmjs.com/package/sass)
 - Here's the set up in the vite.config.ts: (Don't forget to create the file in the corresponding folder)
+
   ```
   import { defineConfig } from 'vite';
   import react from '@vitejs/plugin-react-swc';
@@ -96,6 +99,7 @@ And here are my several approach during the development process.
     },
   });
   ```
+
 - Jest doesn't understand and handle SCSS files by default. To resolve this issue, you can mock the SCSS imports in your Jest test environment. And here's the config in the jest: (Don't forget to create the file in the corresponding folder)
   ```
   {
@@ -111,73 +115,85 @@ And here are my several approach during the development process.
     }
   }
   ```
-### Footer Setting
-This would save future-me a lot. This is about Footer. Sometimes, the content is really short and the footer instead is at the bottom it would be in the middle like this: 
-![Footer Not At the bottom](./__docImages__/Footer%20Not%20at%20The%20Bottom.png)
-I tried many things, and it didn't work to solve this issue. In many cases this won't happen since we put many items on the pages right. But let's solved it. 
-  - First wrap all the HTML element / React Component outside the footer in a div so it's like this:
-    ```
-    export default function App() {
-      return (
-        <div>
-          <div className='content'> //this one
-            <Routes >
-              <Route path='/' element={<Navigation navigationArray={navigationArray} />} >
-                <Route index element={<Home />} />
-                <Route path='shop' element={<Shop />} />
-                <Route path='auth' element={<Authentication />} />
-              </Route>
-            </Routes>
-          </div>
 
-          <Footer />
-        </div>
-      );
-    }
-    ```
-  - Then give a clas name `content` or what ever you like. 
-  - Okay then determined the height of the Footer. If you're not sure then you can check the console in the browser and count the height (click the element and count the height for the boddy - padding - border - margin) like this:
-  ![count the padding](./__docImages__/count%20the%20height%20of%20the%20element.png)
-  - Then put this css in the index/main css : 
+### Footer Setting
+
+This would save future-me a lot. This is about Footer. Sometimes, the content is really short and the footer instead is at the bottom it would be in the middle like this:
+![Footer Not At the bottom](./__docImages__/Footer%20Not%20at%20The%20Bottom.png)
+I tried many things, and it didn't work to solve this issue. In many cases this won't happen since we put many items on the pages right. But let's solved it.
+
+- First wrap all the HTML element / React Component outside the footer in a div so it's like this:
+
   ```
-  .content {
-    min-height: calc(100vh - 80px);
+  export default function App() {
+    return (
+      <div>
+        <div className='content'> //this one
+          <Routes >
+            <Route path='/' element={<Navigation navigationArray={navigationArray} />} >
+              <Route index element={<Home />} />
+              <Route path='shop' element={<Shop />} />
+              <Route path='auth' element={<Authentication />} />
+            </Route>
+          </Routes>
+        </div>
+
+        <Footer />
+      </div>
+    );
   }
   ```
-  - "Voila, it works!"
 
+- Then give a clas name `content` or what ever you like.
+- Okay then determined the height of the Footer. If you're not sure then you can check the console in the browser and count the height (click the element and count the height for the boddy - padding - border - margin) like this:
+  ![count the padding](./__docImages__/count%20the%20height%20of%20the%20element.png)
+- Then put this css in the index/main css :
+
+```
+.content {
+  min-height: calc(100vh - 80px);
+}
+```
+
+- "Voila, it works!"
 
 ## Linting
 
 The detail of the linting rules is this file `.eslintrc.cjs` :
-- Indent tab: 2 
+
+- Indent tab: 2
 - Semi colon: always
 - Quotes: single
 - Comma Dangle: always
 - `indent: ['warn', 2, { SwitchCase: 1}]` . Don't forget for the SwitchCase
 
 ## Testing
-I'm using several packages for this : 
+
+I'm using several packages for this :
+
 - `@testing-library/jest-dom": "^5.16.5`
 - `@testing-library/react": "^14.0.0`
-- `@types/jest": "^29.5.2"` 
+- `@types/jest": "^29.5.2"`
 - `jest": "^29.5.0`
 - `jest-environment-jsdom": "^29.5.0"`
 - `ts-jest": "^29.1.1`
 
-This is a good way to start the React TypeScript test: 
+This is a good way to start the React TypeScript test:
+
 - [Medium Article: Starting Jest](https://medium.com/tinyso/react-hero-typescript-jest-react-testing-library-setup-c2ecce18ec96)
 
 Reading List:
+
 - [Use Query](https://testing-library.com/docs/queries/about/)
 - [Common Mistakes](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
 
-
 ### Firebase Test
-Here's the step: 
+
+Here's the step:
+
 - Install the CLI: [link](https://firebase.google.com/docs/cli#mac-linux-npm)
 - Login: `firebase login` [Link](https://firebase.google.com/docs/cli#sign-in-test-cli)
-- Set up the emulator : `firebase init emulators`. This set up everything and generate `firebase.json` like this : 
+- Set up the emulator : `firebase init emulators`. This set up everything and generate `firebase.json` like this :
   ```
   {
   "emulators": {
@@ -213,15 +229,16 @@ Here's the step:
   }
   ```
 
-Update: I'll skip this for a while. 
+Update: I'll skip this for a while.
 
+### Handling SVG in Vite
 
-### Handling SVG in Vite 
 - Install Dev Dependency: `vite-plugin-svgr`
-- Then in the `vite.config.ts` 
+- Then in the `vite.config.ts`
+
   ```
   import svgr from 'vite-plugin-svgr';
-  
+
   export default defineConfig({
     plugins: [
       react(),
@@ -237,14 +254,17 @@ Update: I'll skip this for a while.
   });
 
   ```
-- Put this code on top of the file that you'd like to use it : 
+
+- Put this code on top of the file that you'd like to use it :
   `/// <reference types="vite-plugin-svgr/client" />`
-  Read the information on NPM for more information about this.  
+  Read the information on NPM for more information about this.
 
 ### Handling SVG in Jest
+
 Remember! SVG + Jest + TypeScript === `PAIN`
-So, take a look this step to make your life easier. 
-- First of all, ensure that you follow the step above in **Handling SVG in Vite** 
+So, take a look this step to make your life easier.
+
+- First of all, ensure that you follow the step above in **Handling SVG in Vite**
 - Create a definition file : `svg.d.ts` and copy paste this
   ```
   declare module '*.svg' {
@@ -255,11 +275,11 @@ So, take a look this step to make your life easier.
     export default content;
   }
   ```
-- Then in the `jset.config.json` in the `moduleNameMapper`, add this : 
+- Then in the `jset.config.json` in the `moduleNameMapper`, add this :
   ```
   "\\.svg": "<rootDir>/src/__mocks__/svg-mock.ts"
   ```
-- Create a file `svg-mock.ts` in the path above and copy paste this : 
+- Create a file `svg-mock.ts` in the path above and copy paste this :
   ```
   const content = 'div';
   export const ReactComponent = content;
@@ -270,8 +290,10 @@ So, take a look this step to make your life easier.
 # The React App Overview
 
 ## Design Patterns
-### Observer Pattern 
-Here's a little bit note about Observer pattern. 
+
+### Observer Pattern
+
+Here's a little bit note about Observer pattern.
 The Observer pattern is a design pattern that establishes a relationship between objects, where one object (called the subject or observable) maintains a list of other objects (called observers) and notifies them automatically of any state changes.
 
 Here's a quick overview of how the Observer pattern works, including Next, Error, and Complete events:
@@ -292,51 +314,83 @@ These events allow observers to respond to different situations and handle vario
 
 The Observer pattern, along with the Next, Error, and Complete events, promotes loose coupling between the subject and observers. It enables objects to establish a one-to-many relationship, where changes in one object are automatically propagated to multiple other objects. This ensures synchronization and maintains consistency between the subject and its observers, enhancing flexibility and extensibility in the system.
 
-
 ## React Routes
+
 ### [Home](./src/routes/home/Home.component.tsx)
-**To-do item** Improve it 
+
+**To-do item** Improve it
+
 ### [Navigation](./src/routes/navigation/Navigation.component.tsx)
-**To-do item** Improve it 
+
+**To-do item** Improve it
+
 ### [Authentication](./src/routes/authentication/Authentication.component.tsx)
+
 ![Authenticaiton](./__docImages__/Authentication.png)
+
 ### [Shop](./src/routes/shop/Shop.component.tsx)
+
 ![Shop](./__docImages__/Shop.png)
+
 ### [Checkout](/src/routes/checkout/Checkout.component.tsx)
+
 ![Checkout](./__docImages__/Checkout.png)
 
 ## Component
+
 ### [CategoryItem](./src/components/CategoryItem/CategoryItem.component.tsx)
+
 ![Category Component Example](./__docImages__/CategoryItem.png)
+
 ### [Directory](./src//components/Directory/Directory.component.tsx)
+
 ![Directory Component Example](./__docImages__/Directory.png)
+
 ### [SignIn](./src/components/SignIn/SignIn.component.tsx)
+
 ![Sign In](./__docImages__/signIn.png)
+
 ### [SignUp](./src/components/SignUp/SignUp.component.tsx)
+
 ![Sign Up](./__docImages__/signUp.png)
+
 ### [Button](./src/components/Button/Button.component.tsx)
+
 ![Button](./__docImages__/button.png)
+
 ### [Footer](./src/components/Footer/Footer.component.tsx)
+
 ![Footer](./__docImages__/Footer.png)
+
 ### [Loading](./src/components/Loading/Loading.component.tsx)
-There are several loading components. All are in the same file 
+
+There are several loading components. All are in the same file
 
 ![LoadingWithingButton](./__docImages__/loading.png)
+
 ### [ProductCard](./src/components/ProductCard/ProductCard.component.tsx)
+
 ![ProductCard](./__docImages__/ProductCard.png)
+
 ### [CartIcon](./src/components/CartIcon/CartIcon.component.tsx)
+
 ![CartIcon](./__docImages__/CartIcon.png)
+
 ### [CartDropDown](/src/components/CartDropDown/CartDropDown.component.tsx)
+
 ![CartDropDown](./__docImages__/CartDropdown.png)
+
 ### [CheckoutItem](./src/components/CheckoutItem/CheckoutItem.component.tsx)
+
 ![CheckoutItem](./__docImages__/CheckoutItem.png)
 
-
 ## Styles
+
 - [Google Fonts: Obitron](https://fonts.google.com/specimen/Orbitron)
 - [styled-components](https://www.npmjs.com/package/styled-components)
-  Using this package will help you a lot to avoid styling clash. 
-  Combine it with Bootstrap, and it'll look like this: 
+  Using this package will help you a lot to avoid styling clash.
+  Combine it with Bootstrap, and it'll look like this:
+
   ```
   import styled from 'styled-components';
 
@@ -347,7 +401,8 @@ There are several loading components. All are in the same file
   `;
   ```
 
-  Or sytling the existing component like this : 
+  Or sytling the existing component like this :
+
   ```
   export const LinkContainer = styled(Link)`
     <css properties here>
@@ -355,13 +410,17 @@ There are several loading components. All are in the same file
   ```
 
 ## Authentication
+
 - Google Auth by Firebase Auth
 - Email Auth by Firebase Auth
-To keep track of the User Authentication I used `onAuthStateChange`. So the Authentication is consistent. 
+  To keep track of the User Authentication I used `onAuthStateChange`. So the Authentication is consistent.
 
 ## React Context
+
 ### User Context
-Here's how to set up useContext for User in TypeScript: 
+
+Here's how to set up useContext for User in TypeScript:
+
 ```
 import {
   createContext,
@@ -396,17 +455,22 @@ export function UserProvider({ children }: UserProviderProps) {
   );
 }
 ```
+
 ### Product Context
+
 All the product data is fetched from Firebasestore then stored in the `ProductContext`
+
 ### Cart Context
-`CartContext` contains: 
+
+`CartContext` contains:
+
 - `cart` : toogleOpen for the Cart Icon
   ```
   const defaultCartValue: CartType = {
     toogleOpen: false,
   };
   ```
-- `cartItems`: 
+- `cartItems`:
   ```
   export type CartItemsType = {
     id: number,
@@ -416,7 +480,7 @@ All the product data is fetched from Firebasestore then stored in the `ProductCo
   ```
 - `countItems` : number
 - `totalPrice`: number
-- Functions: 
+- Functions:
   - `addCartItem`:
     ```
     addCartItem: (idProduct: number, category: string) => void
@@ -426,24 +490,25 @@ All the product data is fetched from Firebasestore then stored in the `ProductCo
     subtractCartItem: (idProduct: number) => void
     ```
   - `removeCartItem`
-    ```
-     removeCartItem: (idProduct: number) => void
-    ```
-Maybe I 'll add more. 
+    `      removeCartItem: (idProduct: number) => void
+    `
+    Maybe I 'll add more.
 
 ## Reducer
 
-Internal React for state management is using `useContext` and withing the component, using `useState` or `useEffect` to access it. 
+Internal React for state management is using `useContext` and withing the component, using `useState` or `useEffect` to access it.
 The other strategy is using `useReducer`
 
-So, instead of using `useState` to update the state, it has `Action` to update the state. Action has two things: 
+So, instead of using `useState` to update the state, it has `Action` to update the state. Action has two things:
+
 - type
 - payload
 
 Now let's start with the React `useReducer`. It's quite similar with `useState` but for complex state it's better to use `useReducer`. Now let's change our code to use `useReducer`, let's start with the simple one: state in the [`user.context.tsx`](./src/context/user.context.tsx);
 
-first of all, like I mentioned before, let's comment out the `useState` in this code. 
-Let's set up the type first: 
+first of all, like I mentioned before, let's comment out the `useState` in this code.
+Let's set up the type first:
+
 ```
 export enum USER_ACTION_TYPES {
   SET_CURRENT_USER = 'SET_CURRENT_USER',
@@ -459,7 +524,8 @@ type UserActionType = {
 }
 ```
 
-After that let's update the `UserContextType` the type of the `setCurrentUser`: 
+After that let's update the `UserContextType` the type of the `setCurrentUser`:
+
 ```
 type UserContextType = {
   currentUser: User | null;
@@ -467,7 +533,7 @@ type UserContextType = {
 }
 ```
 
-Great! Now let's move to the implementation: 
+Great! Now let's move to the implementation:
 
 ```
 function userReducer(state: UserStateType, action: UserActionType): UserStateType {
@@ -488,29 +554,33 @@ function userReducer(state: UserStateType, action: UserActionType): UserStateTyp
 }
 ```
 
-Now let's set up the initial value for the state: 
+Now let's set up the initial value for the state:
+
 ```
 const INITIAL_STATE: UserStateType = {
   currentUser: null,
 };
 ```
 
-The function above takes two argument: the state (which we will define using `useReducer`), 
-and the second one is the action. The second one is an object that contains two properties: 
-- `type` which is a string. We defined it in an enum `USER_ACTION_TYPES`.
-- `payload` which is a new state that we'd like to update it too. 
+The function above takes two argument: the state (which we will define using `useReducer`),
+and the second one is the action. The second one is an object that contains two properties:
 
-Ok great now let's use it in the component: 
+- `type` which is a string. We defined it in an enum `USER_ACTION_TYPES`.
+- `payload` which is a new state that we'd like to update it too.
+
+Ok great now let's use it in the component:
 
 ```
   const [state, dispatch] = useReducer(userReducer, INITIAL_STATE);
 
   const { currentUser } = state;
 ```
-First off all we define the state and the `dispatch` function using `useReducer` and also we pass the initial value for the state. 
-We can also do the destructuring for the state, in the case above I'm destructuring `{currentUser}` . 
 
-Next let's define the `setCurrentUser` functino like this : 
+First off all we define the state and the `dispatch` function using `useReducer` and also we pass the initial value for the state.
+We can also do the destructuring for the state, in the case above I'm destructuring `{currentUser}` .
+
+Next let's define the `setCurrentUser` functino like this :
+
 ```
   function setCurrentUser(user: User) {
     dispatch({
@@ -520,12 +590,12 @@ Next let's define the `setCurrentUser` functino like this :
   }
 ```
 
-As you can see, the above function, we set the type using enum and then we set the payload to be the new user. And that's it. Now we already using `useReducer` instead of `useState`. The benefit of using `useReducer` instead of using `useState` is the flexibility to update the state, particularly if the state is quite complex. 
+As you can see, the above function, we set the type using enum and then we set the payload to be the new user. And that's it. Now we already using `useReducer` instead of `useState`. The benefit of using `useReducer` instead of using `useState` is the flexibility to update the state, particularly if the state is quite complex.
 One thing to remember is that if we'd like to update several multiple states, that it's best to use Reducer.
 
-Here's the full code for it. 
+Here's the full code for it.
 
-``` 
+```
 export function UserProvider({ children }: UserProviderProps) {
   // const [currentUser, setCurrentUser] = useState<User | null>(null);
 
@@ -569,7 +639,8 @@ export function UserProvider({ children }: UserProviderProps) {
   );
 }
 ```
-and here's also the use of `useReducer` in the `cart.context` 
+
+and here's also the use of `useReducer` in the `cart.context`
 
 ```
 import {
@@ -835,31 +906,183 @@ export function CartProvider({ children }: CartProviderProps) {
 }
 ```
 
-It's quite long isn't it? But let me put it here as a code snippet. Next we're going to use `Redux` as a library. 
-
-
+It's quite long isn't it? But let me put it here as a code snippet. Next we're going to use `Redux` as a library.
 
 ## Redux
-`Redux` is a predictable state managment library for JavaScript applications. 'Predictable' means that the state changes in an application are handled in a consistent and explicit manner, following a set of defined principles and patterns. This predictablity helps make the application state easier to understand, reason about, and debug. 
 
-`Reducer` is a fundamental concept in Redux. In Redux, a Reducer is a pure function responsible for handling state changes. It takes the current state and an action as inputs, and returns a new state based on that action. Reducers are responsible for defining how the application state should be updated in response to different actions. They follow the principle of immutability, meaning they do not modify the existing state directly, but instead create a new state object with the desired changes. 
+In the documentation, it's commended to use both `React-Redux` and also `Redux Toolkit`.
+
+Let's start to use `React-Redux only`. This is to understand how Redux works.
+
+### Redux Vs Context API
+
+There are only two differences:
+
+- Accessibility
+  Context: Only components that are wrapped withing the context can access it.
+  Redux: Always wrapped in the entire application. All components have access to it. It's called global state management.
+
+- Flow of Data
+  Context: Component => |action| => Reducer => |values| => component
+  Redux: Root Reducer => |pass State| => All Components ==> |one dispatch actions| => All Reducers. Singular store.
+
+### Redux Set Up
+
+- Dependencies
+  ```bash
+  npm i redux react-redux redux-logger
+  ```
+
+  ```bash
+  npm i -D @types/redux-logger
+  ```
+
+  For most of the time we don't want to use Context and Redux at the same time. so let's change our previous implementation with Redux
+
+- Store
+  - Now let's create folder named `store`. 
+  - Let's create several files: 
+    - `store.ts` => store set up for Redux
+    - `rootReducers.ts` => to combine all reducers 
+    - Create a new folder named `user` then create a file `user.reducer.ts`
+  - Great now let's go through it one by one: 
+    `user.reducer.tx` => This is quite similar with the previous one that we create for context. The different is on default we return the current state, and also we passed in the initial state. 
+    ```typescript
+    /* eslint-disable @typescript-eslint/naming-convention */
+    import { createContext } from 'react';
+
+    import { User } from 'firebase/auth';
+
+    type UserContextType = {
+      currentUser: User | null;
+      setCurrentUser: (user: User) => void;
+    };
+
+    export const UserContext = createContext<UserContextType>({
+      currentUser: null,
+      setCurrentUser: () => null,
+    });
+
+    export enum USER_ACTION_TYPES {
+      SET_CURRENT_USER = 'SET_CURRENT_USER',
+    }
+
+    type UserStateType = {
+      currentUser: User | null;
+    };
+
+    type UserActionType = {
+      type: USER_ACTION_TYPES;
+      payload: User;
+    };
+
+    const INITIAL_STATE: UserStateType = {
+      currentUser: null,
+    };
+
+    export function userReducer(
+      // eslint-disable-next-line @typescript-eslint/default-param-last
+      state: UserStateType = INITIAL_STATE,
+      action: UserActionType
+    ): UserStateType {
+      const { type, payload } = action;
+
+      switch (type) {
+        case USER_ACTION_TYPES.SET_CURRENT_USER:
+          return {
+            ...state,
+            currentUser: payload,
+          };
+
+        default:
+          return state;
+      }
+    }
+    ```
+    `rootReducer.ts`
+    After we create the `user.reducer.ts`, it's time for us to combine it into the root reducer: 
+    ```typescript
+    import { combineReducers } from 'redux';
+    import { userReducer } from './user/user.reducer';
+
+    export const rootReducer = combineReducers({
+      user: userReducer,
+    });
+
+    export default rootReducer;
+    ```
+    
+    `store.ts`
+    Here is our configuration for the store
+    ```typescript
+    import { compose, createStore, applyMiddleware } from 'redux';
+    import logger from 'redux-logger';
+    import { rootReducer } from './rootReducer';
+
+    // root-reducer
+
+    const middleWares = [logger];
+    const composedEnhancers = compose(applyMiddleware(...middleWares));
+    export const store = createStore(rootReducer, undefined, composedEnhancers);
+
+    export default store;
+    ```
+  - Now let's wrap our application using Provider from `react-redux`:
+  ```typescript
+  import React from 'react';
+  import ReactDOM from 'react-dom/client';
+  import { BrowserRouter } from 'react-router-dom';
+  import { Provider } from 'react-redux';
+
+  import App from './App';
+  import { UserProvider } from './context/user.context';
+  import { CategoriesProvider } from './context/categories.context';
+  import { CartProvider } from './context/cart.context';
+  import { store } from './store/store';
+
+  import './main.scss';
+
+  ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <BrowserRouter>
+          <UserProvider>
+            <CategoriesProvider>
+              <CartProvider>
+                <App />
+              </CartProvider>
+            </CategoriesProvider>
+          </UserProvider>
+        </BrowserRouter>
+      </Provider>
+    </React.StrictMode>
+  );
+  ```
+
+- Use Redux state
+Okay we already set it up, now it's time to implement it. 
 
 
 # BackEnd
+
 I'm using [Firebase](https://firebase.google.com/) here for the backend.
+
 - `npm i firebase`. [Link](https://www.npmjs.com/package/firebase)
 
-
 ## Setting up Firestore Database
+
 It consists of three things:
+
 - data
 - document
 - collection
 
 Example:
+
 - '#' => collection
 - '##' => document
 - '###' => data
+
 ```
 #Shoes#
   ##Shoe1##
@@ -881,46 +1104,51 @@ Example:
       currencry: 'USD'
     ###
 ```
-Please take a look at the picture below: 
+
+Please take a look at the picture below:
 ![Firestore Database Structure](./__docImages__/firebase%20database%20structure.png)
 
-## Database Structure 
+## Database Structure
+
 - Collection: `users`
   - document: `uid` || (how when email)
     - data:
-      | Field           | Type            | Default Value (in Function) |
+      | Field | Type | Default Value (in Function) |
       |-----------------|-----------------|-----------------------------|
-      | active          | boolean         | true                        |
-      | createdAt       | timeStamp       | new Date()                  |
-      | updatedAt       | timeStamp       | new Date()                  |
-      | displayName     | string          |                             |
-      | email           | string          |                             |
+      | active | boolean | true |
+      | createdAt | timeStamp | new Date() |
+      | updatedAt | timeStamp | new Date() |
+      | displayName | string | |
+      | email | string | |
 - Collection: `categories`
+
   - data: example: `hats`, `jackets`, `mens`, `sneakers`, `womens`
-      | Field           | Type            | Default Value (in Function) |
-      |-----------------|-----------------|-----------------------------|
-      | title           | string          | example: `hats`, `jackets`  |
-      | items           | {}              | below                       |
+    | Field | Type | Default Value (in Function) |
+    |-----------------|-----------------|-----------------------------|
+    | title | string | example: `hats`, `jackets` |
+    | items | {} | below |
 
-      `item` object: 
-      | Field           | Type            | Default Value (in Function) |
-      |-----------------|-----------------|-----------------------------|
-      | id              | number          |                             |
-      | imageUrl        | string          |                             |
-      | name            | string          |                             |
-      | price           | string          |                             |
-      | stock           | number          |                             |
+    `item` object:
+    | Field | Type | Default Value (in Function) |
+    |-----------------|-----------------|-----------------------------|
+    | id | number | |
+    | imageUrl | string | |
+    | name | string | |
+    | price | string | |
+    | stock | number | |
 
-
-- Collection: 
-  - data 
-      | Field           | Type            | Default Value (in Function) |
-      |-----------------|-----------------|-----------------------------|
-      |                 |                 |                             |
+- Collection:
+  - data
+    | Field | Type | Default Value (in Function) |
+    |-----------------|-----------------|-----------------------------|
+    | | | |
 
 # Journal
+
 ## Next ...
+
 ## July 7 2023
+
 After spending a considerable amount of time on this project, I encountered a significant challenge while working with testing. Originally, my intention was to adopt the Test-Driven Development (TDD) approach for React. However, due to numerous errors, I made the decision to gradually introduce tests, one at a time. Additionally, I am currently in the process of familiarizing myself with Firebase and Firestore, which has proven to be a bit challenging when it comes to specifying the initial specifications.
 
 Nevertheless, I firmly believe that practice is the key to mastery. In my future projects, I aspire to incorporate TDD into the development process of React applications, leveraging the lessons learned from this experience.
