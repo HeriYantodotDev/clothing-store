@@ -1,25 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { createContext } from 'react';
+// import { createContext } from 'react';
 
 import { User } from 'firebase/auth';
 
-type UserContextType = {
-  currentUser: User | null;
-  setCurrentUser: (user: User) => void;
-};
+import USER_ACTION_TYPES from './user.actionTypes';
 
-// type UserProviderProps = {
-//   children: ReactNode;
+// type UserContextType = {
+//   currentUser: User | null;
+//   setCurrentUser: (user: User) => void;
 // };
-
-export const UserContext = createContext<UserContextType>({
-  currentUser: null,
-  setCurrentUser: () => null,
-});
-
-export enum USER_ACTION_TYPES {
-  SET_CURRENT_USER = 'SET_CURRENT_USER',
-}
 
 type UserStateType = {
   currentUser: User | null;
@@ -29,6 +18,11 @@ type UserActionType = {
   type: USER_ACTION_TYPES;
   payload: User;
 };
+
+// export const UserContext = createContext<UserContextType>({
+//   currentUser: null,
+//   setCurrentUser: () => null,
+// });
 
 const INITIAL_STATE: UserStateType = {
   currentUser: null,
@@ -51,4 +45,8 @@ export function userReducer(
     default:
       return state;
   }
+}
+
+export function placeholder() {
+  return 'just place holder';
 }

@@ -4,13 +4,14 @@
 import { useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
+import { useSelector } from 'react-redux';
+
 import { NavigationItem, NavigationProps } from '../../Types';
 
 import { defaultNavigationArray } from './defaultValue';
 
 import shopLogo from '../../assets/loud.jpg';
 
-import { UserContext } from '../../context/user.context';
 import { CartContext } from '../../context/cart.context';
 
 import { signOutUser } from '../../services/firebase/firebase.auth';
@@ -24,6 +25,8 @@ import {
   Logocontainer,
   LogoText,
 } from './Navigation.styles';
+
+import { selectCurrentUser } from '../../store/user/user.collector';
 
 const brandName = 'Cool Store';
 
@@ -40,7 +43,7 @@ export function NavLink({ path, label, onClick }: NavigationItem) {
 export default function Navigation({
   navigationArray = defaultNavigationArray,
 }: NavigationProps) {
-  const { currentUser } = useContext(UserContext);
+  const currentUser = useSelector(selectCurrentUser);
   const { cart, setCart, countItems } = useContext(CartContext);
 
   function handleCartIconClick() {
