@@ -490,8 +490,7 @@ All the product data is fetched from Firebasestore then stored in the `ProductCo
     subtractCartItem: (idProduct: number) => void
     ```
   - `removeCartItem`
-    `      removeCartItem: (idProduct: number) => void
-    `
+    `     removeCartItem: (idProduct: number) => void`
     Maybe I 'll add more.
 
 ## Reducer
@@ -929,6 +928,7 @@ There are only two differences:
 ### Redux Set Up
 
 - Dependencies
+
   ```bash
   npm i redux react-redux redux-logger
   ```
@@ -940,13 +940,15 @@ There are only two differences:
   For most of the time we don't want to use Context and Redux at the same time. so let's change our previous implementation with Redux
 
 - Store
-  - Now let's create folder named `store`. 
-  - Let's create several files: 
+
+  - Now let's create folder named `store`.
+  - Let's create several files:
     - `store.ts` => store set up for Redux
-    - `rootReducers.ts` => to combine all reducers 
+    - `rootReducers.ts` => to combine all reducers
     - Create a new folder named `user` then create a file `user.reducer.ts`
-  - Great now let's go through it one by one: 
-    `user.reducer.tx` => This is quite similar with the previous one that we create for context. The different is on default we return the current state, and also we passed in the initial state. 
+  - Great now let's go through it one by one:
+    `user.reducer.tx` => This is quite similar with the previous one that we create for context. The different is on default we return the current state, and also we passed in the initial state.
+
     ```typescript
     /* eslint-disable @typescript-eslint/naming-convention */
     import { createContext } from 'react';
@@ -999,8 +1001,10 @@ There are only two differences:
       }
     }
     ```
+
     `rootReducer.ts`
-    After we create the `user.reducer.ts`, it's time for us to combine it into the root reducer: 
+    After we create the `user.reducer.ts`, it's time for us to combine it into the root reducer:
+
     ```typescript
     import { combineReducers } from 'redux';
     import { userReducer } from './user/user.reducer';
@@ -1011,9 +1015,10 @@ There are only two differences:
 
     export default rootReducer;
     ```
-    
+
     `store.ts`
     Here is our configuration for the store
+
     ```typescript
     import { compose, createStore, applyMiddleware } from 'redux';
     import logger from 'redux-logger';
@@ -1027,7 +1032,9 @@ There are only two differences:
 
     export default store;
     ```
+
   - Now let's wrap our application using Provider from `react-redux`:
+
   ```typescript
   import React from 'react';
   import ReactDOM from 'react-dom/client';
@@ -1060,8 +1067,92 @@ There are only two differences:
   ```
 
 - Use Redux state
-Okay we already set it up, now it's time to implement it. 
+  Okay we already set it up, now it's time to implement it.
+  First off all we have to move the set up in the `user.context` to the `App.ts` and also `user.reducer`
 
+  `App.ts`
+
+  We move the `useEffect` and then import `useDispatch` from `react-redux`. We will get linting error, since the linting needs us to add `dispatch` into array or dependencies. However, we don't have to, the reference is the same and it's not going to change.
+
+  ```tsx
+  import { useDispatch } from 'react-redux';
+  import { setCurrentUser } from './store/user/user.action';
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener(async (user) => {
+      try {
+        if (user) {
+          const userExists = await userSnapshotExists(user);
+          if (userExists) {
+            dispatch(setCurrentUser(user));
+          }
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      }
+    });
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  ```
+
+  Now let's create a function named `setCurrentUser` in the newfile named `user.action.ts`:
+
+  ```ts
+  import { User } from 'firebase/auth';
+  import USER_ACTION_TYPES from './user.actionTypes';
+
+  export function setCurrentUser(user: User) {
+    return {
+      type: USER_ACTION_TYPES.SET_CURRENT_USER,
+      payload: user,
+    };
+  }
+  ```
+
+  Great now let's create the enum separately in the `user.actionTypes.ts`:
+
+  ```ts
+  /* eslint-disable @typescript-eslint/naming-convention */
+  enum USER_ACTION_TYPES {
+    SET_CURRENT_USER = 'SET_CURRENT_USER',
+  }
+
+  export default USER_ACTION_TYPES;
+  ```
+
+After we update the implementation above, we can see that we have a log right now in the console that logs the previous, current, and also next state.
+
+### Using Redux
+
+In order to use it in our application we have to use a hook called `UseSelector`.
+
+**User Reducer**
+
+Okay now let's use it. We use the User Context in the `Navigation.component` right?
+now let's remove the context, and then we replace it with the Redux Reducer
+
+First let's create the selector function named `user.collector.ts`:
+
+```ts
+import { store } from '../store';
+
+export function selectCurrentUser(state: ReturnType<typeof store.getState>) {
+  return state.user.currentUser;
+}
+```
+
+Great let's remove our previous context and the we replace it with Redux:
+
+```ts
+import { selectCurrentUser } from '../../store/user/user.collector';
+const currentUser = useSelector(selectCurrentUser);
+```
+
+That's it!
 
 # BackEnd
 
@@ -1152,3 +1243,7 @@ Please take a look at the picture below:
 After spending a considerable amount of time on this project, I encountered a significant challenge while working with testing. Originally, my intention was to adopt the Test-Driven Development (TDD) approach for React. However, due to numerous errors, I made the decision to gradually introduce tests, one at a time. Additionally, I am currently in the process of familiarizing myself with Firebase and Firestore, which has proven to be a bit challenging when it comes to specifying the initial specifications.
 
 Nevertheless, I firmly believe that practice is the key to mastery. In my future projects, I aspire to incorporate TDD into the development process of React applications, leveraging the lessons learned from this experience.
+
+## September 4 2023
+
+Take a break for while for other projects, now I'm working to set up Redux for this app.
