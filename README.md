@@ -1154,6 +1154,19 @@ const currentUser = useSelector(selectCurrentUser);
 
 That's it!
 
+**Category Reducer**
+
+Next! Let's create a folder named `category` under the `store` folder, and create four files:
+
+- `category.action.ts`
+- `category.actionTypes.ts`
+- `category.collector.ts`
+- `category.reducer.ts`
+
+Then we can replace the context with our reducer. It's quite similar. We don't have to put everything on `App.ts` to fetch the date from the backend and then store it in Redux. In this case we only need to put it in the `Shop` page.
+
+Since it's quite the same, I don't repeat it.
+
 # BackEnd
 
 I'm using [Firebase](https://firebase.google.com/) here for the backend.

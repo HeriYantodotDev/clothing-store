@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { CategoriesContext } from '../../context/categories.context';
 import { CartContext } from '../../context/cart.context';
 import { CheckoutItemProps } from '../../Types';
 
@@ -10,12 +10,14 @@ import './CheckoutItem.styles.scss';
 
 import { findProductItem } from '../../context/cart.helper';
 
+import { selectCategories } from '../../store/category/category.selector';
+
 export default function CheckoutItem({
   cartItems,
   index,
   category,
 }: CheckoutItemProps) {
-  const { categories } = useContext(CategoriesContext);
+  const categories = useSelector(selectCategories);
   const { id, quantity } = cartItems;
   const productItem = findProductItem(categories, cartItems);
   const { name, price, imageUrl } = productItem ?? {};

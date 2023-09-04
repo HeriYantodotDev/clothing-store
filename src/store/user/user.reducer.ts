@@ -1,14 +1,6 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-// import { createContext } from 'react';
-
 import { User } from 'firebase/auth';
 
 import USER_ACTION_TYPES from './user.actionTypes';
-
-// type UserContextType = {
-//   currentUser: User | null;
-//   setCurrentUser: (user: User) => void;
-// };
 
 type UserStateType = {
   currentUser: User | null;
@@ -18,11 +10,6 @@ type UserActionType = {
   type: USER_ACTION_TYPES;
   payload: User;
 };
-
-// export const UserContext = createContext<UserContextType>({
-//   currentUser: null,
-//   setCurrentUser: () => null,
-// });
 
 const INITIAL_STATE: UserStateType = {
   currentUser: null,
