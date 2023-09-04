@@ -26,7 +26,7 @@ import {
   LogoText,
 } from './Navigation.styles';
 
-import { selectCurrentUser } from '../../store/user/user.collector';
+import { selectCurrentUser } from '../../store/user/user.selector';
 
 const brandName = 'Cool Store';
 
