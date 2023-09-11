@@ -1,9 +1,15 @@
+import { createSelector } from 'reselect';
 import { store } from '../store';
 
-export function selectCategories(state: ReturnType<typeof store.getState>) {
-  return state.categories.categories;
+export function selectCategoryReducer(
+  state: ReturnType<typeof store.getState>
+) {
+  return state.categories;
 }
 
-export function placeHolder() {
-  return 'justPlaceHolder';
-}
+export const selectCategories = createSelector(
+  [selectCategoryReducer],
+  (categoriesSlice) => {
+    return categoriesSlice.categories;
+  }
+);

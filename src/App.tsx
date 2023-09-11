@@ -50,6 +50,10 @@ export default function App() {
             dispatch(setCurrentUser(user));
           }
         }
+        // This is just a note for updating the state after logout.
+        // if (user === null) {
+        //   dispatch(setCurrentUser(null));
+        // }
       } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err);
