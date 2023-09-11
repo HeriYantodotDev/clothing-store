@@ -4,7 +4,7 @@ import { rootReducer } from './rootReducer';
 
 const loggerMiddleware: Middleware = (store) => (next) => (action) => {
   if (!action.type) {
-    return next();
+    return next(action);
   }
 
   console.log('type', action.type);
