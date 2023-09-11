@@ -1167,7 +1167,44 @@ Then we can replace the context with our reducer. It's quite similar. We don't h
 
 Since it's quite the same, I don't repeat it.
 
-# BackEnd
+### ReSelect & Memoization
+
+Memoization ("meh-MOY-uh-zay-shun." ) is a technique used in programming to improve the performance of functions by caching the result of expensive calculations or functions calls based on their input parameters.
+
+We also will use a library named `reselect`.
+
+- https://www.npmjs.com/package/reselect
+- https://github.com/reduxjs/reselect
+
+Now let's use it:
+
+In the `category.selector`, we're using `createSelector` from `reselect`:
+
+```ts
+import { createSelector } from 'reselect';
+import { store } from '../store';
+
+export function selectCategoryReducer(
+  state: ReturnType<typeof store.getState>
+) {
+  return state.categories;
+}
+
+export const selectCategories = createSelector(
+  [selectCategoryReducer],
+  (categoriesSlice) => {
+    return categoriesSlice.categories;
+  }
+);
+```
+
+As you can see here that we're using function `createSelector`, we pass the function, and the result that we pass in the callback function.
+
+The `createSelector` will ensure that the selector isn't running if the result is referring to the same object (no changes).
+
+Then it won't trigger to rerender.
+
+# BackEnd / Fire Store
 
 I'm using [Firebase](https://firebase.google.com/) here for the backend.
 
