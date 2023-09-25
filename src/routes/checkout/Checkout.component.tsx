@@ -1,11 +1,15 @@
-import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import CheckoutItem from '../../components/CheckoutItem/CheckoutItem.component';
-import { CartContext } from '../../context/cart.context';
-
+import {
+  selectCartItems,
+  selectCartTotal,
+} from '../../store/cart/cart.selector';
 import './Checkout.styles.scss';
 
 export default function Checkout() {
-  const { cartItems, totalPrice } = useContext(CartContext);
+  const cartItems = useSelector(selectCartItems);
+  const totalPrice = useSelector(selectCartTotal);
+
   return (
     <div className="container">
       <div className="table-responsive">

@@ -6,5 +6,8 @@
     "activityBar.background": "#215502",
     "titleBar.activeBackground": "#215502",
     "titleBar.activeForeground": "#f5f8fa"
-  }
+  },
+  "cSpell.words": [
+    "toogle"
+  ]
 }

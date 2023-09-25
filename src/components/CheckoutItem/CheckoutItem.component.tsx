@@ -1,9 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { CartContext } from '../../context/cart.context';
 import { CheckoutItemProps } from '../../Types';
 
 import './CheckoutItem.styles.scss';
@@ -11,21 +9,27 @@ import './CheckoutItem.styles.scss';
 import { findProductItem } from '../../context/cart.helper';
 
 import { selectCategories } from '../../store/category/category.selector';
+import { selectCartItems } from '../../store/cart/cart.selector';
+import {
+  addCartItem,
+  subtractCartItem,
+  removeCartItem,
+} from '../../store/cart/cart.action';
 
 export default function CheckoutItem({
   cartItems,
   index,
   category,
 }: CheckoutItemProps) {
+  const dispatch = useDispatch();
   const categories = useSelector(selectCategories);
+  const allCartItems = useSelector(selectCartItems);
   const { id, quantity } = cartItems;
   const productItem = findProductItem(categories, cartItems);
   const { name, price, imageUrl } = productItem ?? {};
-  const { addCartItem, subtractCartItem, removeCartItem } =
-    useContext(CartContext);
 
   function addIdProductToCart() {
-    addCartItem(id, category);
+    dispatch(addCartItem(allCartItems, id, category));
     toast(
       `Congratulations! One item "${name}" is successfully added to the cart.`,
       {
@@ -52,7 +56,7 @@ export default function CheckoutItem({
       return;
     }
 
-    subtractCartItem(id);
+    dispatch(subtractCartItem(allCartItems, id));
     toast.info(`One item "${name}" is subtracted from the cart.`, {
       position: 'bottom-right',
       autoClose: 5000,
@@ -62,7 +66,7 @@ export default function CheckoutItem({
   }
 
   function removeIdProductFromCart() {
-    removeCartItem(id);
+    dispatch(removeCartItem(allCartItems, id));
     toast.warning(`The Item "${name}" has been removed from the cart.`, {
       position: 'bottom-right',
       autoClose: 5000,

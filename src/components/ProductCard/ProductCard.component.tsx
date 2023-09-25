@@ -1,20 +1,22 @@
 /* eslint-disable react/jsx-no-bind */
 import './ProductCard.styles.scss';
-import { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import Button from '../Button/Button.component';
 
+import { addCartItem } from '../../store/cart/cart.action';
+import { selectCartItems } from '../../store/cart/cart.selector';
+
 import { ProductCardProps } from '../../Types';
 
-import { CartContext } from '../../context/cart.context';
-
 export default function ProductCard({ product, category }: ProductCardProps) {
+  const dispatch = useDispatch();
   const { name, price, imageUrl, id } = product;
-  const { addCartItem } = useContext(CartContext);
+  const cartItems = useSelector(selectCartItems);
 
   function addIdProductToCart() {
-    addCartItem(id, category);
+    dispatch(addCartItem(cartItems, id, category));
     toast(
       `Congratulations! One item "${name}" is successfully added to the cart.`,
       {
