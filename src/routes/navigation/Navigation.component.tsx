@@ -1,10 +1,9 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { NavigationItem, NavigationProps } from '../../Types';
 
@@ -12,7 +11,10 @@ import { defaultNavigationArray } from './defaultValue';
 
 import shopLogo from '../../assets/loud.jpg';
 
-import { CartContext } from '../../context/cart.context';
+import {
+  selectCartCount,
+  selectIsCartOpen,
+} from '../../store/cart/cart.selector';
 
 import { signOutUser } from '../../services/firebase/firebase.auth';
 
@@ -27,6 +29,7 @@ import {
 } from './Navigation.styles';
 
 import { selectCurrentUser } from '../../store/user/user.selector';
+import { setIsCartOpen } from '../../store/cart/cart.action';
 
 const brandName = 'Cool Store';
 
@@ -44,10 +47,12 @@ export default function Navigation({
   navigationArray = defaultNavigationArray,
 }: NavigationProps) {
   const currentUser = useSelector(selectCurrentUser);
-  const { cart, setCart, countItems } = useContext(CartContext);
+  const isCartOpen = useSelector(selectIsCartOpen);
+  const countItems = useSelector(selectCartCount);
+  const dispatch = useDispatch();
 
   function handleCartIconClick() {
-    setCart(!cart.toogleOpen);
+    dispatch(setIsCartOpen(!isCartOpen));
   }
 
   return (
@@ -94,7 +99,7 @@ export default function Navigation({
             )}
             <CartIcon onClick={handleCartIconClick} countItems={countItems} />
           </ul>
-          {cart.toogleOpen && <CartDropDown />}
+          {isCartOpen && <CartDropDown />}
         </div>
       </NavigationContainer>
 

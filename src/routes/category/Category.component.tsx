@@ -13,10 +13,8 @@ export default function Category() {
   const { category } = useParams();
   const categories = useSelector(selectCategories);
   const [products, setProducts] = useState<ItemShopData[]>([]);
-  console.log('render/re-rendering category component');
 
   useEffect(() => {
-    console.log('effect firing calling setProducts');
     const productList = categories?.find(
       (item) => item.title.toLowerCase() === category?.toLocaleLowerCase()
     );

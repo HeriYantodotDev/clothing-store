@@ -1204,6 +1204,10 @@ The `createSelector` will ensure that the selector isn't running if the result i
 
 Then it won't trigger to rerender.
 
+## Migrate other reducers to Redux
+
+It's basically quite the same like the previous setting. So I don't have to repeat it.
+
 # BackEnd / Fire Store
 
 I'm using [Firebase](https://firebase.google.com/) here for the backend.
